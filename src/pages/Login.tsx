@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
-import React, { useEffect, FC, useState } from "react";
+import { useEffect, FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { isToken } from "../store/slices/TokenSlice";
 import { ContainerPage, Page } from "../layouts/components";
@@ -48,7 +48,7 @@ const Login: FC<LoginProps> = () => {
         <Logo>
           <Title>Music Player</Title>
           <LogoImg
-            isClicked={isClicked}
+            isClicked
             size={150}
             onClick={handleLogin}></LogoImg>
         </Logo>
@@ -116,7 +116,8 @@ interface LogoImg {
 }
 
 const LogoImg = styled(FaPlay)<LogoImg>`
-  animation: ${(props) => (props.isClicked ? rotate : null)} 1s linear infinite;
+  animation: ${({ isClicked }) => (isClicked ? rotate : null)} 1s linear
+    infinite;
 `;
 
 export default Login;
