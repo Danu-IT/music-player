@@ -6,6 +6,9 @@ export default createGlobalStyle`
         margin: 0px;
         border: none;
     }
+    body{
+        height: 100vh;
+    }
 
     *,
     *::before,
