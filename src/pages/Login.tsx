@@ -13,6 +13,7 @@ const Login: FC<LoginProps> = () => {
   const { token } = useAppSelector((state) => state.tokenSlice);
   const dispatch = useAppDispatch();
 
+  // console.log(actionData);
   const handleLogin = () => {
     setIsClicked(true);
     const clientID = "31902ba63cef4879b088fcd06fd9d234";
@@ -27,6 +28,10 @@ const Login: FC<LoginProps> = () => {
       "user-read-playback-position",
       "user-top-read",
       "user-read-recently-played",
+      "playlist-read-private",
+      "playlist-read-collaborative",
+      "playlist-modify-private",
+      "playlist-modify-public",
     ];
     window.location.href = `${apiUrl}?client_id=${clientID}&redirect_uri=${redirect}&scope=${scope.join(
       " "
@@ -48,7 +53,7 @@ const Login: FC<LoginProps> = () => {
         <Logo>
           <Title>Music Player</Title>
           <LogoImg
-            isClicked
+            isClicked={isClicked}
             size={150}
             onClick={handleLogin}></LogoImg>
         </Logo>

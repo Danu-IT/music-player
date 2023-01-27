@@ -20,16 +20,18 @@ export default createGlobalStyle`
     :active {
         outline: none;
     }
-
+    a{
+        text-decoration:none;
+    }
     a:focus,
-    a:active {
+    a:active,
+    a:visited {
+        text-decoration:none;
          outline: none;
     }
 
     a, a:link, a:visited  {
-        /* color: inherit; */
         text-decoration: none;
-        /* display: inline-block; */
     }
 
     a:hover  {
