@@ -25,5 +25,11 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["User"],
     }),
+    testFetch: build.query<IUser, null>({
+      query: () => ({
+        url: "/v1/me/playlists",
+      }),
+      providesTags: (result) => ["User"],
+    }),
   }),
 });

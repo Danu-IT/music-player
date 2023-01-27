@@ -3,11 +3,13 @@ import themeSlice from './slices/ThemeSlice';
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { userAPI } from '../services/UserService';
 import userSlice from './slices/UserSlice';
+import sidebarHiddenSlice from './slices/SidebarHiddenSlice';
 
 const rootReducer = combineReducers({
     themeSlice,
     tokenSlice,
     userSlice,
+    sidebarHiddenSlice,
     [userAPI.reducerPath]: userAPI.reducer
 });
 
