@@ -29,11 +29,7 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
     setIsDarkMode((prev) => (prev = !prev));
   };
 
-  const {
-    data: user,
-    isFetching,
-    isLoading: isLoadingUser,
-  } = userAPI.useCurrentUserQuery(null);
+  const { data: user, isFetching } = userAPI.useCurrentUserQuery(null);
 
   const getCurrentUser = (user: IUser | any) => {
     if (!user) return false;
@@ -71,9 +67,7 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
           to={`/#access_token=${token}`}>
           Home
         </LinkCustom>
-        <LinkCustom
-          replace={false}
-          to={`/playlists/#access_token=${token}`}>
+        <LinkCustom to={`/playlists/#access_token=${token}`}>
           Playlists
         </LinkCustom>
         <LinkCustom
