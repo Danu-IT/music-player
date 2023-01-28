@@ -7,6 +7,10 @@ import CustomizedSwitches from "../Switch/SwitchCustom";
 import { useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { toggle } from "../../../store/slices/SidebarHiddenSlice";
+import { userAPI } from "../../../services/UserService";
+import { IUser } from "../../../interfaces/user";
+import { receiveСurrentUser } from "../../../store/slices/UserSlice";
+import { useEffect } from "react";
 
 interface SidebarCustomProps {}
 
@@ -24,6 +28,30 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
     dispatch(toggleTheme());
     setIsDarkMode((prev) => (prev = !prev));
   };
+
+  const {
+    data: user,
+    isFetching,
+    isLoading: isLoadingUser,
+  } = userAPI.useCurrentUserQuery(null);
+
+  const getCurrentUser = (user: IUser | any) => {
+    if (!user) return false;
+
+    const createdUser: IUser = {
+      display_name: user.display_name,
+      country: user.country,
+      email: user.email,
+      image: user.images[0],
+    };
+    dispatch(receiveСurrentUser(createdUser));
+  };
+
+  useEffect(() => {
+    getCurrentUser(user);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetching]);
 
   return (
     <Sidebar isActiveSidebar={isActiveSidebar}>
@@ -84,12 +112,14 @@ const Sidebar = styled.div<SidebarProps>`
 
 const ImgArrow = styled(BsArrowLeft)`
   position: absolute;
-  right: 50px;
+  right: 30px;
 `;
 
 const User = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 40px;
   transition: all 1s;
 `;
