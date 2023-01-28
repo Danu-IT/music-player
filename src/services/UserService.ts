@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { IUser } from '../interfaces/user';
+import { IUser, IUserPlaylists } from '../interfaces/user';
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -25,7 +25,7 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["User"],
     }),
-    testFetch: build.query<IUser, null>({
+    currentUserPlaylists: build.query<IUserPlaylists, null>({
       query: () => ({
         url: "/v1/me/playlists",
       }),
