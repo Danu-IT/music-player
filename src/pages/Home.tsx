@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import BaseContainer from "../components/BaseContainer";
+import styled from "styled-components";
 
 const Home = () => {
   return (

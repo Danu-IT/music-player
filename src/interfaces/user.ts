@@ -5,15 +5,37 @@ export interface IUser {
     image: IUserImage;
 }
 
-export interface IUserPlaylists {
-    items: IUserPlaylist[]
-}
-
 export interface IUserPlaylist {
-    images: IUserImage[];
+    images: any;
     name: string;
     id: string;
-    tracks: any;
+    tolal: number;
+    tracks?: IUserPlaylistTracks;
+}
+
+export interface IUserPlaylistTracks {
+    items: IUserPlaylistTrackHaracter[];
+}
+
+export interface IUserPlaylistTrackHaracter {
+    added_at: string;
+    track: IUserPlaylistTrack;
+}
+
+export interface IUserPlaylistTrack {
+    duration_ms: number;
+    artist: IUserPlaylistTrackArtist[];
+    albun: IUserPlaylistTrackAlbum;
+}
+
+export interface IUserPlaylistTrackAlbum {
+    id: string;
+    name: string;
+}
+
+export interface IUserPlaylistTrackArtist {
+    id: string;
+    name: string;
 }
 
 interface IUserImage {

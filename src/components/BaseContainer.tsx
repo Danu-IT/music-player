@@ -11,9 +11,15 @@ import SearchCustom from "./UI/Search/SearchCustom";
 
 type BaseContainerProps = {
   children: React.ReactNode;
+  search?: boolean;
+  navbar?: boolean;
 };
 
-const BaseContainer: FC<BaseContainerProps> = ({ children }) => {
+const BaseContainer: FC<BaseContainerProps> = ({
+  children,
+  search,
+  navbar,
+}) => {
   const { isLoading: isLoadingUser } = userAPI.useCurrentUserQuery(null);
   const { vissible: isActiveSidebar } = useAppSelector(
     (state) => state.sidebarHiddenSlice
@@ -25,12 +31,16 @@ const BaseContainer: FC<BaseContainerProps> = ({ children }) => {
         <Loader></Loader>
       ) : (
         <ContainerHomePage>
-          <Hamburger
-            size={30}
-            onClick={() => dispatch(toggle())}></Hamburger>
-          <SidebarCustom></SidebarCustom>
-          <Content isActiveSidebar={isActiveSidebar}>
-            <SearchCustom></SearchCustom>
+          <Navbar navbar={navbar}>
+            <Hamburger
+              size={30}
+              onClick={() => dispatch(toggle())}></Hamburger>
+            <SidebarCustom></SidebarCustom>
+          </Navbar>
+          <Content
+            navbar={navbar}
+            isActiveSidebar={isActiveSidebar}>
+            <SearchCustom search={search}></SearchCustom>
             {children}
           </Content>
         </ContainerHomePage>
@@ -44,6 +54,14 @@ const ContainerHomePage = styled(ContainerPage)`
   gap: 50px;
 `;
 
+interface NavbarProps {
+  navbar?: boolean;
+}
+
+const Navbar = styled.div<NavbarProps>`
+  display: ${({ navbar }) => (navbar !== true ? "flex" : "none")};
+`;
+
 const Hamburger = styled(GiHamburgerMenu)`
   cursor: pointer;
   transform: rotate(0deg);
@@ -52,17 +70,17 @@ const Hamburger = styled(GiHamburgerMenu)`
   margin: 15px;
   :hover {
     transition: all 0.5s ease-out;
-    transform: rotate(180deg);
   }
 `;
 
 interface ContentProps {
   isActiveSidebar: boolean;
+  navbar?: boolean;
 }
 
 const Content = styled.div<ContentProps>`
-  margin-left: ${({ isActiveSidebar }) =>
-    isActiveSidebar ? "300px" : "200px"};
+  margin-left: ${({ isActiveSidebar, navbar }) =>
+    navbar ? "0px" : isActiveSidebar ? "300px" : "200px"};
   transition: all 0.5s ease-out;
 `;
 
