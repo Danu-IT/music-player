@@ -9,7 +9,7 @@ interface RowProps {
   component: any;
 }
 
-const Row: FC<RowProps> = ({ component, title }) => {
+const RowPlaylists: FC<RowProps> = ({ component, title }) => {
   return (
     <div>
       <Title>{title}</Title>
@@ -34,4 +34,4 @@ const Title = styled.h1`
   margin: 0 0 30px 10px;
 `;
 
-export default Row;
+export default RowPlaylists;

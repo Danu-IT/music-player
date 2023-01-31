@@ -3,9 +3,10 @@ import React from "react";
 
 interface ListProps<T> {
   items: T[];
-  renderItem: (item: T) => React.ReactNode;
+  renderItem: (item: T, i: number) => React.ReactNode;
   flex?: boolean;
   direction?: string;
+  length?: number;
 }
 
 export default function List<T>({

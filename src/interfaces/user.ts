@@ -9,12 +9,13 @@ export interface IUserPlaylist {
     images: any;
     name: string;
     id: string;
-    tolal: number;
     tracks?: IUserPlaylistTracks;
+    total?: number;
 }
 
 export interface IUserPlaylistTracks {
     items: IUserPlaylistTrackHaracter[];
+    total?: number;
 }
 
 export interface IUserPlaylistTrackHaracter {
@@ -24,13 +25,15 @@ export interface IUserPlaylistTrackHaracter {
 
 export interface IUserPlaylistTrack {
     duration_ms: number;
-    artist: IUserPlaylistTrackArtist[];
-    albun: IUserPlaylistTrackAlbum;
+    artists: IUserPlaylistTrackArtist[];
+    album: IUserPlaylistTrackAlbum;
+    name: string;
 }
 
 export interface IUserPlaylistTrackAlbum {
     id: string;
     name: string;
+    images: IUserImage[];
 }
 
 export interface IUserPlaylistTrackArtist {

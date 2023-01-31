@@ -74,7 +74,9 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
       </User>
       <Links>
         <List
-          items={privateRoutes.filter((route) => route.type !== "Playlist")}
+          items={privateRoutes.filter(
+            (route) => route.type !== "Playlist" && route.type !== "Artist"
+          )}
           flex={true}
           direction="column"
           renderItem={(item) => (

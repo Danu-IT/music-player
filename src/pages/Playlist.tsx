@@ -1,31 +1,74 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { userAPI } from "../services/UserService";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import PlaylistPicture from "../components/PlaylistPicture/PlaylistPicture";
 import styled from "styled-components";
+import Loader from "../components/UI/Loader/Loader";
+import { countAllDuration, countArtistPlaylist } from "../utils/calc";
+import TracksInPlaylist from "../components/TracksInPlaylist/TracksInPlaylist";
+import { ContainerPage, Page } from "../layouts/components/index";
+import { BsArrowLeft } from "react-icons/bs";
 
 interface PlaylistProps {}
 
 export const Playlist: FC<PlaylistProps> = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const { data, isLoading } = userAPI.useCurrentUserPlaylistQuery(id);
+
+  const { data: playlists, isLoading } =
+    userAPI.useCurrentUserPlaylistQuery(id);
+
+  const navigate = useNavigate();
+  const artistsCount = useMemo(
+    () => countArtistPlaylist(playlists),
+    [playlists]
+  );
+
+  const countDuration = useMemo(() => countAllDuration(playlists), [playlists]);
+
+  if (isLoading) {
+    return (
+      <BaseContainer
+        navbar={true}
+        search={true}>
+        <Loader></Loader>
+      </BaseContainer>
+    );
+  }
+
   return (
-    <BaseContainer
-      navbar={true}
-      search={true}>
-      <ContainerPlaylist>
-        <PlaylistPicture
-          picture={data?.images[0]?.url}
-          playlistName={data?.name}></PlaylistPicture>
-      </ContainerPlaylist>
-    </BaseContainer>
+    <Page>
+      <ContainerPage>
+        <ContainerPlaylist>
+          <Arrow
+            size={20}
+            onClick={() => navigate(-1)}></Arrow>
+          <PlaylistPicture
+            picture={playlists?.images[0]?.url}
+            playlistName={playlists?.name.toUpperCase()}
+            total={playlists?.tracks?.total}
+            artistsCount={artistsCount}
+            countDuration={countDuration}></PlaylistPicture>
+          <TracksInPlaylist id={id}></TracksInPlaylist>
+        </ContainerPlaylist>
+      </ContainerPage>
+    </Page>
   );
 };
 
 const ContainerPlaylist = styled.div`
-  margin: 60px 50px 0 50px;
+  padding: 60px 50px 0 50px;
   display: block;
   gap: 50px;
+  position: relative;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 13px;
+`;
+
+const Arrow = styled(BsArrowLeft)`
+  position: absolute;
+  left: 10px;
+  top: 25px;
 `;

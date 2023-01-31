@@ -19,9 +19,9 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
     const currentPlaylist = currentUserPlaylists.filter(
       (playlist) => playlist.id === id
     );
+
     navigate(`/playlists/${currentPlaylist[0].id}#access_token=${token}`);
   };
-
   return (
     <Container onClick={(event) => handlerPlaylist(event, playlist.id)}>
       {playlist.images ? (
@@ -31,11 +31,9 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
       )}
 
       <Name length={playlist.name.length}>
-        <div>
-          <h1>{playlist.name}</h1>
-        </div>
+        <div>{playlist.name}</div>
       </Name>
-      <Songs>{playlist.tolal} songs</Songs>
+      <Songs>{playlist?.total} songs</Songs>
     </Container>
   );
 };
@@ -56,7 +54,7 @@ const Image = styled.img`
   border-radius: 15px;
 `;
 
-interface NameProps {
+export interface NameProps {
   length: number;
 }
 
@@ -64,10 +62,18 @@ const Songs = styled.span`
   color: white;
 `;
 
-const Name = styled.div<NameProps>`
-  margin: 10px auto;
+export const Name = styled.div<NameProps>`
+  margin: 10px 0;
+  padding: 2px;
   max-width: 90%;
   overflow: hidden;
+  &:hover {
+    overflow: visible;
+    & div {
+      animation: none;
+      cursor: pointer;
+    }
+  }
   & div {
     width: 120%;
     animation: ${({ length }) =>

@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
-export default createGlobalStyle`
+export const GlobalStyles = createGlobalStyle`
     * {
         padding: 0px;
         margin: 0px;
@@ -8,6 +8,7 @@ export default createGlobalStyle`
     }
     body{
         height: 100vh;
+        background: ${({ theme }) => theme.colors.bg}
     }
 
     *,
@@ -50,4 +51,4 @@ export default createGlobalStyle`
     ul, ul li {
         list-style: none;
     }
-`
+`;

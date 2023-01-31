@@ -1,3 +1,4 @@
+import { black } from 'material-ui/styles/colors';
 import { ITheme, ThemeEnum } from './../../interfaces/styled';
 
 
@@ -19,6 +20,7 @@ export const lightTheme = {
         ...baseTheme.colors,
         bg: '#76CCFB',
         primary: '#0F1E36',
+        secondary: '#000000'
     },
 }
 
@@ -29,5 +31,6 @@ export const darkTheme = {
         ...baseTheme.colors,
         bg: '#0F1E36',
         primary: '#76CCFB',
+        secondary: '#FFFFFF',
     },
 }
