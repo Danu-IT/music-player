@@ -18,10 +18,6 @@ const AppRouter: FC = () => {
                   path={route.path}
                   element={<route.component></route.component>}></Route>
                 <Route
-                  path="/"
-                  element={<Home />}
-                />
-                <Route
                   path="*"
                   element={<Home />}
                 />

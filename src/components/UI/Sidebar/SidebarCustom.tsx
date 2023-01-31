@@ -1,20 +1,31 @@
 import React, { FC } from "react";
 import { useAppSelector, useAppDispatch } from "../../../hooks/redux";
 import { toggleTheme } from "../../../store/slices/ThemeSlice";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
 import CustomizedSwitches from "../Switch/SwitchCustom";
 import { useState } from "react";
-import { BsArrowLeft } from "react-icons/bs";
 import { toggle } from "../../../store/slices/SidebarHiddenSlice";
 import { userAPI } from "../../../services/UserService";
 import { IUser } from "../../../interfaces/user";
 import { receiveСurrentUser } from "../../../store/slices/UserSlice";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import List from "../../List";
+import { privateRoutes } from "../../../routes/index";
+import {
+  ImgArrow,
+  Sidebar,
+  User,
+  Avatar,
+  Name,
+  Links,
+  LinkCustom,
+  DarkMode,
+} from "./SidebarCustomStyles";
 
 interface SidebarCustomProps {}
 
 const SidebarCustom: FC<SidebarCustomProps> = () => {
+  const location = useLocation();
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const { vissible: isActiveSidebar } = useAppSelector(
     (state) => state.sidebarHiddenSlice
@@ -62,24 +73,21 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
         <Name>{currentUser?.display_name}</Name>
       </User>
       <Links>
-        <LinkCustom
-          replace={false}
-          to={`/#access_token=${token}`}>
-          Home
-        </LinkCustom>
-        <LinkCustom to={`/playlists/#access_token=${token}`}>
-          Playlists
-        </LinkCustom>
-        <LinkCustom
-          replace={false}
-          to={`/#access_token=${token}`}>
-          Settings
-        </LinkCustom>
-        <LinkCustom
-          replace={false}
-          to={`/#access_token=${token}`}>
-          Language
-        </LinkCustom>
+        <List
+          items={privateRoutes.filter(
+            (route) => route.type !== "Playlist" && route.type !== "Artist"
+          )}
+          flex={true}
+          direction="column"
+          renderItem={(item) => (
+            <LinkCustom
+              location={location.pathname}
+              coloractive={item.path}
+              key={item.type}
+              to={`${item.path}#access_token=${token}`}>
+              {item.type}
+            </LinkCustom>
+          )}></List>
       </Links>
       <DarkMode>
         <div>Night Mode</div>
@@ -90,73 +98,5 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
     </Sidebar>
   );
 };
-
-interface SidebarProps {
-  isActiveSidebar: boolean;
-}
-
-const Sidebar = styled.div<SidebarProps>`
-  width: 265px;
-  background: ${({ theme }) => theme.colors.bg};
-  position: absolute;
-  height: 100vh;
-  padding: 30px 30px 0px 30px;
-  left: ${({ isActiveSidebar }) => (isActiveSidebar ? "none" : "-100%")};
-`;
-
-const ImgArrow = styled(BsArrowLeft)`
-  position: absolute;
-  right: 30px;
-`;
-
-const User = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
-  transition: all 1s;
-`;
-const Name = styled.div`
-  font-size: 25px;
-  padding-top: 10px;
-  padding-left: 5px;
-`;
-const Avatar = styled.img`
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-`;
-
-const LinkCustom = styled(Link)`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const Links = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-weight: 400;
-  font-size: 20px;
-  color: ;
-  > * {
-    padding: 5px;
-    :hover {
-      opacity: 0.6;
-      border-radius: 10px;
-    }
-  }
-`;
-
-const DarkMode = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px;
-  font-weight: 400;
-  font-size: 20px;
-  cursor: pointer;
-  margin-top: 50px;
-`;
 
 export default SidebarCustom;

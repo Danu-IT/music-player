@@ -2,32 +2,46 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import LogoImage from "../../../assets/images/Logo.svg";
+import LogoImageDark from "../../../assets/images/LogoDark.svg";
 import { SearchIcons } from "../../../utils";
 import SearchIcon from "./SearchIcon";
+import List from "../../List";
+import { useAppSelector } from "../../../hooks/redux";
 
-interface SearchCustomProps {}
+interface SearchCustomProps {
+  search?: boolean;
+}
 
-const SearchCustom: FC<SearchCustomProps> = () => {
+const SearchCustom: FC<SearchCustomProps> = ({ search }) => {
+  const { theme } = useAppSelector((state) => state.themeSlice);
   return (
-    <ContainerSearch>
-      <Logo src={LogoImage}></Logo>
+    <ContainerSearch search={search}>
+      <Logo src={theme.type === "dark" ? LogoImage : LogoImageDark}></Logo>
       <InputContainer>
         <ImgInput size={15}></ImgInput>
         <Input></Input>
       </InputContainer>
       <SearchContainer>
-        {SearchIcons.map((icon) => (
-          <SearchIcon
-            name={icon.name}
-            src={icon.src}></SearchIcon>
-        ))}
+        <List
+          items={SearchIcons}
+          flex={true}
+          renderItem={(icon) => (
+            <SearchIcon
+              key={icon.name}
+              name={icon.name}
+              src={theme.type === "dark" ? icon.light : icon.dark}></SearchIcon>
+          )}></List>
       </SearchContainer>
     </ContainerSearch>
   );
 };
 
-const ContainerSearch = styled.div`
-  display: flex;
+interface ContainerSearchProps {
+  search?: boolean;
+}
+
+const ContainerSearch = styled.div<ContainerSearchProps>`
+  display: ${({ search }) => (search !== true ? "flex" : "none")};
   align-items: center;
   margin: 40px 20px;
   & > * {

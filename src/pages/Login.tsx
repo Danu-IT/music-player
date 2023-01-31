@@ -53,7 +53,7 @@ const Login: FC<LoginProps> = () => {
         <Logo>
           <Title>Music Player</Title>
           <LogoImg
-            isClicked={isClicked}
+            isclicked={isClicked}
             size={150}
             onClick={handleLogin}></LogoImg>
         </Logo>
@@ -117,11 +117,11 @@ const Logo = styled.div`
 `;
 
 interface LogoImg {
-  isClicked: boolean;
+  isclicked?: boolean;
 }
 
 const LogoImg = styled(FaPlay)<LogoImg>`
-  animation: ${({ isClicked }) => (isClicked ? rotate : null)} 1s linear
+  animation: ${({ isclicked }) => (isclicked ? rotate : null)} 1s linear
     infinite;
 `;
 

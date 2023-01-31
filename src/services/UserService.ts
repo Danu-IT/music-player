@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { IUser, IUserPlaylists } from '../interfaces/user';
+import { IUser, IUserPlaylist, IUserPlaylistTracks } from '../interfaces/user';
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -25,9 +25,33 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["User"],
     }),
-    currentUserPlaylists: build.query<IUserPlaylists, null>({
+    currentUserPlaylists: build.query<IUserPlaylist[], null>({
       query: () => ({
         url: "/v1/me/playlists",
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    currentUserPlaylist: build.query<IUserPlaylist, string>({
+      query: (id: string) => ({
+        url: `/v1/playlists/${id}`,
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({
+      query: (id: string) => ({
+        url: `/v1/playlists/${id}/tracks`,
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    getArtist: build.query<any, string>({
+      query: (id: string) => ({
+        url: `/v1/artists/${id}`,
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    RecentlyPlayedTracks: build.query<any, null>({
+      query: () => ({
+        url: "/v1/me/player/recently-played",
       }),
       providesTags: (result) => ["User"],
     }),
