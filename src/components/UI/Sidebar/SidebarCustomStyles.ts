@@ -8,9 +8,11 @@ export interface SidebarProps {
 
 export const Sidebar = styled.div<SidebarProps>`
     width: 265px;
+    // box-shadow: -5px 0px 5px -5px rgba(34, 60, 80, 0.6) inset;
     background: ${({ theme }) => theme.colors.bg};
-    position: absolute;
+    position: fixed;
     height: 100vh;
+    height: 100%;
     padding: 30px 30px 0px 30px;
     left: ${({ isActiveSidebar }) => (isActiveSidebar ? "none" : "-100%")};
   `;

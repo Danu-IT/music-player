@@ -66,7 +66,7 @@ const Hamburger = styled(GiHamburgerMenu)`
   cursor: pointer;
   transform: rotate(0deg);
   transition: all 0.5s ease-out;
-  position: absolute;
+  position: fixed;
   margin: 15px;
   :hover {
     transition: all 0.5s ease-out;

@@ -2,7 +2,7 @@ export interface IUser {
     display_name: string;
     country: string;
     email: string;
-    image: IUserImage;
+    image: IImage;
 }
 
 export interface IUserPlaylist {
@@ -21,6 +21,7 @@ export interface IUserPlaylistTracks {
 export interface IUserPlaylistTrackHaracter {
     added_at: string;
     track: IUserPlaylistTrack;
+    tracks: IUserPlaylistTrack[];
 }
 
 export interface IUserPlaylistTrack {
@@ -33,7 +34,7 @@ export interface IUserPlaylistTrack {
 export interface IUserPlaylistTrackAlbum {
     id: string;
     name: string;
-    images: IUserImage[];
+    images: IImage[];
 }
 
 export interface IUserPlaylistTrackArtist {
@@ -41,6 +42,6 @@ export interface IUserPlaylistTrackArtist {
     name: string;
 }
 
-interface IUserImage {
+export interface IImage {
     url: string;
 }
