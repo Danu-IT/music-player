@@ -62,20 +62,18 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
 
   return (
     <Sidebar isActiveSidebar={isActiveSidebar}>
-      <ImgArrow
-        size={20}
-        onClick={() => dispatch(toggle())}></ImgArrow>
+      <ImgArrow size={20} onClick={() => dispatch(toggle())}></ImgArrow>
       <User>
-        <Avatar
-          src={currentUser?.image.url}
-          alt="avatar"
-        />
+        <Avatar src={currentUser?.image.url} alt="avatar" />
         <Name>{currentUser?.display_name}</Name>
       </User>
       <Links>
         <List
           items={privateRoutes.filter(
-            (route) => route.type !== "Playlist" && route.type !== "Artist"
+            (route) =>
+              route.type !== "Playlist" &&
+              route.type !== "Artist" &&
+              route.type !== "Albums"
           )}
           flex={true}
           direction="column"
@@ -84,16 +82,19 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
               location={location.pathname}
               coloractive={item.path}
               key={item.type}
-              to={`${item.path}#access_token=${token}`}>
+              to={`${item.path}#access_token=${token}`}
+            >
               {item.type}
             </LinkCustom>
-          )}></List>
+          )}
+        ></List>
       </Links>
       <DarkMode>
         <div>Night Mode</div>
         <CustomizedSwitches
           checked={isDarkMode}
-          onChange={handleTheme}></CustomizedSwitches>
+          onChange={handleTheme}
+        ></CustomizedSwitches>
       </DarkMode>
     </Sidebar>
   );

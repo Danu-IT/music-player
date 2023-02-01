@@ -16,9 +16,7 @@ export default function List<T>({
   direction,
 }: ListProps<T>) {
   return (
-    <Container
-      direction={direction}
-      flex={flex}>
+    <Container direction={direction} flex={flex}>
       {items.map(renderItem)}
     </Container>
   );
@@ -32,5 +30,6 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   display: ${({ flex }) => (flex ? "flex" : "block")};
   flex-direction: ${({ direction }) => direction};
+  flex-wrap: wrap;
   gap: 15px;
 `;

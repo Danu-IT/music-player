@@ -37,17 +37,13 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   return (
     <Music
       onMouseEnter={() => setPlayAndRemoveVisible(true)}
-      onMouseLeave={() => setPlayAndRemoveVisible(false)}>
+      onMouseLeave={() => setPlayAndRemoveVisible(false)}
+    >
       <Number>{index}</Number>
-      <Play
-        size={30}
-        playAndRemoveVisible={playAndRemoveVisible}></Play>
+      <Play size={30} playAndRemoveVisible={playAndRemoveVisible}></Play>
       <SongCustom>
         <SongContainer>
-          <Image
-            src={track.album.images[1].url}
-            alt=""
-          />
+          <Image src={track.album.images[1].url} alt="" />
           <Name length={track.name.length}>
             <div>
               <span>{track.name}</span>
@@ -70,10 +66,9 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       <Album>{track.album.name}</Album>
       <Remove
         displayRemove={remove}
-        playAndRemoveVisible={playAndRemoveVisible}></Remove>
-      <Add
-        displayAdd={add}
-        playAndRemoveVisible={playAndRemoveVisible}></Add>
+        playAndRemoveVisible={playAndRemoveVisible}
+      ></Remove>
+      <Add displayAdd={add} playAndRemoveVisible={playAndRemoveVisible}></Add>
     </Music>
   );
 };

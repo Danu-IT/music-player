@@ -1,13 +1,13 @@
-import { IImage } from './user';
+import { IImage } from "./user";
 
 export interface IAlbums {
-    items: IAlbum[]
+  items: IAlbum[];
 }
 
 export interface IAlbum {
-    id: string;
-    images: IImage[];
-    name: string;
-    release_date: string;
-    artists: [{ name: string }];
+  id: string;
+  images: IImage[];
+  name: string;
+  release_date: string;
+  artists: [{ name: string }];
 }

@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { IUser, IUserPlaylist, IUserPlaylistTracks, IUserPlaylistTrackHaracter } from '../interfaces/user';
-import { IArtist } from '../interfaces/artist';
-import { IAlbums } from '../interfaces/album';
+import {
+  IUser,
+  IUserPlaylist,
+  IUserPlaylistTracks,
+  IUserPlaylistTrackHaracter,
+} from "../interfaces/user";
+import { IArtist } from "../interfaces/artist";
+import { IAlbums } from "../interfaces/album";
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -10,7 +15,7 @@ export const userAPI = createApi({
     prepareHeaders: (headers, { getState }) => {
       const {
         tokenSlice: { token },
-      } = (getState() as any);
+      } = getState() as any;
 
       if (token) {
         headers.set("Authorization", "Bearer " + token);
@@ -51,12 +56,15 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["User"],
     }),
-    getArtistsTopTracks: build.query<IUserPlaylistTrackHaracter, { id: string }>({
+    getArtistsTopTracks: build.query<
+      IUserPlaylistTrackHaracter,
+      { id: string }
+    >({
       query: ({ id }) => {
         return {
           url: `/v1/artists/${id}/top-tracks`,
-          params: { market: 'ES' }
-        }
+          params: { market: "ES" },
+        };
       },
       providesTags: (result) => ["User"],
     }),
@@ -64,17 +72,26 @@ export const userAPI = createApi({
       query: ({ id }) => {
         return {
           url: `/v1/artists/${id}/albums`,
-          params: { market: 'ES' }
-        }
+          params: { market: "ES" },
+        };
       },
       providesTags: (result) => ["User"],
     }),
-    getAlbumTracks: build.query<any, { id: string }>({
+    getAlbumTracks: build.query<IAlbums, { id: string }>({
       query: ({ id }) => {
         return {
-          url: `/v1/playlists/${id}`,
-          params: { market: 'ES' }
-        }
+          url: `/v1/albums/${id}/tracks`,
+          params: { market: "ES", limit: 10 },
+        };
+      },
+      providesTags: (result) => ["User"],
+    }),
+    getTrack: build.query<IUserPlaylistTrackHaracter, { id: string }>({
+      query: ({ id }) => {
+        return {
+          url: `/v1/tracks/${id}`,
+          params: { market: "ES" },
+        };
       },
       providesTags: (result) => ["User"],
     }),

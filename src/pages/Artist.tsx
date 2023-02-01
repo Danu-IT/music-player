@@ -7,7 +7,7 @@ import ButtonAndPicture from "../components/UI/ButtonAndPicture/ButtonAndPicture
 import Button from "../components/UI/Button/Button";
 import List from "../components/List";
 import Track from "../components/Track/Track";
-import Albums from "../components/Albums/Albums";
+import AlbumItem from "../components/Albums/AlbumItem";
 import Row from "../components/Row";
 
 interface ArtistProps {}
@@ -35,9 +35,7 @@ const Artist: FC<ArtistProps> = () => {
           <ButtonAndPicture content=""></ButtonAndPicture>
           <Button>Подписаться</Button>
         </Play>
-        <Row
-          top={true}
-          title="Popular tracks">
+        <Row top={true} title="Popular tracks">
           {top && (
             <List
               items={top.tracks}
@@ -47,21 +45,21 @@ const Artist: FC<ArtistProps> = () => {
                   artist={true}
                   index={i + 1}
                   track={item}
-                  key={item.duration_ms}></Track>
-              )}></List>
+                  key={item.duration_ms}
+                ></Track>
+              )}
+            ></List>
           )}
         </Row>
-        <Row
-          top={true}
-          title="Albums">
+        <Row top={true} title="Albums">
           {albums && (
             <List
+              flex={true}
               items={albums.items}
               renderItem={(item, i) => (
-                <Albums
-                  track={item}
-                  key={item.id}></Albums>
-              )}></List>
+                <AlbumItem album={item} key={item.id}></AlbumItem>
+              )}
+            ></List>
           )}
         </Row>
       </Content>
@@ -77,8 +75,6 @@ const HeaderArtist = styled.div`
   height: 200px;
   color: ${({ theme }) => theme.colors.secondary};
 `;
-
-const PopularTrack = styled.div``;
 
 const HeaderContent = styled.div`
   margin: 50px 0;
@@ -102,17 +98,8 @@ const IamgeArtist = styled.img`
   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
 `;
 
-const Title = styled.div`
-  margin: 50px 0 30px;
-  font-size: 30px;
-`;
-
 const Content = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
-`;
-
-const AlbumsArtist = styled.div`
-  margin: 50px 0;
 `;
 
 const Play = styled.div`
