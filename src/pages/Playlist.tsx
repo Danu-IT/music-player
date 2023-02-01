@@ -6,7 +6,7 @@ import PlaylistPicture from "../components/PlaylistPicture/PlaylistPicture";
 import styled from "styled-components";
 import Loader from "../components/UI/Loader/Loader";
 import { countAllDuration, countArtistPlaylist } from "../utils/calc";
-import TracksInPlaylist from "../components/TracksInPlaylist/TracksInPlaylist";
+import Tracks from "../components/Tracks/Tracks";
 import { ContainerPage, Page } from "../layouts/components/index";
 import { BsArrowLeft } from "react-icons/bs";
 
@@ -50,7 +50,7 @@ export const Playlist: FC<PlaylistProps> = () => {
             total={playlists?.tracks?.total}
             artistsCount={artistsCount}
             countDuration={countDuration}></PlaylistPicture>
-          <TracksInPlaylist id={id}></TracksInPlaylist>
+          <Tracks id={id}></Tracks>
         </ContainerPlaylist>
       </ContainerPage>
     </Page>

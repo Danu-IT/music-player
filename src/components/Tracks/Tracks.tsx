@@ -2,13 +2,13 @@ import React, { FC } from "react";
 import styled from "styled-components";
 import { userAPI } from "../../services/UserService";
 import List from "../List";
-import TrackInPlaylist from "../TrackInPlaylist/TrackInPlaylist";
+import Track from "../Track/Track";
 
-interface TracksInPlaylistProps {
+interface TracksProps {
   id: string;
 }
 
-const TracksInPlaylist: FC<TracksInPlaylistProps> = ({ id }) => {
+const Tracks: FC<TracksProps> = ({ id }) => {
   const { data: tracks } = userAPI.useCurrentUserPlaylistTracksQuery(id);
 
   return (
@@ -25,10 +25,11 @@ const TracksInPlaylist: FC<TracksInPlaylistProps> = ({ id }) => {
           <List
             items={tracks.items}
             renderItem={(item, i) => (
-              <TrackInPlaylist
+              <Track
                 index={i + 1}
-                track={item}
-                key={item.track.duration_ms}></TrackInPlaylist>
+                track={item.track}
+                remove={true}
+                key={item.track.duration_ms}></Track>
             )}></List>
         )}
       </ContainerMusic>
@@ -51,6 +52,7 @@ const Header = styled.div`
 export const Image = styled.img`
   width: 62px;
   height: 41px;
+  object-fit: cover;
 `;
 
 export const Number = styled.div`
@@ -65,10 +67,18 @@ export const Song = styled.div`
 export const Duration = styled.div`
   column-width: 200px;
 `;
-export const Artist = styled.div`
+
+interface ArtistProps {
+  display?: boolean;
+}
+
+export const Artist = styled.div<ArtistProps>`
   column-width: 250px;
+  width: 280px;
+  display: ${({ display }) => (!display ? "block" : "none")};
 `;
 export const Album = styled.div`
+  margin-right: 100px;
   column-width: 250px;
 `;
 export const ContainerMusic = styled.div`
@@ -77,4 +87,4 @@ export const ContainerMusic = styled.div`
   justify-content: center;
 `;
 
-export default TracksInPlaylist;
+export default Tracks;

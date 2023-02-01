@@ -8,24 +8,28 @@ interface ButtonAndPictureProps {
 
 const ButtonAndPicture: FC<ButtonAndPictureProps> = ({ content }) => {
   return (
-    <Container>
+    <Container content={content}>
       <LinkButton href="">{content}</LinkButton>
-      <Icon></Icon>
+      <Icon size={content.length > 0 ? 20 : 30}></Icon>
     </Container>
   );
 };
+interface ContainerProps {
+  content: string;
+}
 
-const Container = styled.div`
+const Container = styled.div<ContainerProps>`
   background: ${({ theme }) => theme.colors.primary};
   cursor: pointer;
-  width: 100px;
+  width: ${({ content }) => (content.length > 0 ? "100px" : "50px")};
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
+  border-radius: ${({ content }) => (content.length > 0 ? "18px" : "50%")};
   &:hover {
     opacity: 0.7;
+    scale: 1.05;
   }
 `;
 const LinkButton = styled.a`

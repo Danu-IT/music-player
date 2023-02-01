@@ -4,8 +4,11 @@ import { useAppSelector, useAppDispatch } from "../hooks/redux";
 import { receiveCurrentUserPlaylists } from "../store/slices/UserSlice";
 import { useEffect } from "react";
 import BaseContainer from "../components/BaseContainer";
-import RowPlaylists from "../components/RowPlaylists";
+import Row from "../components/Row";
 import axios from "axios";
+import List from "../components/List";
+import PlaylistItem from "../components/PlaylistItem";
+import { IUserPlaylist } from "../interfaces/user";
 
 interface PlaylistsProps {}
 
@@ -32,30 +35,30 @@ const Library: FC<PlaylistsProps> = () => {
     dispatch(receiveCurrentUserPlaylists(playlists));
   };
 
-  const fetch = async () => {
-    const response = await axios.get(
-      // "https://api.spotify.com/v1/browse/featured-playlists",
-      // "https://api.spotify.com/v1/browse/categories",
-      "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFQ00XGBls6ym/playlists",
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-        params: {
-          limit: 10,
-          offset: 5,
-          market: "ES",
-          include_groups: "single",
-        },
-      }
-    );
-    console.log(response);
-  };
+  // const fetch = async () => {
+  //   const response = await axios.get(
+  //     // "https://api.spotify.com/v1/browse/featured-playlists",
+  //     // "https://api.spotify.com/v1/browse/categories",
+  //     "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr/playlists",
+  //     {
+  //       headers: {
+  //         Authorization: "Bearer " + token,
+  //         "Content-Type": "application/json",
+  //       },
+  //       params: {
+  //         limit: 10,
+  //         offset: 5,
+  //         market: "ES",
+  //         include_groups: "single",
+  //       },
+  //     }
+  //   );
+  //   console.log(response);
+  // };
 
-  useEffect(() => {
-    fetch();
-  }, []);
+  // useEffect(() => {
+  //   fetch();
+  // }, []);
 
   useEffect(() => {
     currentPlaylists && addCurrentUserPlaylists(currentPlaylists);
@@ -64,9 +67,17 @@ const Library: FC<PlaylistsProps> = () => {
 
   return (
     <BaseContainer>
-      <RowPlaylists
-        title="My Playlists"
-        component={currentUserPlaylists}></RowPlaylists>
+      <Row title="My Playlists">
+        <List
+          items={currentUserPlaylists}
+          flex={true}
+          renderItem={(item: IUserPlaylist) => (
+            <PlaylistItem
+              key={item.id}
+              playlist={item}></PlaylistItem>
+          )}
+        />
+      </Row>
     </BaseContainer>
   );
 };

@@ -76,6 +76,7 @@ export const Name = styled.div<NameProps>`
   }
   & div {
     width: 120%;
+    display: inline-block;
     animation: ${({ length }) =>
       length > 15 ? "marquee-text 5s linear infinite" : "none"};
   }
