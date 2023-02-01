@@ -29,8 +29,10 @@ const Tracks: FC<TracksProps> = ({ id }) => {
                 index={i + 1}
                 track={item.track}
                 remove={true}
-                key={item.track.duration_ms}></Track>
-            )}></List>
+                key={item.track.duration_ms}
+              ></Track>
+            )}
+          ></List>
         )}
       </ContainerMusic>
     </Container>
