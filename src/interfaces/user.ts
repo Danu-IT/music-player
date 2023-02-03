@@ -22,6 +22,7 @@ export interface IUserPlaylistTrackHaracter {
   added_at: string;
   track: IUserPlaylistTrack;
   tracks: IUserPlaylistTrack[];
+  id: string;
 }
 
 export interface IUserPlaylistTrack {

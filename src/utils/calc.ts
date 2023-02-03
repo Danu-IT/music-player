@@ -27,13 +27,12 @@ export const calcTime = (data: number, all: boolean = false) => {
     const absoluteHours = Math.floor(+hours);
     minutes = (+minutes < 10) ? "0" + minutes : minutes;
     const absoluteMinutes = Math.floor(+minutes);
-    seconds = (+seconds < 10) ? "0" + seconds : seconds;
-    const absoluteSeconds = Math.floor(+seconds);
+    seconds = (+seconds < 10) ? "0" + Math.floor(+seconds) : Math.floor(+seconds);
     if (all) {
         return `${absoluteHours}h ${absoluteMinutes}mins`
     }
 
-    return `0${absoluteMinutes}:${absoluteSeconds}`
+    return `0${absoluteMinutes}:${seconds}`
 }
 
 export const calcArtist = (artists: ArtistsProps[]) => {

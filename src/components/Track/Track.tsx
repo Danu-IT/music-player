@@ -21,11 +21,11 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
   const { token } = useAppSelector((state) => state.tokenSlice);
-  const arrayTrack = track.artists;
+  const arrayTrack = track?.artists;
 
   const navigate = useNavigate();
 
-  const duration = calcTime(track.duration_ms);
+  const duration = calcTime(track?.duration_ms);
   const artists = calcArtist(arrayTrack);
 
   const handleArtist = (artist: any) => {
@@ -34,16 +34,22 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
     );
     navigate(`/artists/${answer[0].id}#access_token=${token}`);
   };
+
   return (
     <Music
+      artist={artist}
       onMouseEnter={() => setPlayAndRemoveVisible(true)}
-      onMouseLeave={() => setPlayAndRemoveVisible(false)}
-    >
+      onMouseLeave={() => setPlayAndRemoveVisible(false)}>
       <Number>{index}</Number>
-      <Play size={30} playAndRemoveVisible={playAndRemoveVisible}></Play>
+      <Play
+        size={30}
+        playAndRemoveVisible={playAndRemoveVisible}></Play>
       <SongCustom>
         <SongContainer>
-          <Image src={track.album.images[1].url} alt="" />
+          <Image
+            src={track.album.images[1].url}
+            alt=""
+          />
           <Name length={track.name.length}>
             <div>
               <span>{track.name}</span>
@@ -66,17 +72,23 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       <Album>{track.album.name}</Album>
       <Remove
         displayRemove={remove}
-        playAndRemoveVisible={playAndRemoveVisible}
-      ></Remove>
-      <Add displayAdd={add} playAndRemoveVisible={playAndRemoveVisible}></Add>
+        playAndRemoveVisible={playAndRemoveVisible}></Remove>
+      <Add
+        displayAdd={add}
+        playAndRemoveVisible={playAndRemoveVisible}></Add>
     </Music>
   );
 };
 
-export const Music = styled.div`
+interface MusicProps {
+  artist: boolean | undefined;
+}
+
+export const Music = styled.div<MusicProps>`
   display: flex;
   position: relative;
   color: white;
+  width: ${({ artist }) => (artist ? "900px" : "100%")};
   color: ${({ theme }) => theme.colors.secondary};
   & > * {
     margin-top: 15px;
@@ -103,7 +115,7 @@ interface AddProps {
   displayAdd?: boolean;
 }
 
-const Play = styled(BsFillPlayFill)<PlayProps>`
+export const Play = styled(BsFillPlayFill)<PlayProps>`
   position: absolute;
   display: ${({ playAndRemoveVisible }) =>
     playAndRemoveVisible ? "flex" : "none"};

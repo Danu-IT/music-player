@@ -16,7 +16,9 @@ export default function List<T>({
   direction,
 }: ListProps<T>) {
   return (
-    <Container direction={direction} flex={flex}>
+    <Container
+      direction={direction}
+      flex={flex}>
       {items.map(renderItem)}
     </Container>
   );
