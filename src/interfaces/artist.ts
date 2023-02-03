@@ -1,5 +1,9 @@
 import { IImage } from './user';
 
+export interface IArtists {
+    artists: IArtist[],
+}
+
 export interface IArtist {
     followers: { total: number },
     name: string,

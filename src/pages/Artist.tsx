@@ -9,16 +9,19 @@ import List from "../components/List";
 import Track from "../components/Track/Track";
 import AlbumItem from "../components/Albums/AlbumItem";
 import Row from "../components/Row";
+import { useState } from "react";
 
 interface ArtistProps {}
 
 const Artist: FC<ArtistProps> = () => {
+  const [full, setFull] = useState<boolean>(false);
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { data: artist } = userAPI.useGetArtistQuery(id);
   const { data: top } = userAPI.useGetArtistsTopTracksQuery({ id });
   const { data: albums } = userAPI.useGetArtistsAlbumsQuery({ id });
-
+  const { data: artists } = userAPI.useGetArtistsRelatedArtistsQuery(id);
+  console.log(artists);
   return (
     <Container search={true}>
       <HeaderArtist>
@@ -35,31 +38,47 @@ const Artist: FC<ArtistProps> = () => {
           <ButtonAndPicture content=""></ButtonAndPicture>
           <Button>Подписаться</Button>
         </Play>
-        <Row top={true} title="Popular tracks">
+        <Row
+          top={true}
+          title="Popular tracks">
           {top && (
             <List
-              items={top.tracks}
+              items={full ? top?.tracks : top?.tracks.slice(0, 5)}
               renderItem={(item, i) => (
                 <Track
                   add={true}
                   artist={true}
                   index={i + 1}
                   track={item}
-                  key={item.duration_ms}
-                ></Track>
-              )}
-            ></List>
+                  key={item.duration_ms}></Track>
+              )}></List>
           )}
         </Row>
-        <Row top={true} title="Albums">
+        <View onClick={() => setFull((prev) => (prev = !prev))}>
+          {full ? "СВЕРНУТЬ" : "ЕЩЕ"}
+        </View>
+        <Row
+          top={true}
+          title="Albums">
           {albums && (
             <List
               flex={true}
-              items={albums.items}
+              items={albums.items.slice(0, 5)}
               renderItem={(item, i) => (
-                <AlbumItem album={item} key={item.id}></AlbumItem>
-              )}
-            ></List>
+                <AlbumItem
+                  album={item}
+                  key={item.id}></AlbumItem>
+              )}></List>
+          )}
+        </Row>
+        <Row
+          top={true}
+          title="Поклонникам также нравится">
+          {artists && (
+            <List
+              flex={true}
+              items={artists.artists.slice(0, 5)}
+              renderItem={(item, i) => <div>{item.name}</div>}></List>
           )}
         </Row>
       </Content>
@@ -100,6 +119,11 @@ const IamgeArtist = styled.img`
 
 const Content = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
+`;
+
+const View = styled.div`
+  cursor: pointer;
+  margin-top: 10px;
 `;
 
 const Play = styled.div`

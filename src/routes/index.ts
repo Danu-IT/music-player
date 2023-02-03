@@ -37,7 +37,9 @@ export const privateRoutes: IRoute[] = [
   { path: RoutesNamesPrivate.SETTINGS, component: Home, type: "Settings" },
   { path: RoutesNamesPrivate.LANGUGE, component: Home, type: "Language" },
   { path: RoutesNamesPrivate.ARTISTS, component: Artist, type: "Artist" },
-  { path: RoutesNamesPrivate.ALBUMS, component: Album, type: "Albums" },
+  {
+    path: RoutesNamesPrivate.ALBUMS, component: Album, type: "Albums"
+  }
 ];
 
 export const publicRoutes: IRoute[] = [

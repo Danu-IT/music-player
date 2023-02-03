@@ -42,6 +42,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   gap: 50px;
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 const ContainerPic = styled.div`

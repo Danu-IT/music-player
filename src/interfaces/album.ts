@@ -1,4 +1,5 @@
-import { IImage } from "./user";
+import { IImage, IUserPlaylistTrackHaracter } from './user';
+import { IArtist } from './artist';
 
 export interface IAlbums {
   items: IAlbum[];
@@ -9,5 +10,6 @@ export interface IAlbum {
   images: IImage[];
   name: string;
   release_date: string;
-  artists: [{ name: string }];
+  artists: IArtist[];
+  tracks: { items: IUserPlaylistTrackHaracter[] }
 }

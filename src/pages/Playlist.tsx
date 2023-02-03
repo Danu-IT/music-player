@@ -20,6 +20,7 @@ export const Playlist: FC<PlaylistProps> = () => {
     userAPI.useCurrentUserPlaylistQuery(id);
 
   const navigate = useNavigate();
+
   const artistsCount = useMemo(
     () => countArtistPlaylist(playlists),
     [playlists]

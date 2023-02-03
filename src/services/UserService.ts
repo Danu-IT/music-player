@@ -5,8 +5,9 @@ import {
   IUserPlaylistTracks,
   IUserPlaylistTrackHaracter,
 } from "../interfaces/user";
-import { IArtist } from "../interfaces/artist";
-import { IAlbums } from "../interfaces/album";
+import { IArtist, IArtists } from '../interfaces/artist';
+import { IAlbums, IAlbum } from '../interfaces/album';
+import { IUserPlaylistTrack } from '../interfaces/user';
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -26,37 +27,37 @@ export const userAPI = createApi({
   }),
   tagTypes: ["User"],
   endpoints: (build) => ({
-    currentUser: build.query<IUser, null>({
+    currentUser: build.query<IUser, null>({ // Получение пользователя
       query: () => ({
         url: "/v1/me",
       }),
       providesTags: (result) => ["User"],
     }),
-    currentUserPlaylists: build.query<IUserPlaylist[], null>({
+    currentUserPlaylists: build.query<IUserPlaylist[], null>({ // Получить действующие плейлисты
       query: () => ({
         url: "/v1/me/playlists",
       }),
       providesTags: (result) => ["User"],
     }),
-    currentUserPlaylist: build.query<IUserPlaylist, string>({
+    currentUserPlaylist: build.query<IUserPlaylist, string>({ // Получить действующий плейлист
       query: (id: string) => ({
         url: `/v1/playlists/${id}`,
       }),
       providesTags: (result) => ["User"],
     }),
-    currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({
+    currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({ // Получить треки из действующего плейлиста
       query: (id: string) => ({
         url: `/v1/playlists/${id}/tracks`,
       }),
       providesTags: (result) => ["User"],
     }),
-    getArtist: build.query<IArtist, string>({
+    getArtist: build.query<IArtist, string>({// Получить артиста
       query: (id: string) => ({
         url: `/v1/artists/${id}`,
       }),
       providesTags: (result) => ["User"],
     }),
-    getArtistsTopTracks: build.query<
+    getArtistsTopTracks: build.query<// Получить лучшие треки артиста
       IUserPlaylistTrackHaracter,
       { id: string }
     >({
@@ -68,7 +69,7 @@ export const userAPI = createApi({
       },
       providesTags: (result) => ["User"],
     }),
-    getArtistsAlbums: build.query<IAlbums, { id: string }>({
+    getArtistsAlbums: build.query<IAlbums, { id: string }>({// Получить альбомы артиста
       query: ({ id }) => {
         return {
           url: `/v1/artists/${id}/albums`,
@@ -77,22 +78,28 @@ export const userAPI = createApi({
       },
       providesTags: (result) => ["User"],
     }),
-    getAlbumTracks: build.query<IAlbums, { id: string }>({
+    getAlbumTracks: build.query<IUserPlaylistTrack, { id: string }>({// Получить треки из альбома артиста
       query: ({ id }) => {
         return {
-          url: `/v1/albums/${id}/tracks`,
+          url: `/v1/tracks/${id}`,
           params: { market: "ES", limit: 10 },
         };
       },
       providesTags: (result) => ["User"],
     }),
-    getTrack: build.query<IUserPlaylistTrackHaracter, { id: string }>({
+    getAlbum: build.query<IAlbum, { id: string }>({// Получить альбом
       query: ({ id }) => {
         return {
-          url: `/v1/tracks/${id}`,
+          url: `/v1/albums/${id}`,
           params: { market: "ES" },
         };
       },
+      providesTags: (result) => ["User"],
+    }),
+    getArtistsRelatedArtists: build.query<IArtists, string>({
+      query: (id) => ({
+        url: `/v1/artists/${id}/related-artists`,
+      }),
       providesTags: (result) => ["User"],
     }),
     RecentlyPlayedTracks: build.query<any, null>({
@@ -102,4 +109,4 @@ export const userAPI = createApi({
       providesTags: (result) => ["User"],
     }),
   }),
-});
+}); 

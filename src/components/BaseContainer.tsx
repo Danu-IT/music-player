@@ -49,10 +49,7 @@ const BaseContainer: FC<BaseContainerProps> = ({
   );
 };
 
-const ContainerHomePage = styled(ContainerPage)`
-  display: flex;
-  gap: 50px;
-`;
+const ContainerHomePage = styled(ContainerPage)``;
 
 interface NavbarProps {
   navbar?: boolean;

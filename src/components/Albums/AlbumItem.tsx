@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { IAlbum } from "../../interfaces/album";
-import { userAPI } from "../../services/UserService";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../hooks/redux";
@@ -17,6 +16,8 @@ const AlbumItem: FC<AlbumsProps> = ({ album }) => {
     navigate(`/albums/${album.id}#access_token=${token}`);
   };
 
+  // console.log(album);
+
   return (
     <Container onClick={handlerAlbum}>
       <Image src={album.images[0].url}></Image>
@@ -28,14 +29,19 @@ const AlbumItem: FC<AlbumsProps> = ({ album }) => {
 
 const Container = styled.div`
   width: 200px;
+  cursor: pointer;
   height: 250px;
-  background: ${({ theme }) => theme.colors.dark};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.bg};
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
   border-radius: 10px;
   gap: 15px;
+  :hover {
+    opacity: 0.7;
+  }
 `;
 
 const Image = styled.img`
