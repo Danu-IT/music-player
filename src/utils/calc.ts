@@ -46,3 +46,12 @@ export const calcArtist = (artists: ArtistsProps[]) => {
     })
     return artists.length > 1 ? answer.slice(0, answer.length - 2) : answer;
 }
+
+
+export const separation = (num: number | undefined) => {
+    const str: string = String(num);
+    if (str.length === 6) return str.split("").splice(3, 0, " ").join('');
+    if (str.length === 7)
+        return str.split("").splice(1, 0, " ").splice(4, 0, "").join('');
+    return num;
+};

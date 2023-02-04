@@ -1,13 +1,20 @@
-import React, { FC } from "react";
-import { Album, Artist, Duration, Image, Number } from "../Tracks/Tracks";
-import { calcArtist, calcTime } from "../../utils/calc";
+import { FC } from "react";
+import {
+  Album,
+  Artist,
+  Duration,
+  Image,
+  Number,
+} from "../../Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+import { calcArtist, calcTime } from "../../../utils/calc";
 import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdRemove, MdAdd } from "react-icons/md";
 import { useState } from "react";
-import { Name } from "../PlaylistItem";
+import { Name } from "../../Playlists/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppSelector } from "../../../hooks/redux";
+import { userAPI } from "../../../services/UserService";
 
 interface TrackProps {
   track: any;
@@ -20,6 +27,9 @@ interface TrackProps {
 const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
+
+  const { data: album } = userAPI.useGetAlbumQuery({ id: track.album.id });
+
   const { token } = useAppSelector((state) => state.tokenSlice);
   const arrayTrack = track?.artists;
 
@@ -33,6 +43,10 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       (track: any) => track.name === artist.trim()
     );
     navigate(`/artists/${answer[0].id}#access_token=${token}`);
+  };
+
+  const handleAlbum = () => {
+    navigate(`/albums/${album?.id}#access_token=${token}`);
   };
 
   return (
@@ -58,18 +72,18 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
         </SongContainer>
       </SongCustom>
       <Duration>{duration}</Duration>
-      <Artist display={artist}>
+      <CustomArtist display={artist}>
         <Name length={artists.length}>
           <div>
             {artists.split(",").map((artist, id) => (
-              <span onClick={() => handleArtist(artist)}>
+              <ArtSpan onClick={() => handleArtist(artist)}>
                 {track.artists.length > 1 && id === 0 ? artist + "," : artist}
-              </span>
+              </ArtSpan>
             ))}
           </div>
         </Name>
-      </Artist>
-      <Album>{track.album.name}</Album>
+      </CustomArtist>
+      <Album onClick={handleAlbum}>{track.album.name}</Album>
       <Remove
         displayRemove={remove}
         playAndRemoveVisible={playAndRemoveVisible}></Remove>
@@ -134,6 +148,18 @@ const Add = styled(MdAdd)<AddProps>`
   display: ${({ playAndRemoveVisible, displayAdd }) =>
     !playAndRemoveVisible ? "none" : !displayAdd ? "none" : "flex"};
   right: 55px;
+`;
+
+const CustomArtist = styled(Artist)`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const ArtSpan = styled.span`
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const SongCustom = styled.div`

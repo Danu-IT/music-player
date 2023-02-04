@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { IAlbum } from "../../interfaces/album";
+import { IAlbum } from "../../../interfaces/album";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppSelector } from "../../../hooks/redux";
 
 interface AlbumsProps {
   album: IAlbum;
@@ -16,18 +16,16 @@ const AlbumItem: FC<AlbumsProps> = ({ album }) => {
     navigate(`/albums/${album.id}#access_token=${token}`);
   };
 
-  // console.log(album);
-
   return (
-    <Container onClick={handlerAlbum}>
+    <ContainerCard onClick={handlerAlbum}>
       <Image src={album.images[0].url}></Image>
       <Name>{album.name}</Name>
       <Type>{album.release_date.split("-")[0]} &bull; Альбом</Type>
-    </Container>
+    </ContainerCard>
   );
 };
 
-const Container = styled.div`
+export const ContainerCard = styled.div`
   width: 200px;
   cursor: pointer;
   height: 250px;
@@ -47,6 +45,7 @@ const Container = styled.div`
 const Image = styled.img`
   margin-top: 15px;
   width: 150px;
+  height: 150px;
   border-radius: 10px;
 `;
 

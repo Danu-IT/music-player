@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { userAPI } from "../../services/UserService";
-import List from "../List";
-import Track from "../Track/Track";
+import { userAPI } from "../../../services/UserService";
+import List from "../../List";
+import Track from "../../UI/Track/Track";
 
 interface TracksProps {
   id: string;
 }
 
-const Tracks: FC<TracksProps> = ({ id }) => {
+const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
   const { data: tracks } = userAPI.useCurrentUserPlaylistTracksQuery(id);
 
   return (
@@ -80,6 +80,10 @@ export const Artist = styled.div<ArtistProps>`
 export const Album = styled.div`
   margin-right: 100px;
   column-width: 250px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 export const ContainerMusic = styled.div`
   display: grid;
@@ -87,4 +91,4 @@ export const ContainerMusic = styled.div`
   justify-content: center;
 `;
 
-export default Tracks;
+export default ColumnTracksPlaylists;

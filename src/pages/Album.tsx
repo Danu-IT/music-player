@@ -7,11 +7,11 @@ import { useAppSelector } from "../hooks/redux";
 import ButtonAndPicture from "../components/UI/ButtonAndPicture/ButtonAndPicture";
 import Like from "../components/UI/Like/Like";
 import List from "../components/List";
-import TrackAlbum from "../components/TrackAlbum/TrackAlbum";
 import { BiTime } from "react-icons/bi";
+import TrackAlbums from "../components/UI/TrackAlbums/TrackAlbums";
 interface AlbumTracksProps {}
 
-const Album: FC<AlbumTracksProps> = ({}) => {
+const Album: FC<AlbumTracksProps> = () => {
   const location = useLocation();
   const { token } = useAppSelector((state) => state.tokenSlice);
   const idAlbums = location.pathname.split("/")[2];
@@ -58,10 +58,10 @@ const Album: FC<AlbumTracksProps> = ({}) => {
           <List
             items={album?.tracks.items}
             renderItem={(item, index) => (
-              <TrackAlbum
+              <TrackAlbums
                 key={item.added_at}
                 id={item.id}
-                index={index + 1}></TrackAlbum>
+                index={index + 1}></TrackAlbums>
             )}></List>
         )}
       </AlbumContainer>
