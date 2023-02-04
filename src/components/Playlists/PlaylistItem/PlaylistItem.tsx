@@ -1,8 +1,8 @@
 import { FC, MouseEvent } from "react";
-import { IUserPlaylist } from "../interfaces/user";
+import { IUserPlaylist } from "../../../interfaces/user";
 import styled from "styled-components";
 import { SiApplemusic } from "react-icons/si";
-import { useAppSelector } from "../hooks/redux";
+import { useAppSelector } from "../../../hooks/redux";
 import { useNavigate } from "react-router-dom";
 
 interface PlaylistProps {

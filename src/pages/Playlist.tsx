@@ -1,14 +1,14 @@
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { userAPI } from "../services/UserService";
 import { useLocation, useNavigate } from "react-router";
-import PlaylistPicture from "../components/PlaylistPicture/PlaylistPicture";
+import PlaylistPicture from "../components/Playlists/PlaylistPicture/PlaylistPicture";
 import styled from "styled-components";
 import Loader from "../components/UI/Loader/Loader";
 import { countAllDuration, countArtistPlaylist } from "../utils/calc";
-import Tracks from "../components/Tracks/Tracks";
 import { ContainerPage, Page } from "../layouts/components/index";
 import { BsArrowLeft } from "react-icons/bs";
+import ColumnTracksPlaylists from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 
 interface PlaylistProps {}
 
@@ -51,7 +51,7 @@ export const Playlist: FC<PlaylistProps> = () => {
             total={playlists?.tracks?.total}
             artistsCount={artistsCount}
             countDuration={countDuration}></PlaylistPicture>
-          <Tracks id={id}></Tracks>
+          <ColumnTracksPlaylists id={id}></ColumnTracksPlaylists>
         </ContainerPlaylist>
       </ContainerPage>
     </Page>

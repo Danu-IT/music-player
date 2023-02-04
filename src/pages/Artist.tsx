@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { useLocation } from "react-router";
 import { userAPI } from "../services/UserService";
@@ -6,22 +6,29 @@ import styled from "styled-components";
 import ButtonAndPicture from "../components/UI/ButtonAndPicture/ButtonAndPicture";
 import Button from "../components/UI/Button/Button";
 import List from "../components/List";
-import Track from "../components/Track/Track";
-import AlbumItem from "../components/Albums/AlbumItem";
+import Track from "../components/UI/Track/Track";
+import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
 import Row from "../components/Row";
-import { useState } from "react";
+import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
+import { separation } from "../utils/calc";
 
 interface ArtistProps {}
 
 const Artist: FC<ArtistProps> = () => {
   const [full, setFull] = useState<boolean>(false);
+
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+
   const { data: artist } = userAPI.useGetArtistQuery(id);
   const { data: top } = userAPI.useGetArtistsTopTracksQuery({ id });
   const { data: albums } = userAPI.useGetArtistsAlbumsQuery({ id });
-  const { data: artists } = userAPI.useGetArtistsRelatedArtistsQuery(id);
-  console.log(artists);
+  const { data: artistsRelated } = userAPI.useGetArtistsRelatedArtistsQuery(id);
+  console.log(albums);
+
+  const total = separation(artist?.followers.total);
+  console.log(total);
+  useEffect(() => window.scrollTo(0, 0), [id]);
   return (
     <Container search={true}>
       <HeaderArtist>
@@ -29,14 +36,14 @@ const Artist: FC<ArtistProps> = () => {
           <IamgeArtist src={artist?.images[0].url}></IamgeArtist>
           <InfoArtist>
             <NameInfo>{artist?.name}</NameInfo>
-            <Subscribe>{artist?.followers.total} подписчиков</Subscribe>
+            <Subscribe>{artist?.followers.total} subscribers</Subscribe>
           </InfoArtist>
         </HeaderContent>
       </HeaderArtist>
       <Content>
         <Play>
           <ButtonAndPicture content=""></ButtonAndPicture>
-          <Button>Подписаться</Button>
+          <Button>Subscribe</Button>
         </Play>
         <Row
           top={true}
@@ -54,9 +61,14 @@ const Artist: FC<ArtistProps> = () => {
               )}></List>
           )}
         </Row>
-        <View onClick={() => setFull((prev) => (prev = !prev))}>
-          {full ? "СВЕРНУТЬ" : "ЕЩЕ"}
-        </View>
+        {top && top?.tracks.length >= 5 ? (
+          <View onClick={() => setFull((prev) => (prev = !prev))}>
+            {full ? "HOLD" : "MORE"}
+          </View>
+        ) : (
+          <></>
+        )}
+
         <Row
           top={true}
           title="Albums">
@@ -73,12 +85,14 @@ const Artist: FC<ArtistProps> = () => {
         </Row>
         <Row
           top={true}
-          title="Поклонникам также нравится">
-          {artists && (
+          title="Fans also like">
+          {artistsRelated && (
             <List
               flex={true}
-              items={artists.artists.slice(0, 5)}
-              renderItem={(item, i) => <div>{item.name}</div>}></List>
+              items={artistsRelated.artists.slice(0, 5)}
+              renderItem={(item, i) => (
+                <ArtistItem related={item}></ArtistItem>
+              )}></List>
           )}
         </Row>
       </Content>

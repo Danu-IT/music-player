@@ -26,7 +26,7 @@ const Title = styled.h1<TitleProps>`
   font-weight: 400;
   font-size: 25px;
   line-height: 25px;
-  margin: ${({ top }) => (top ? "20px" : "0px")} 0 30px 10px;
+  margin: ${({ top }) => (top ? "45px" : "0px")} 0 30px 10px;
 `;
 
 export default Row;

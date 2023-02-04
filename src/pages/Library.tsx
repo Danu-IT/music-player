@@ -7,7 +7,7 @@ import BaseContainer from "../components/BaseContainer";
 import Row from "../components/Row";
 import axios from "axios";
 import List from "../components/List";
-import PlaylistItem from "../components/PlaylistItem";
+import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../interfaces/user";
 
 interface PlaylistsProps {}

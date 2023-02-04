@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import ButtonAndPicture from "../UI/ButtonAndPicture/ButtonAndPicture";
+import ButtonAndPicture from "../../UI/ButtonAndPicture/ButtonAndPicture";
 
 interface PlaylistPictureProps {
   picture: string | undefined;

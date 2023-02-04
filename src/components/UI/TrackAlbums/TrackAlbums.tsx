@@ -1,17 +1,17 @@
 import React, { FC } from "react";
-import { userAPI } from "../../services/UserService";
-import { calcTime } from "../../utils/calc";
+import { userAPI } from "../../../services/UserService";
+import { calcTime } from "../../../utils/calc";
 import styled from "styled-components";
 import { Play } from "../Track/Track";
 import { useState } from "react";
-import { LikePic } from "../UI/Like/Like";
+import { LikePic } from "../Like/Like";
 
 interface TrackAlbumProps {
   index: number;
   id: string;
 }
 
-const TrackAlbum: FC<TrackAlbumProps> = ({ index, id }) => {
+const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
   const { data: track } = userAPI.useGetAlbumTracksQuery({
@@ -93,4 +93,4 @@ const Name = styled.div`
   color: gray;
 `;
 
-export default TrackAlbum;
+export default TrackAlbums;
