@@ -1,10 +1,10 @@
 import { FC } from "react";
 import {
   Album,
-  Artist,
   Duration,
   Image,
   Number,
+  ArtistProps,
 } from "../../Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 import { calcArtist, calcTime } from "../../../utils/calc";
 import styled from "styled-components";
@@ -72,7 +72,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
         </SongContainer>
       </SongCustom>
       <Duration>{duration}</Duration>
-      <CustomArtist display={artist}>
+      <CustArtist display={artist}>
         <Name length={artists.length}>
           <div>
             {artists.split(",").map((artist, id) => (
@@ -82,7 +82,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
             ))}
           </div>
         </Name>
-      </CustomArtist>
+      </CustArtist>
       <Album onClick={handleAlbum}>{track.album.name}</Album>
       <Remove
         displayRemove={remove}
@@ -150,8 +150,11 @@ const Add = styled(MdAdd)<AddProps>`
   right: 55px;
 `;
 
-const CustomArtist = styled(Artist)`
-  &:hover {
+const CustArtist = styled.div<ArtistProps>`
+  display: ${({ display }) => (!display ? "block" : "none")};
+  column-width: 250px;
+  width: 280px;
+  & :hover {
     text-decoration: underline;
   }
 `;

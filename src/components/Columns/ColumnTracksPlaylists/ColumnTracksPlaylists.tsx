@@ -68,7 +68,7 @@ export const Duration = styled.div`
   column-width: 200px;
 `;
 
-interface ArtistProps {
+export interface ArtistProps {
   display?: boolean;
 }
 
