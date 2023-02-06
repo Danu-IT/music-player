@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { useLocation } from "react-router";
 import { userAPI } from "../services/UserService";
@@ -16,6 +16,7 @@ interface ArtistProps {}
 
 const Artist: FC<ArtistProps> = () => {
   const [full, setFull] = useState<boolean>(false);
+  const [check, setCheck] = useState<boolean>(false);
 
   const location = useLocation();
   const id = location.pathname.split("/")[2];
@@ -24,10 +25,25 @@ const Artist: FC<ArtistProps> = () => {
   const { data: top } = userAPI.useGetArtistsTopTracksQuery({ id });
   const { data: albums } = userAPI.useGetArtistsAlbumsQuery({ id });
   const { data: artistsRelated } = userAPI.useGetArtistsRelatedArtistsQuery(id);
-  console.log(albums);
+
+  // const { update } = userAPI.usePutFollowArtistsMutation({
+  //   ids: "57dN52uHvrHOxijzpIgu3E",
+  //   type: "artist",
+  // });
+
+  const { data: checkSubscibe } = userAPI.useGetCheckIfUserFollowsArtistsQuery({
+    ids: artist?.id,
+    type: "artist",
+  });
 
   const total = separation(artist?.followers.total);
-  console.log(total);
+
+  useEffect(() => {
+    if (Array.isArray(checkSubscibe)) {
+      setCheck(checkSubscibe[0]);
+    }
+  }, [checkSubscibe]);
+
   useEffect(() => window.scrollTo(0, 0), [id]);
   return (
     <Container search={true}>
@@ -36,14 +52,14 @@ const Artist: FC<ArtistProps> = () => {
           <IamgeArtist src={artist?.images[0].url}></IamgeArtist>
           <InfoArtist>
             <NameInfo>{artist?.name}</NameInfo>
-            <Subscribe>{artist?.followers.total} subscribers</Subscribe>
+            <Subscribe>{total} subscribers</Subscribe>
           </InfoArtist>
         </HeaderContent>
       </HeaderArtist>
       <Content>
         <Play>
           <ButtonAndPicture content=""></ButtonAndPicture>
-          <Button>Subscribe</Button>
+          <Button>{check ? "Unsubscribe" : "Subscribe"}</Button>
         </Play>
         <Row
           top={true}
@@ -91,7 +107,7 @@ const Artist: FC<ArtistProps> = () => {
               flex={true}
               items={artistsRelated.artists.slice(0, 5)}
               renderItem={(item, i) => (
-                <ArtistItem related={item}></ArtistItem>
+                <ArtistItem artist={item}></ArtistItem>
               )}></List>
           )}
         </Row>

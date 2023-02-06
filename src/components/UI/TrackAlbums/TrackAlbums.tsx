@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { userAPI } from "../../../services/UserService";
 import { calcTime } from "../../../utils/calc";
 import styled from "styled-components";

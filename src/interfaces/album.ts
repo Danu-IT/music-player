@@ -13,3 +13,12 @@ export interface IAlbum {
   artists: IArtist[];
   tracks: { items: IUserPlaylistTrackHaracter[] }
 }
+
+export interface IMyAlbums {
+  items: IMyAlbum[];
+}
+
+export interface IMyAlbum {
+  added_at: string;
+  album: IAlbum;
+}

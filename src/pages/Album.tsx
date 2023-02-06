@@ -24,7 +24,7 @@ const Album: FC<AlbumTracksProps> = () => {
   const handlerActer = () => {
     navigate(`/artists/${album?.artists[0].id}#access_token=${token}`);
   };
-  console.log(album?.tracks);
+
   return (
     <BaseContainer search={true}>
       <AlbumContainer>
