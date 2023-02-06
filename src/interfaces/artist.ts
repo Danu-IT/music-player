@@ -11,3 +11,7 @@ export interface IArtist {
     type: string,
     images: IImage[]
 }
+
+export interface IMyArtists {
+    artists: { items: IArtist[] },
+}

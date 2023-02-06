@@ -27,11 +27,17 @@ const Login: FC<LoginProps> = () => {
       "user-read-currently-playing",
       "user-read-playback-position",
       "user-top-read",
+      "user-library-modify",
+      "user-library-read",
       "user-read-recently-played",
       "playlist-read-private",
       "playlist-read-collaborative",
       "playlist-modify-private",
       "playlist-modify-public",
+      "user-follow-modify",
+      "user-follow-read",
+      "streaming",
+      "app-remote-control",
     ];
     window.location.href = `${apiUrl}?client_id=${clientID}&redirect_uri=${redirect}&scope=${scope.join(
       " "

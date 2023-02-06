@@ -15,6 +15,7 @@ const Button: FC<ButtonProps> = ({ children }) => {
 
 const Container = styled.div`
   padding: 4px 10px;
+  max-width: 150px;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.secondary};
 `;

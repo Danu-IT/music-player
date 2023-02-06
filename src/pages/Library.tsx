@@ -1,26 +1,25 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { userAPI } from "../services/UserService";
 import { useAppSelector, useAppDispatch } from "../hooks/redux";
 import { receiveCurrentUserPlaylists } from "../store/slices/UserSlice";
 import { useEffect } from "react";
 import BaseContainer from "../components/BaseContainer";
 import Row from "../components/Row";
-import axios from "axios";
 import List from "../components/List";
 import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../interfaces/user";
+import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
+import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
 
 interface PlaylistsProps {}
 
 const Library: FC<PlaylistsProps> = () => {
   const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.tokenSlice);
+
   const { data: currentPlaylists } = userAPI.useCurrentUserPlaylistsQuery(null);
-  // const { data: currentAlbums } = userAPI.useCurrentUserAlbumsTracksQuery({
-  //   limit: 50,
-  //   market: "ES",
-  // });
+  const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
+  const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
 
   const addCurrentUserPlaylists = ({ items }: any) => {
     const playlists = items.map((item: any) => {
@@ -35,31 +34,6 @@ const Library: FC<PlaylistsProps> = () => {
     dispatch(receiveCurrentUserPlaylists(playlists));
   };
 
-  // const fetch = async () => {
-  //   const response = await axios.get(
-  //     // "https://api.spotify.com/v1/browse/featured-playlists",
-  //     // "https://api.spotify.com/v1/browse/categories",
-  //     "https://api.spotify.com/v1/browse/categories/0JQ5DAqbMKFFzDl7qN9Apr/playlists",
-  //     {
-  //       headers: {
-  //         Authorization: "Bearer " + token,
-  //         "Content-Type": "application/json",
-  //       },
-  //       params: {
-  //         limit: 10,
-  //         offset: 5,
-  //         market: "ES",
-  //         include_groups: "single",
-  //       },
-  //     }
-  //   );
-  //   console.log(response);
-  // };
-
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
-
   useEffect(() => {
     currentPlaylists && addCurrentUserPlaylists(currentPlaylists);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,6 +41,7 @@ const Library: FC<PlaylistsProps> = () => {
 
   return (
     <BaseContainer>
+      {/* <Navigate content={privateRoutes.slice(7, 10)}></Navigate> */}
       <Row title="My Playlists">
         <List
           items={currentUserPlaylists}
@@ -78,6 +53,32 @@ const Library: FC<PlaylistsProps> = () => {
           )}
         />
       </Row>
+      {currentAlbums && (
+        <Row
+          title="My Albums"
+          top={true}>
+          <List
+            items={currentAlbums?.items}
+            flex={true}
+            renderItem={(item) => (
+              <AlbumItem
+                key={item.added_at}
+                album={item.album}></AlbumItem>
+            )}></List>
+        </Row>
+      )}
+      {currentArtists && (
+        <Row
+          title="My Artist"
+          top={true}>
+          <List
+            items={currentArtists?.artists.items}
+            flex={true}
+            renderItem={(item) => (
+              <ArtistItem artist={item}></ArtistItem>
+            )}></List>
+        </Row>
+      )}
     </BaseContainer>
   );
 };

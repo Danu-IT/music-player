@@ -5,8 +5,8 @@ import {
   IUserPlaylistTracks,
   IUserPlaylistTrackHaracter,
 } from "../interfaces/user";
-import { IArtist, IArtists } from '../interfaces/artist';
-import { IAlbums, IAlbum } from '../interfaces/album';
+import { IArtist, IArtists, IMyArtists } from '../interfaces/artist';
+import { IAlbums, IAlbum, IMyAlbums } from '../interfaces/album';
 import { IUserPlaylistTrack } from '../interfaces/user';
 
 export const userAPI = createApi({
@@ -25,7 +25,7 @@ export const userAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Artists"],
   endpoints: (build) => ({
     currentUser: build.query<IUser, null>({ // Получение пользователя
       query: () => ({
@@ -96,11 +96,49 @@ export const userAPI = createApi({
       },
       providesTags: (result) => ["User"],
     }),
-    getArtistsRelatedArtists: build.query<IArtists, string>({
+    getArtistsRelatedArtists: build.query<IArtists, string>({ // Получить похожих артистов
       query: (id) => ({
         url: `/v1/artists/${id}/related-artists`,
       }),
       providesTags: (result) => ["User"],
+    }),
+    getUsersSavedAlbums: build.query<IMyAlbums, null>({ // Получить сохраненные альбомы пользователя
+      query: () => {
+        return {
+          url: `/v1/me/albums`,
+          params: { limit: 20, market: 'ES' },
+        };
+      },
+      providesTags: (result) => ["User"],
+    }),
+    getFollowedArtists: build.query<IMyArtists, null>({// Получить подписанных артистов
+      query: () => {
+        return {
+          url: `/v1/me/following`,
+          params: { type: 'artist' },
+        };
+      },
+      providesTags: (result) => ["Artists"],
+    }),
+    getCheckIfUserFollowsArtists: build.query<boolean[], { ids: string | undefined, type: string }>({// Проверить подписан ли на артиста
+      query: ({ ids, type }) => {
+        return {
+          url: `/v1/me/following/contains`,
+          params: { ids: ids, type: type },
+        };
+      },
+      providesTags: (result) => ["User"],
+    }),
+    putFollowArtists: build.mutation<string, any>({ // Подписаться на артиста
+      query: ({ ids, type }) => {
+        return {
+          url: '/v1/me/following',
+          method: 'PUT',
+          params: { ids: ids, type: type },
+          body: ids.split(',')
+        }
+      },
+      invalidatesTags: ['Artists']
     }),
     RecentlyPlayedTracks: build.query<any, null>({
       query: () => ({

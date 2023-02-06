@@ -20,6 +20,9 @@ export enum RoutesNamesPrivate {
   LANGUGE = "/language",
   ARTISTS = "/artists/:id",
   ALBUMS = "/albums/:id",
+  MYALBUMS = "/library/albums",
+  MYPLAYLISTS = "/library/playlists",
+  MYARTISTS = "/library/artists",
 }
 
 export enum RoutesNamesPublic {
@@ -29,17 +32,20 @@ export enum RoutesNamesPublic {
 export const privateRoutes: IRoute[] = [
   { path: RoutesNamesPrivate.HOME, component: Home, type: "Home" },
   { path: RoutesNamesPrivate.LIBRARY, component: Library, type: "Library" },
-  {
-    path: RoutesNamesPrivate.PLAYLISTS_ID,
-    component: Playlist,
-    type: "Playlist",
-  },
   { path: RoutesNamesPrivate.SETTINGS, component: Home, type: "Settings" },
   { path: RoutesNamesPrivate.LANGUGE, component: Home, type: "Language" },
   { path: RoutesNamesPrivate.ARTISTS, component: Artist, type: "Artist" },
   {
     path: RoutesNamesPrivate.ALBUMS, component: Album, type: "Albums"
-  }
+  },
+  {
+    path: RoutesNamesPrivate.PLAYLISTS_ID,
+    component: Playlist,
+    type: "Playlist",
+  },
+  { path: RoutesNamesPrivate.MYALBUMS, component: Artist, type: "MyArtist" },
+  { path: RoutesNamesPrivate.MYPLAYLISTS, component: Artist, type: "MyAlbums" },
+  { path: RoutesNamesPrivate.MYARTISTS, component: Artist, type: "MyPlaylist" },
 ];
 
 export const publicRoutes: IRoute[] = [

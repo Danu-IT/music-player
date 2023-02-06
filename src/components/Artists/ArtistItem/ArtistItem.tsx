@@ -6,24 +6,24 @@ import { useNavigate } from "react-router";
 import { useAppSelector } from "../../../hooks/redux";
 
 interface ArtistItemProps {
-  related: IArtist;
+  artist: IArtist;
 }
 
-const ArtistItem: FC<ArtistItemProps> = ({ related }) => {
+const ArtistItem: FC<ArtistItemProps> = ({ artist }) => {
   const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.tokenSlice);
 
   const handlerArtist = () => {
-    navigate(`/artists/${related.id}#access_token=${token}`);
+    navigate(`/artists/${artist.id}#access_token=${token}`);
   };
 
   return (
     <Container onClick={handlerArtist}>
-      <Image src={related.images[0].url}></Image>
-      <div>{related.name}</div>
+      <Image src={artist.images[0].url}></Image>
+      <div>{artist.name}</div>
       <div>
-        {related.type[0].toUpperCase() +
-          related.type.slice(1, related.type.length)}
+        {artist.type[0].toUpperCase() +
+          artist.type.slice(1, artist.type.length)}
       </div>
     </Container>
   );
