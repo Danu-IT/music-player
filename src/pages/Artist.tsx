@@ -26,17 +26,25 @@ const Artist: FC<ArtistProps> = () => {
   const { data: albums } = userAPI.useGetArtistsAlbumsQuery({ id });
   const { data: artistsRelated } = userAPI.useGetArtistsRelatedArtistsQuery(id);
 
-  // const { update } = userAPI.usePutFollowArtistsMutation({
-  //   ids: "57dN52uHvrHOxijzpIgu3E",
-  //   type: "artist",
-  // });
-
   const { data: checkSubscibe } = userAPI.useGetCheckIfUserFollowsArtistsQuery({
     ids: artist?.id,
     type: "artist",
   });
 
+  const [follow, {}] = userAPI.useUpdateFollowArtistsMutation();
+  const [unfollow, {}] = userAPI.useDeleteFollowArtistsMutation();
+
   const total = separation(artist?.followers.total);
+
+  const handlerButton = () => {
+    if (check) {
+      unfollow({ ids: artist?.id, type: "artist" });
+      setCheck((prev) => (prev = !prev));
+    } else {
+      follow({ ids: artist?.id, type: "artist" });
+      setCheck((prev) => (prev = !prev));
+    }
+  };
 
   useEffect(() => {
     if (Array.isArray(checkSubscibe)) {
@@ -59,7 +67,9 @@ const Artist: FC<ArtistProps> = () => {
       <Content>
         <Play>
           <ButtonAndPicture content=""></ButtonAndPicture>
-          <Button>{check ? "Unsubscribe" : "Subscribe"}</Button>
+          <Button onClick={handlerButton}>
+            {check ? "Unsubscribe" : "Subscribe"}
+          </Button>
         </Play>
         <Row
           top={true}

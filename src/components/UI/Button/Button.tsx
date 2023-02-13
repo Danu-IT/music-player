@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 interface ButtonProps {
   children: React.ReactNode;
+  onClick?: any;
 }
 
-const Button: FC<ButtonProps> = ({ children }) => {
+const Button: FC<ButtonProps> = ({ children, onClick }) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <Content>{children}</Content>
     </Container>
   );
