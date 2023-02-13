@@ -8,6 +8,7 @@ interface PlaylistPictureProps {
   total: number | undefined;
   artistsCount: number | undefined;
   countDuration: string | undefined;
+  rename: (name: string) => void;
 }
 
 const PlaylistPicture: FC<PlaylistPictureProps> = ({
@@ -16,6 +17,7 @@ const PlaylistPicture: FC<PlaylistPictureProps> = ({
   total,
   artistsCount,
   countDuration,
+  rename,
 }) => {
   return (
     <Container>
@@ -24,7 +26,7 @@ const PlaylistPicture: FC<PlaylistPictureProps> = ({
         <CustomTitle>{playlistName}</CustomTitle>
       </ContainerPic>
       <Info>
-        <Title>{playlistName}</Title>
+        <Title onClick={() => rename("name")}>{playlistName}</Title>
         <InfoTreck>
           <div>{artistsCount} Artists</div>
           <div>{total} Songs</div>
@@ -77,6 +79,7 @@ const CustomTitle = styled.h1`
   bottom: -8px;
 `;
 const Title = styled.h1`
+  cursor: pointer;
   font-weight: 400;
   font-size: 50px;
   line-height: 50px;
