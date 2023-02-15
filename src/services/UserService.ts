@@ -45,11 +45,18 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["Playlist"],
     }),
-    updateUserPlaylist: build.mutation<any, { id: string, name: string }>({ // Подписка на артиста
+    updateUserPlaylist: build.mutation<any, { id: string, name: string }>({ // Изменить плейлист
       query: ({ id, name }) => ({
         url: `/v1/playlists/${id}`,
         method: 'PUT',
         body: { name: name }
+      }),
+      invalidatesTags: ['Playlist']
+    }),
+    deleteUserPlaylist: build.mutation<any, string>({ // Удалить плейлист
+      query: (ids) => ({
+        url: `/v1/playlists/${ids}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['Playlist']
     }),

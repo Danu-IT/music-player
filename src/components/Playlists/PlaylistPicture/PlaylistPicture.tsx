@@ -9,6 +9,7 @@ interface PlaylistPictureProps {
   artistsCount: number | undefined;
   countDuration: string | undefined;
   rename: (name: string) => void;
+  children?: React.ReactNode;
 }
 
 const PlaylistPicture: FC<PlaylistPictureProps> = ({
@@ -17,6 +18,7 @@ const PlaylistPicture: FC<PlaylistPictureProps> = ({
   total,
   artistsCount,
   countDuration,
+  children,
   rename,
 }) => {
   return (
@@ -34,6 +36,7 @@ const PlaylistPicture: FC<PlaylistPictureProps> = ({
         </InfoTreck>
         <RowButton>
           <ButtonAndPicture content="Play"></ButtonAndPicture>
+          {children}
         </RowButton>
       </Info>
     </Container>
@@ -66,7 +69,8 @@ const Info = styled.div`
   line-height: 30px;
 `;
 const RowButton = styled.div`
-  align-self: start;
+  display: flex;
+  gap: 40px;
 `;
 
 const CustomTitle = styled.h1`

@@ -10,13 +10,15 @@ import { ContainerPage, Page } from "../layouts/components/index";
 import { BsArrowLeft } from "react-icons/bs";
 import ColumnTracksPlaylists from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 import Modal from "../components/UI/Modal/Modal";
-import { TextField } from "material-ui";
 import Button from "../components/UI/Button/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 interface PlaylistProps {}
 
 export const Playlist: FC<PlaylistProps> = () => {
   const [visibleModal, setVisibleModal] = useState(false);
+
   const location = useLocation();
   const id = location.pathname.split("/")[2];
 
@@ -35,9 +37,9 @@ export const Playlist: FC<PlaylistProps> = () => {
     [playlists]
   );
 
-  const handlerTitle = (name: string) => {
+  const handlerTitle = () => {
     setVisibleModal(true);
-    // rename({ id: id, name: name });
+    setAnchorEl(null);
   };
 
   const renamePlaylist = () => {
@@ -46,6 +48,15 @@ export const Playlist: FC<PlaylistProps> = () => {
   };
 
   const countDuration = useMemo(() => countAllDuration(playlists), [playlists]);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   if (isLoading) {
     return (
@@ -70,7 +81,29 @@ export const Playlist: FC<PlaylistProps> = () => {
             playlistName={playlists?.name.toUpperCase()}
             total={playlists?.tracks?.total}
             artistsCount={artistsCount}
-            countDuration={countDuration}></PlaylistPicture>
+            countDuration={countDuration}>
+            <>
+              <DropDown
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}>
+                ...
+              </DropDown>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}>
+                <MenuItem onClick={handlerTitle}>Rename</MenuItem>
+                <MenuItem onClick={() => "f"}>Delete</MenuItem>
+              </Menu>
+            </>
+          </PlaylistPicture>
           <ColumnTracksPlaylists id={id}></ColumnTracksPlaylists>
         </ContainerPlaylist>
         <Modal
@@ -78,7 +111,7 @@ export const Playlist: FC<PlaylistProps> = () => {
           setVisibleModal={setVisibleModal}
           color="white">
           <Content>
-            <TitleRename>Изменит сведения</TitleRename>
+            <TitleRename>Will change details</TitleRename>
             <Rename>
               <Image
                 alt="rename"
@@ -89,7 +122,7 @@ export const Playlist: FC<PlaylistProps> = () => {
                   defaultValue={playlists?.name}
                   onChange={(e) => setCurrentName(e.target.value)}
                   placeholder="name"></input>
-                <Button onClick={renamePlaylist}>Изменить</Button>
+                <Button onClick={renamePlaylist}>Rename</Button>
               </Inputs>
             </Rename>
           </Content>
@@ -137,3 +170,7 @@ const Rename = styled.div`
 `;
 
 const Inputs = styled.div``;
+
+const DropDown = styled.span`
+  cursor: pointer;
+`;
