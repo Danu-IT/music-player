@@ -39,12 +39,51 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["Playlist"],
     }),
+    currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({ // Получить треки из действующего плейлиста
+      query: (id: string) => ({
+        url: `/v1/playlists/${id}/tracks`,
+      }),
+      providesTags: (result) => ["Playlist"],
+    }),
     updateUserPlaylist: build.mutation<any, { id: string, name: string }>({ // Изменить плейлист
       query: ({ id, name }) => ({
         url: `/v1/playlists/${id}`,
         method: 'PUT',
         body: { name: name }
       }),
+      invalidatesTags: ['Playlist']
+    }),
+    updateUserPlaylistItems: build.mutation<any, { // Изменить элемент плейлист
+      playlist_id: string, uris: string[], range_start: number
+      , insert_before: number, range_length: number
+    }>({
+      query: ({ playlist_id, uris, range_start, insert_before, range_length }) => {
+        return {
+          url: `/v1/playlists/${playlist_id}/tracks`,
+          method: 'PUT',
+          body: { 'uris': [uris], 'range_start': range_start, 'insert_before': insert_before, 'range_length': range_length }
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    postUserPlaylist: build.mutation<IUserPlaylistTracks, string>({ // Создать плейлист
+      query: (id) => {
+        return {
+          url: `/v1/users/${id}/playlists`,
+          method: 'POST',
+          body: { name: 'default-name' }
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    postItemsToPlaylist: build.mutation<IUserPlaylistTracks, { id: string, url: string }>({ // Добавить трек в плейлист
+      query: ({ id, url }) => {
+        return {
+          url: `/v1/playlists/${id}/tracks`,
+          method: 'POST',
+          body: { 'uris': [`spotify:track:${url}`], 'position': 0 }
+        }
+      },
       invalidatesTags: ['Playlist']
     }),
     deleteUserPlaylist: build.mutation<any, string>({ // Удалить плейлист
@@ -64,21 +103,11 @@ export const userAPI = createApi({
       },
       invalidatesTags: ['Playlist']
     }),
-    currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({ // Получить треки из действующего плейлиста
-      query: (id: string) => ({
-        url: `/v1/playlists/${id}/tracks`,
+    getUsersSavedTracks: build.query<IUser, null>({ // Получение пользователя
+      query: () => ({
+        url: "/v1/me/tracks",
       }),
-      providesTags: (result) => ["Playlist"],
-    }),
-    postUserPlaylist: build.mutation<IUserPlaylistTracks, string>({ // Создать плейлист
-      query: (id) => {
-        return {
-          url: `/v1/users/${id}/playlists`,
-          method: 'POST',
-          body: { name: 'default-name' }
-        }
-      },
-      invalidatesTags: ['Playlist']
+      providesTags: (result) => ["User"],
     }),
     currentUser: build.query<IUser, null>({ // Получение пользователя
       query: () => ({

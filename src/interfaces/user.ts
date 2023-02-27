@@ -31,6 +31,7 @@ export interface IUserPlaylistTrack {
   artists: IUserPlaylistTrackArtist[];
   album: IUserPlaylistTrackAlbum;
   name: string;
+  id: string;
 }
 
 export interface IUserPlaylistTrackAlbum {
