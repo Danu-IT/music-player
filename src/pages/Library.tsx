@@ -10,7 +10,6 @@ import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../interfaces/user";
 import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
 import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
-import Button from "../components/UI/Button/Button";
 import styled from "styled-components";
 
 interface PlaylistsProps {}
@@ -24,7 +23,7 @@ const Library: FC<PlaylistsProps> = () => {
   const { data: currentPlaylists } = userAPI.useCurrentUserPlaylistsQuery(null);
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
-
+  const { data: savedTracks } = userAPI.useGetUsersSavedTracksQuery(null);
   const [create] = userAPI.usePostUserPlaylistMutation();
 
   const addCurrentUserPlaylists = ({ items }: any) => {
@@ -37,6 +36,8 @@ const Library: FC<PlaylistsProps> = () => {
       };
       return playlist;
     });
+    console.log(playlists);
+    console.log(savedTracks);
     dispatch(receiveCurrentUserPlaylists(playlists));
   };
 

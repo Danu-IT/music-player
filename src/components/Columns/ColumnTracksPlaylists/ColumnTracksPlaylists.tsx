@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import { userAPI } from "../../../services/UserService";
 import List from "../../List";
 import Track from "../../UI/Track/Track";
+import { IUserPlaylistTrackHaracter } from "../../../interfaces/user";
 
 interface TracksProps {
   id: string;
@@ -10,7 +11,35 @@ interface TracksProps {
 
 const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
   const { data: tracks } = userAPI.useCurrentUserPlaylistTracksQuery(id);
+  // const [upddate] = userAPI.useUpdateUserPlaylistItemsMutation();
 
+  // const findDuplicates = (
+  //   arr: IUserPlaylistTrackHaracter[] | undefined
+  // ): string[] => {
+  //   const filteredArray: any[] = [];
+  //   const answer: string[] = [];
+  //   arr?.filter((item) => {
+  //     if (
+  //       !filteredArray.some((element) => element.track.id === item.track.id)
+  //     ) {
+  //       filteredArray.push(item);
+  //     }
+  //   });
+  //   filteredArray.forEach((el) => answer.push(`spotify:track:${el.track.id}`));
+  //   return answer;
+  // };
+
+  useEffect(() => {
+    console.log(tracks);
+    // const current = findDuplicates(tracks?.items);
+    // upddate({
+    //   playlist_id: id,
+    //   uris: current,
+    //   range_start: 0,
+    //   insert_before: current.length,
+    //   range_length: current.length,
+    // });
+  }, [tracks]);
   return (
     <Container>
       <ContainerMusic>

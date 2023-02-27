@@ -6,6 +6,7 @@ interface MultiDropDownProps {
   open: boolean;
   children: React.ReactNode;
   el: null | HTMLElement;
+  container?: string;
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleClose: () => void;
 }
@@ -13,6 +14,7 @@ interface MultiDropDownProps {
 const MultiDropDown: FC<MultiDropDownProps> = ({
   open,
   children,
+  container,
   handleClick,
   handleClose,
   el,
@@ -25,7 +27,7 @@ const MultiDropDown: FC<MultiDropDownProps> = ({
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}>
-        ...
+        {container ? container : "..."}
       </DropDown>
       <Menu
         id="basic-menu"

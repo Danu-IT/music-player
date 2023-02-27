@@ -16,6 +16,9 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/redux";
 import { userAPI } from "../../../services/UserService";
 import { useLocation } from "react-router";
+import MultiDropDown from "../MultiDropDown/MultiDropDown";
+import MenuItem from "@mui/material/MenuItem";
+import { IUserPlaylist } from "../../../interfaces/user";
 
 interface TrackProps {
   track: any;
@@ -28,12 +31,17 @@ interface TrackProps {
 const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
+  const open = Boolean(anchorEl);
 
   const location = useLocation();
   const id = location.pathname.split("/")[2];
 
   const { data: album } = userAPI.useGetAlbumQuery({ id: track.album.id });
+
   const [delete_track, {}] = userAPI.useDeleteUserPlaylistTrackMutation();
+  const [add_track, {}] = userAPI.usePostItemsToPlaylistMutation();
 
   const { token } = useAppSelector((state) => state.tokenSlice);
   const arrayTrack = track?.artists;
@@ -50,12 +58,27 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
     navigate(`/artists/${answer[0].id}#access_token=${token}`);
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleAlbum = () => {
     navigate(`/albums/${album?.id}#access_token=${token}`);
   };
 
   const handleDeleteTrack = () => {
     delete_track({ ids: id, url: track.id });
+  };
+
+  const addTrackInPlaylist = (praylist: IUserPlaylist) => {
+    setPlayAndRemoveVisible(false);
+    setAnchorEl(null);
+    if (track.id) {
+    }
+    add_track({ id: praylist.id, url: track.id });
   };
 
   return (
@@ -98,9 +121,22 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
         onClick={handleDeleteTrack}
         displayRemove={remove}
         playAndRemoveVisible={playAndRemoveVisible}></Remove>
-      <Add
+      <MultiDropDownTrack
         displayAdd={add}
-        playAndRemoveVisible={playAndRemoveVisible}></Add>
+        playAndRemoveVisible={playAndRemoveVisible}>
+        <MultiDropDown
+          handleClick={handleClick}
+          handleClose={handleClose}
+          el={anchorEl}
+          open={open}
+          container="+">
+          {currentUserPlaylists.map((praylist) => (
+            <MenuItem onClick={() => addTrackInPlaylist(praylist)}>
+              {praylist.name}
+            </MenuItem>
+          ))}
+        </MultiDropDown>
+      </MultiDropDownTrack>
     </Music>
   );
 };
@@ -152,9 +188,10 @@ const Remove = styled(MdRemove)<RemoveProps>`
   display: ${({ playAndRemoveVisible, displayRemove }) =>
     !playAndRemoveVisible ? "none" : !displayRemove ? "none" : "flex"};
   right: 55px;
+  cursor: pointer;
 `;
 
-const Add = styled(MdAdd)<AddProps>`
+const MultiDropDownTrack = styled.div<AddProps>`
   position: absolute;
   display: ${({ playAndRemoveVisible, displayAdd }) =>
     !playAndRemoveVisible ? "none" : !displayAdd ? "none" : "flex"};
