@@ -20,6 +20,7 @@ const Login: FC<LoginProps> = () => {
     const redirect = "http://localhost:3000/";
     const apiUrl = "https://accounts.spotify.com/authorize";
     const scope = [
+      "ugc-image-upload",
       "user-read-email",
       "user-read-private",
       "user-read-playback-state",

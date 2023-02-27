@@ -27,12 +27,6 @@ export const userAPI = createApi({
   }),
   tagTypes: ["User", "Artist", "Playlist"],
   endpoints: (build) => ({
-    currentUser: build.query<IUser, null>({ // Получение пользователя
-      query: () => ({
-        url: "/v1/me",
-      }),
-      providesTags: (result) => ["User"],
-    }),
     currentUserPlaylists: build.query<IUserPlaylist[], null>({ // Получить действующие плейлисты
       query: () => ({
         url: "/v1/me/playlists",
@@ -55,9 +49,19 @@ export const userAPI = createApi({
     }),
     deleteUserPlaylist: build.mutation<any, string>({ // Удалить плейлист
       query: (ids) => ({
-        url: `/v1/playlists/${ids}`,
+        url: `/v1/playlists/${ids}/followers`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Playlist']
+    }),
+    deleteUserPlaylistTrack: build.mutation<any, { ids: string, url: string }>({ // Удалить трек из плейлист
+      query: ({ ids, url }) => {
+        return {
+          url: `/v1/playlists/${ids}/tracks`,
+          method: 'DELETE',
+          body: { "tracks": [{ 'uri': `spotify:track:${url}` }] }
+        }
+      },
       invalidatesTags: ['Playlist']
     }),
     currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({ // Получить треки из действующего плейлиста
@@ -65,6 +69,22 @@ export const userAPI = createApi({
         url: `/v1/playlists/${id}/tracks`,
       }),
       providesTags: (result) => ["Playlist"],
+    }),
+    postUserPlaylist: build.mutation<IUserPlaylistTracks, string>({ // Создать плейлист
+      query: (id) => {
+        return {
+          url: `/v1/users/${id}/playlists`,
+          method: 'POST',
+          body: { name: 'default-name' }
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    currentUser: build.query<IUser, null>({ // Получение пользователя
+      query: () => ({
+        url: "/v1/me",
+      }),
+      providesTags: (result) => ["User"],
     }),
     getArtist: build.query<IArtist, string>({// Получить артиста
       query: (id: string) => ({

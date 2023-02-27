@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo, useState, useRef, useEffect, useCallback } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { userAPI } from "../services/UserService";
 import { useLocation, useNavigate } from "react-router";
@@ -11,26 +11,35 @@ import { BsArrowLeft } from "react-icons/bs";
 import ColumnTracksPlaylists from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 import Modal from "../components/UI/Modal/Modal";
 import Button from "../components/UI/Button/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import MultiDropDown from "../components/UI/MultiDropDown/MultiDropDown";
+import { SiApplemusic } from "react-icons/si";
 
 interface PlaylistProps {}
 
 export const Playlist: FC<PlaylistProps> = () => {
   const [visibleModal, setVisibleModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const input = useRef<HTMLInputElement | null>(null);
+  const error = useRef<HTMLSpanElement | null>(null);
+
+  const open = Boolean(anchorEl);
 
   const location = useLocation();
+  const navigate = useNavigate();
+
   const id = location.pathname.split("/")[2];
 
   const { data: playlists, isLoading } =
     userAPI.useCurrentUserPlaylistQuery(id);
-  const navigate = useNavigate();
 
   const [currentName, setCurrentName] = useState<string | undefined>(
     playlists?.name
   );
 
   const [rename] = userAPI.useUpdateUserPlaylistMutation();
+  const [remove] = userAPI.useDeleteUserPlaylistMutation();
 
   const artistsCount = useMemo(
     () => countArtistPlaylist(playlists),
@@ -43,20 +52,37 @@ export const Playlist: FC<PlaylistProps> = () => {
   };
 
   const renamePlaylist = () => {
-    if (currentName) rename({ id: id, name: currentName });
-    setVisibleModal(false);
+    if (currentName && currentName.length <= 10) {
+      rename({ id: id, name: currentName });
+      setVisibleModal(false);
+    } else if (input.current && error.current) {
+      input.current.style.border = "1px solid red";
+      error.current.innerHTML = "Enter a name of 10 characters";
+      error.current.style.color = "red";
+    }
   };
 
   const countDuration = useMemo(() => countAllDuration(playlists), [playlists]);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const deletePlaylist = () => {
+    remove(id);
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    if (input.current && error.current) {
+      input.current.style.border = "0px solid red";
+      error.current.innerHTML = "";
+      error.current.style.color = "none";
+    }
+  }, [currentName]);
 
   if (isLoading) {
     return (
@@ -82,27 +108,14 @@ export const Playlist: FC<PlaylistProps> = () => {
             total={playlists?.tracks?.total}
             artistsCount={artistsCount}
             countDuration={countDuration}>
-            <>
-              <DropDown
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}>
-                ...
-              </DropDown>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}>
-                <MenuItem onClick={handlerTitle}>Rename</MenuItem>
-                <MenuItem onClick={() => "f"}>Delete</MenuItem>
-              </Menu>
-            </>
+            <MultiDropDown
+              handleClick={handleClick}
+              handleClose={handleClose}
+              el={anchorEl}
+              open={open}>
+              <MenuItem onClick={handlerTitle}>Rename</MenuItem>
+              <MenuItem onClick={deletePlaylist}>Delete</MenuItem>
+            </MultiDropDown>
           </PlaylistPicture>
           <ColumnTracksPlaylists id={id}></ColumnTracksPlaylists>
         </ContainerPlaylist>
@@ -113,15 +126,23 @@ export const Playlist: FC<PlaylistProps> = () => {
           <Content>
             <TitleRename>Will change details</TitleRename>
             <Rename>
-              <Image
-                alt="rename"
-                src={playlists?.images[0]?.url}></Image>
+              {playlists?.images[0]?.url ? (
+                <Image
+                  alt="rename"
+                  src={playlists?.images[0]?.url}></Image>
+              ) : (
+                <SiApplemusic size={200}></SiApplemusic>
+              )}
               <Inputs>
-                <input
-                  value={currentName}
-                  defaultValue={playlists?.name}
-                  onChange={(e) => setCurrentName(e.target.value)}
-                  placeholder="name"></input>
+                <Validation>
+                  <span ref={error}></span>
+                  <Input
+                    ref={input}
+                    value={currentName}
+                    defaultValue={playlists?.name}
+                    onChange={(e) => setCurrentName(e.target.value)}
+                    placeholder="name"></Input>
+                </Validation>
                 <Button onClick={renamePlaylist}>Rename</Button>
               </Inputs>
             </Rename>
@@ -171,6 +192,22 @@ const Rename = styled.div`
 
 const Inputs = styled.div``;
 
-const DropDown = styled.span`
-  cursor: pointer;
+const Validation = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  background: transparent;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
+
+const File = styled.input`
+  opacity: 0;
+  position: absolute;
+  top: 78px;
+  left: 14px;
+  width: 48%;
+  height: 69%;
 `;

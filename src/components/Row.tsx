@@ -8,9 +8,9 @@ interface RowProps {
   top?: boolean;
 }
 
-const Row: FC<RowProps> = ({ title, children, top }) => {
+const Row: FC<RowProps> = ({ title, children, top, ...props }) => {
   return (
-    <div>
+    <div {...props}>
       <Title top={top}>{title}</Title>
       {children}
     </div>

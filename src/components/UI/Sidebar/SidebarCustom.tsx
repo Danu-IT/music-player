@@ -46,6 +46,7 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
     if (!user) return false;
 
     const createdUser: IUser = {
+      id: user.id,
       display_name: user.display_name,
       country: user.country,
       email: user.email,

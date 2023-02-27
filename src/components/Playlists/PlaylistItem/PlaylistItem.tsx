@@ -1,16 +1,25 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { IUserPlaylist } from "../../../interfaces/user";
 import styled from "styled-components";
 import { SiApplemusic } from "react-icons/si";
 import { useAppSelector } from "../../../hooks/redux";
 import { useNavigate } from "react-router-dom";
-
+import { BsPencil } from "react-icons/bs";
+import { AiFillDelete } from "react-icons/ai";
+import { userAPI } from "../../../services/UserService";
 interface PlaylistProps {
   playlist: IUserPlaylist;
 }
 
 const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
-  const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
+  const [hover, setHover] = useState<boolean>(false);
+
+  const [rename] = userAPI.useUpdateUserPlaylistMutation();
+  const [remove] = userAPI.useDeleteUserPlaylistMutation();
+
+  const { currentUserPlaylists, currentUser } = useAppSelector(
+    (state) => state.userSlice
+  );
   const { token } = useAppSelector((state) => state.tokenSlice);
 
   const navigate = useNavigate();
@@ -22,14 +31,31 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
 
     navigate(`/playlists/${currentPlaylist[0].id}#access_token=${token}`);
   };
+
+  const deletePlaylist = (e: MouseEvent<SVGElement>, id: string) => {
+    e.stopPropagation();
+
+    const currentPlaylist = currentUserPlaylists.filter(
+      (playlist) => playlist.id === id
+    );
+
+    remove(currentPlaylist[0].id);
+  };
+
   return (
-    <Container onClick={(event) => handlerPlaylist(event, playlist.id)}>
+    <Container
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={(event) => handlerPlaylist(event, playlist.id)}>
       {playlist.images ? (
         <Image src={playlist.images}></Image>
       ) : (
         <SiApplemusic size={120}></SiApplemusic>
       )}
-
+      {hover && (
+        <Delete onClick={(e) => deletePlaylist(e, playlist.id)}>x</Delete>
+      )}
+      {hover && <Rename>r</Rename>}
       <Name length={playlist.name.length}>
         <div>{playlist.name}</div>
       </Name>
@@ -42,11 +68,36 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   &:hover {
     opacity: 0.7;
     cursor: pointer;
   }
 `;
+
+const Delete = styled(AiFillDelete)`
+  color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.bg};
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+`;
+const Rename = styled(BsPencil)`
+  color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.bg};
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+`;
+
 const Image = styled.img`
   width: 120px;
   height: 120px;

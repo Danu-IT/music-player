@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import LogoImage from "../../../assets/images/Logo.svg";
@@ -43,6 +43,7 @@ interface ContainerSearchProps {
 const ContainerSearch = styled.div<ContainerSearchProps>`
   display: ${({ search }) => (search !== true ? "flex" : "none")};
   align-items: center;
+  justify-content: space-between;
   margin: 40px 20px;
   & > * {
     margin-right: 30px;

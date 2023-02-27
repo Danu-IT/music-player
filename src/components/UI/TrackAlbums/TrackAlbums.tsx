@@ -14,9 +14,11 @@ interface TrackAlbumProps {
 const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
+
   const { data: track } = userAPI.useGetAlbumTracksQuery({
     id: id,
   });
+
   let duration = calcTime(track ? track?.duration_ms : Number());
 
   return (
