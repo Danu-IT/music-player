@@ -10,16 +10,22 @@ import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../interfaces/user";
 import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
 import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
+import Button from "../components/UI/Button/Button";
+import styled from "styled-components";
 
 interface PlaylistsProps {}
 
 const Library: FC<PlaylistsProps> = () => {
-  const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
+  const { currentUserPlaylists, currentUser } = useAppSelector(
+    (state) => state.userSlice
+  );
   const dispatch = useAppDispatch();
 
   const { data: currentPlaylists } = userAPI.useCurrentUserPlaylistsQuery(null);
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
+
+  const [create] = userAPI.usePostUserPlaylistMutation();
 
   const addCurrentUserPlaylists = ({ items }: any) => {
     const playlists = items.map((item: any) => {
@@ -34,6 +40,8 @@ const Library: FC<PlaylistsProps> = () => {
     dispatch(receiveCurrentUserPlaylists(playlists));
   };
 
+  const createPlaylist = () => currentUser && create(currentUser.id);
+
   useEffect(() => {
     currentPlaylists && addCurrentUserPlaylists(currentPlaylists);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,8 +49,8 @@ const Library: FC<PlaylistsProps> = () => {
 
   return (
     <BaseContainer>
-      {/* <Navigate content={privateRoutes.slice(7, 10)}></Navigate> */}
-      <Row title="My Playlists">
+      <RowCustom title="My Playlists">
+        <Btn onClick={createPlaylist}>+</Btn>
         <List
           items={currentUserPlaylists}
           flex={true}
@@ -52,7 +60,7 @@ const Library: FC<PlaylistsProps> = () => {
               playlist={item}></PlaylistItem>
           )}
         />
-      </Row>
+      </RowCustom>
       {currentAlbums && (
         <Row
           title="My Albums"
@@ -82,5 +90,20 @@ const Library: FC<PlaylistsProps> = () => {
     </BaseContainer>
   );
 };
+const Btn = styled.div`
+  cursor: pointer;
+  display: inline-block;
+  background: ${({ theme }) => theme.colors.secondary};
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin: 15px 0;
+  position: absolute;
+  top: -18px;
+  left: 150px;
+`;
+
+const RowCustom = styled(Row)`
+  position: relative;
+`;
 
 export default Library;

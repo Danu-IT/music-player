@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BsArrowLeft } from 'react-icons/bs';
+import { AiOutlineClose } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
 export interface SidebarProps {
@@ -17,7 +17,7 @@ export const Sidebar = styled.div<SidebarProps>`
     left: ${({ isActiveSidebar }) => (isActiveSidebar ? "none" : "-100%")};
   `;
 
-export const ImgArrow = styled(BsArrowLeft)`
+export const ImgArrow = styled(AiOutlineClose)`
     position: absolute;
     right: 30px;
   `;

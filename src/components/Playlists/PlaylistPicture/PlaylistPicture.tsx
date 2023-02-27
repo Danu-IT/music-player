@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import ButtonAndPicture from "../../UI/ButtonAndPicture/ButtonAndPicture";
+import { SiApplemusic } from "react-icons/si";
 
 interface PlaylistPictureProps {
   picture: string | undefined;
@@ -24,7 +25,11 @@ const PlaylistPicture: FC<PlaylistPictureProps> = ({
   return (
     <Container>
       <ContainerPic>
-        <Image src={picture}></Image>
+        {picture ? (
+          <Image src={picture}></Image>
+        ) : (
+          <SiApplemusic size={320}></SiApplemusic>
+        )}
         <CustomTitle>{playlistName}</CustomTitle>
       </ContainerPic>
       <Info>

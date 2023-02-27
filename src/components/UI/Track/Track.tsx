@@ -15,6 +15,7 @@ import { Name } from "../../Playlists/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/redux";
 import { userAPI } from "../../../services/UserService";
+import { useLocation } from "react-router";
 
 interface TrackProps {
   track: any;
@@ -28,7 +29,11 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   const [playAndRemoveVisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
 
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+
   const { data: album } = userAPI.useGetAlbumQuery({ id: track.album.id });
+  const [delete_track, {}] = userAPI.useDeleteUserPlaylistTrackMutation();
 
   const { token } = useAppSelector((state) => state.tokenSlice);
   const arrayTrack = track?.artists;
@@ -49,6 +54,10 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
     navigate(`/albums/${album?.id}#access_token=${token}`);
   };
 
+  const handleDeleteTrack = () => {
+    delete_track({ ids: id, url: track.id });
+  };
+
   return (
     <Music
       artist={artist}
@@ -57,7 +66,8 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       <Number>{index}</Number>
       <Play
         size={30}
-        playAndRemoveVisible={playAndRemoveVisible}></Play>
+        playAndRemoveVisible={playAndRemoveVisible}
+      />
       <SongCustom>
         <SongContainer>
           <Image
@@ -85,6 +95,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       </CustArtist>
       <Album onClick={handleAlbum}>{track.album.name}</Album>
       <Remove
+        onClick={handleDeleteTrack}
         displayRemove={remove}
         playAndRemoveVisible={playAndRemoveVisible}></Remove>
       <Add
