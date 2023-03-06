@@ -54,7 +54,7 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
         <SiApplemusic size={120}></SiApplemusic>
       )}
       {hover && (
-        <Delete onClick={(e) => deletePlaylist(e, playlist.id)}>x</Delete>
+        <Delete onClick={(e) => deletePlaylist(e, playlist.id)}></Delete>
       )}
       {hover && <Rename>r</Rename>}
       <Name length={playlist.name.length}>

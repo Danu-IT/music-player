@@ -9,13 +9,12 @@ import { FaPlay } from "react-icons/fa";
 interface LoginProps {}
 
 const Login: FC<LoginProps> = () => {
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [rotate, setRotate] = useState<boolean>(false);
   const { token } = useAppSelector((state) => state.tokenSlice);
   const dispatch = useAppDispatch();
 
-  // console.log(actionData);
   const handleLogin = () => {
-    setIsClicked(true);
+    setRotate(true);
     const clientID = "31902ba63cef4879b088fcd06fd9d234";
     const redirect = "http://localhost:3000/";
     const apiUrl = "https://accounts.spotify.com/authorize";
@@ -59,10 +58,11 @@ const Login: FC<LoginProps> = () => {
       <ContainerLogin>
         <Logo>
           <Title>Music Player</Title>
-          <LogoImg
-            isclicked={isClicked}
-            size={150}
-            onClick={handleLogin}></LogoImg>
+          <LogoImg rotateImg={rotate}>
+            <FaPlay
+              size={150}
+              onClick={handleLogin}></FaPlay>
+          </LogoImg>
         </Logo>
       </ContainerLogin>
     </Page>
@@ -124,12 +124,11 @@ const Logo = styled.div`
 `;
 
 interface LogoImg {
-  isclicked?: boolean;
+  rotateImg: boolean;
 }
 
-const LogoImg = styled(FaPlay)<LogoImg>`
-  animation: ${({ isclicked }) => (isclicked ? rotate : null)} 1s linear
-    infinite;
+const LogoImg = styled.div<LogoImg>`
+  animation: ${({ rotateImg }) => rotateImg && rotate} 1s linear infinite;
 `;
 
 export default Login;

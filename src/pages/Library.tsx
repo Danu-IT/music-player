@@ -82,7 +82,9 @@ const Library: FC<PlaylistsProps> = () => {
             items={currentArtists?.artists.items}
             flex={true}
             renderItem={(item) => (
-              <ArtistItem artist={item}></ArtistItem>
+              <ArtistItem
+                key={item.id}
+                artist={item}></ArtistItem>
             )}></List>
         </Row>
       )}
