@@ -10,36 +10,45 @@ interface TracksProps {
 }
 
 const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
-  const { data: tracks } = userAPI.useCurrentUserPlaylistTracksQuery(id);
+  const { data: tracks, refetch } =
+    userAPI.useCurrentUserPlaylistTracksQuery(id);
   // const [upddate] = userAPI.useUpdateUserPlaylistItemsMutation();
+  const [deleteTrack] = userAPI.useDeleteUserPlaylistTrackMutation();
+  const [addTrack] = userAPI.usePostItemsToPlaylistMutation();
 
-  // const findDuplicates = (
-  //   arr: IUserPlaylistTrackHaracter[] | undefined
-  // ): string[] => {
-  //   const filteredArray: any[] = [];
-  //   const answer: string[] = [];
-  //   arr?.filter((item) => {
-  //     if (
-  //       !filteredArray.some((element) => element.track.id === item.track.id)
-  //     ) {
-  //       filteredArray.push(item);
-  //     }
-  //   });
-  //   filteredArray.forEach((el) => answer.push(`spotify:track:${el.track.id}`));
-  //   return answer;
-  // };
+  const findDuplicates = (arr: IUserPlaylistTrackHaracter[] | undefined) => {
+    const tracks: string[] = [];
+    let index: number = 0;
+
+    arr?.forEach((el) => {
+      tracks.push(el.track.id);
+    });
+
+    const answer = tracks?.filter((el, i) => {
+      return tracks.indexOf(el) !== i;
+    });
+
+    arr?.forEach((el, i) => {
+      if (!el.track.id.lastIndexOf(answer[0])) {
+        index = i;
+      }
+    });
+
+    return {
+      answer: answer,
+      index: index,
+    };
+  };
 
   useEffect(() => {
-    console.log(tracks);
-    // const current = findDuplicates(tracks?.items);
-    // upddate({
-    //   playlist_id: id,
-    //   uris: current,
-    //   range_start: 0,
-    //   insert_before: current.length,
-    //   range_length: current.length,
-    // });
+    const current = findDuplicates(tracks?.items);
+    if (current["answer"][0]) {
+      deleteTrack({ ids: id, url: current["answer"][0] });
+      addTrack({ id: id, url: current["answer"][0] });
+    }
+    refetch();
   }, [tracks]);
+
   return (
     <Container>
       <ContainerMusic>

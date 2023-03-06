@@ -36,8 +36,6 @@ const Library: FC<PlaylistsProps> = () => {
       };
       return playlist;
     });
-    console.log(playlists);
-    console.log(savedTracks);
     dispatch(receiveCurrentUserPlaylists(playlists));
   };
 
