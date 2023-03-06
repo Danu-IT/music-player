@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { useLocation } from "react-router";
 import { userAPI } from "../services/UserService";
@@ -34,7 +34,10 @@ const Artist: FC<ArtistProps> = () => {
   const [follow, {}] = userAPI.useUpdateFollowArtistsMutation();
   const [unfollow, {}] = userAPI.useDeleteFollowArtistsMutation();
 
-  const total = separation(artist?.followers.total);
+  const total = useMemo(
+    () => separation(artist?.followers.total),
+    [artist?.followers.total]
+  );
 
   const handlerButton = () => {
     if (check) {
@@ -83,7 +86,7 @@ const Artist: FC<ArtistProps> = () => {
                   artist={true}
                   index={i + 1}
                   track={item}
-                  key={item.duration_ms}></Track>
+                  key={item.name}></Track>
               )}></List>
           )}
         </Row>
@@ -117,7 +120,9 @@ const Artist: FC<ArtistProps> = () => {
               flex={true}
               items={artistsRelated.artists.slice(0, 5)}
               renderItem={(item, i) => (
-                <ArtistItem artist={item}></ArtistItem>
+                <ArtistItem
+                  key={item.id}
+                  artist={item}></ArtistItem>
               )}></List>
           )}
         </Row>

@@ -9,7 +9,7 @@ import {
 import { calcArtist, calcTime } from "../../../utils/calc";
 import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
-import { MdRemove, MdAdd } from "react-icons/md";
+import { MdRemove } from "react-icons/md";
 import { useState } from "react";
 import { Name } from "../../Playlists/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ interface TrackProps {
 }
 
 const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
-  const [playAndRemoveVisible, setPlayAndRemoveVisible] =
+  const [playandremovevisible, setPlayandremovevisible] =
     useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
@@ -70,26 +70,24 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   };
 
   const handleDeleteTrack = () => {
-    delete_track({ ids: id, url: track.id });
+    delete_track({ ids: id, url: [{ uri: `spotify:track:${track.id}` }] });
   };
 
   const addTrackInPlaylist = (praylist: IUserPlaylist) => {
-    setPlayAndRemoveVisible(false);
+    setPlayandremovevisible(false);
     setAnchorEl(null);
-    console.log(praylist);
-    add_track({ id: praylist.id, url: track.id });
+    add_track({ id: praylist.id, url: [`spotify:track:${track.id}`] });
   };
 
   return (
     <Music
       artist={artist}
-      onMouseEnter={() => setPlayAndRemoveVisible(true)}
-      onMouseLeave={() => setPlayAndRemoveVisible(false)}>
+      onMouseEnter={() => setPlayandremovevisible(true)}
+      onMouseLeave={() => setPlayandremovevisible(false)}>
       <Number>{index}</Number>
-      <Play
-        size={30}
-        playAndRemoveVisible={playAndRemoveVisible}
-      />
+      <Play playandremovevisible={playandremovevisible}>
+        <BsFillPlayFill size={30} />
+      </Play>
       <SongCustom>
         <SongContainer>
           <Image
@@ -108,7 +106,9 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
         <Name length={artists.length}>
           <div>
             {artists.split(",").map((artist, id) => (
-              <ArtSpan onClick={() => handleArtist(artist)}>
+              <ArtSpan
+                key={artist}
+                onClick={() => handleArtist(artist)}>
                 {track.artists.length > 1 && id === 0 ? artist + "," : artist}
               </ArtSpan>
             ))}
@@ -119,10 +119,12 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
       <Remove
         onClick={handleDeleteTrack}
         displayRemove={remove}
-        playAndRemoveVisible={playAndRemoveVisible}></Remove>
+        playandremovevisible={playandremovevisible}>
+        <MdRemove></MdRemove>
+      </Remove>
       <MultiDropDownTrack
         displayAdd={add}
-        playAndRemoveVisible={playAndRemoveVisible}>
+        playandremovevisible={playandremovevisible}>
         <MultiDropDown
           handleClick={handleClick}
           handleClose={handleClose}
@@ -130,7 +132,9 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
           open={open}
           container="+">
           {currentUserPlaylists.map((praylist) => (
-            <MenuItem onClick={() => addTrackInPlaylist(praylist)}>
+            <MenuItem
+              key={praylist.id}
+              onClick={() => addTrackInPlaylist(praylist)}>
               {praylist.name}
             </MenuItem>
           ))}
@@ -142,6 +146,20 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
 
 interface MusicProps {
   artist: boolean | undefined;
+}
+
+interface PlayProps {
+  playandremovevisible: boolean;
+}
+
+interface RemoveProps {
+  playandremovevisible: boolean;
+  displayRemove?: boolean;
+}
+
+interface AddProps {
+  playandremovevisible: boolean;
+  displayAdd?: boolean;
 }
 
 export const Music = styled.div<MusicProps>`
@@ -161,39 +179,25 @@ export const Music = styled.div<MusicProps>`
   }
 `;
 
-interface PlayProps {
-  playAndRemoveVisible: boolean;
-}
-
-interface RemoveProps {
-  playAndRemoveVisible: boolean;
-  displayRemove?: boolean;
-}
-
-interface AddProps {
-  playAndRemoveVisible: boolean;
-  displayAdd?: boolean;
-}
-
-export const Play = styled(BsFillPlayFill)<PlayProps>`
+export const Play = styled.div<PlayProps>`
   position: absolute;
-  display: ${({ playAndRemoveVisible }) =>
-    playAndRemoveVisible ? "flex" : "none"};
+  display: ${({ playandremovevisible }) =>
+    playandremovevisible ? "flex" : "none"};
   left: 55px;
 `;
 
-const Remove = styled(MdRemove)<RemoveProps>`
+const Remove = styled.div<RemoveProps>`
   position: absolute;
-  display: ${({ playAndRemoveVisible, displayRemove }) =>
-    !playAndRemoveVisible ? "none" : !displayRemove ? "none" : "flex"};
+  display: ${({ playandremovevisible, displayRemove }) =>
+    !playandremovevisible ? "none" : !displayRemove ? "none" : "flex"};
   right: 55px;
   cursor: pointer;
 `;
 
 const MultiDropDownTrack = styled.div<AddProps>`
   position: absolute;
-  display: ${({ playAndRemoveVisible, displayAdd }) =>
-    !playAndRemoveVisible ? "none" : !displayAdd ? "none" : "flex"};
+  display: ${({ playandremovevisible, displayAdd }) =>
+    !playandremovevisible ? "none" : !displayAdd ? "none" : "flex"};
   right: 55px;
 `;
 

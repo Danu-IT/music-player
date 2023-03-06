@@ -202,12 +202,3 @@ const Input = styled.input`
   padding: 10px;
   margin-bottom: 10px;
 `;
-
-const File = styled.input`
-  opacity: 0;
-  position: absolute;
-  top: 78px;
-  left: 14px;
-  width: 48%;
-  height: 69%;
-`;

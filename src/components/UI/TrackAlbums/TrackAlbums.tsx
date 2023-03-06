@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Play } from "../Track/Track";
 import { useState } from "react";
 import { LikePic } from "../Like/Like";
+import { BsFillPlayFill } from "react-icons/bs";
 
 interface TrackAlbumProps {
   index: number;
@@ -12,7 +13,7 @@ interface TrackAlbumProps {
 }
 
 const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
-  const [playAndRemoveVisible, setPlayAndRemoveVisible] =
+  const [playandremovevisible, setPlayAndRemoveVisible] =
     useState<boolean>(false);
 
   const { data: track } = userAPI.useGetAlbumTracksQuery({
@@ -26,18 +27,18 @@ const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
       onMouseEnter={() => setPlayAndRemoveVisible(true)}
       onMouseLeave={() => setPlayAndRemoveVisible(false)}>
       <Content>
-        <CustomPlay
-          size={30}
-          playAndRemoveVisible={playAndRemoveVisible}></CustomPlay>
-        <Index playAndRemoveVisible={playAndRemoveVisible}>{index}</Index>
+        <CustomPlay playandremovevisible={playandremovevisible}>
+          <BsFillPlayFill size={30} />
+        </CustomPlay>
+        <Index playandremovevisible={playandremovevisible}>{index}</Index>
         <Info>
           <Track>{track?.name}</Track>
           <Name>{track?.artists[0].name}</Name>
         </Info>
       </Content>
-      <CustomLike
-        playAndRemoveVisible={playAndRemoveVisible}
-        size={25}></CustomLike>
+      <CustomLike playandremovevisible={playandremovevisible}>
+        <LikePic size={25}></LikePic>
+      </CustomLike>
       <div>{duration}</div>
     </ContainerTracks>
   );
@@ -60,27 +61,35 @@ const Content = styled.div`
   display: flex;
   align-items: center;
 `;
-const CustomPlay = styled(Play)`
+
+interface PlayProps {
+  playandremovevisible?: boolean;
+}
+
+const CustomPlay = styled.div<PlayProps>`
   cursor: pointer;
+  position: absolute;
   left: 10px;
+  display: ${({ playandremovevisible }) =>
+    playandremovevisible ? "block" : "none"};
 `;
-const CustomLike = styled(LikePic)<IndexProps>`
+const CustomLike = styled.div<IndexProps>`
   cursor: pointer;
   position: absolute;
   right: 110px;
-  display: ${({ playAndRemoveVisible }) =>
-    playAndRemoveVisible ? "block" : "none"};
+  display: ${({ playandremovevisible }) =>
+    playandremovevisible ? "block" : "none"};
 `;
 interface IndexProps {
-  playAndRemoveVisible?: boolean;
+  playandremovevisible?: boolean;
 }
 
 const Index = styled.div<IndexProps>`
   font-size: 20px;
   position: absolute;
   left: 15px;
-  display: ${({ playAndRemoveVisible }) =>
-    !playAndRemoveVisible ? "block" : "none"};
+  display: ${({ playandremovevisible }) =>
+    !playandremovevisible ? "block" : "none"};
 `;
 const Track = styled.div`
   font-size: 20px;

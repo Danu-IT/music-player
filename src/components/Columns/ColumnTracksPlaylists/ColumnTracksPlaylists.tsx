@@ -34,8 +34,17 @@ const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
       }
     });
 
+    answer.forEach((el, i) => {
+      answer[i] = `spotify:track:${el}`;
+    });
+    let deleteAnswer: any[] = [];
+    answer.forEach((el, i) => {
+      deleteAnswer[i] = { uri: el };
+    });
+
     return {
       answer: answer,
+      deleteAnswer: deleteAnswer,
       index: index,
     };
   };
@@ -43,10 +52,10 @@ const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
   useEffect(() => {
     const current = findDuplicates(tracks?.items);
     if (current["answer"][0]) {
-      deleteTrack({ ids: id, url: current["answer"][0] });
-      addTrack({ id: id, url: current["answer"][0] });
+      deleteTrack({ ids: id, url: current["deleteAnswer"] });
+      addTrack({ id: id, url: current["answer"] });
     }
-    refetch();
+    // refetch();
   }, [tracks]);
 
   return (
@@ -67,7 +76,7 @@ const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
                 index={i + 1}
                 track={item.track}
                 remove={true}
-                key={item.track.duration_ms}></Track>
+                key={item.track.id}></Track>
             )}></List>
         )}
       </ContainerMusic>

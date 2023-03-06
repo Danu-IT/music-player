@@ -17,8 +17,9 @@ const Album: FC<AlbumTracksProps> = () => {
   const idAlbums = location.pathname.split("/")[2];
   const navigate = useNavigate();
 
+  const { data: checkAlbum } = userAPI.useGetCheckAlbumQuery({ id: idAlbums });
   const { data: album } = userAPI.useGetAlbumQuery({ id: idAlbums });
-  let id = album?.artists[0]?.id;
+  let id = album?.artists[0].id;
 
   const { data: artist } = userAPI.useGetArtistQuery(id ? id : "");
   const handlerActer = () => {
@@ -47,7 +48,7 @@ const Album: FC<AlbumTracksProps> = () => {
         </HeaderAlbum>
         <Dashboard>
           <ButtonAndPicture content=""></ButtonAndPicture>
-          <Like></Like>
+          <Like activated={checkAlbum}></Like>
         </Dashboard>
         <Header>
           <div># НАЗВАНИЕ</div>
@@ -59,7 +60,7 @@ const Album: FC<AlbumTracksProps> = () => {
             items={album?.tracks.items}
             renderItem={(item, index) => (
               <TrackAlbums
-                key={item.added_at}
+                key={item.id}
                 id={item.id}
                 index={index + 1}></TrackAlbums>
             )}></List>

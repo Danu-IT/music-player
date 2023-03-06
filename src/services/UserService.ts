@@ -76,16 +76,6 @@ export const userAPI = createApi({
       },
       invalidatesTags: ['Playlist']
     }),
-    postItemsToPlaylist: build.mutation<IUserPlaylistTracks, { id: string, url: string }>({ // Добавить трек в плейлист
-      query: ({ id, url }) => {
-        return {
-          url: `/v1/playlists/${id}/tracks`,
-          method: 'POST',
-          body: { 'uris': [`spotify:track:${url}`], 'position': 0 }
-        }
-      },
-      invalidatesTags: ['Playlist']
-    }),
     deleteUserPlaylist: build.mutation<any, string>({ // Удалить плейлист
       query: (ids) => ({
         url: `/v1/playlists/${ids}/followers`,
@@ -93,12 +83,22 @@ export const userAPI = createApi({
       }),
       invalidatesTags: ['Playlist']
     }),
-    deleteUserPlaylistTrack: build.mutation<any, { ids: string, url: string }>({ // Удалить трек из плейлист
+    postItemsToPlaylist: build.mutation<IUserPlaylistTracks, { id: string, url: string[] }>({ // Добавить трек в плейлист
+      query: ({ id, url }) => {
+        return {
+          url: `/v1/playlists/${id}/tracks`,
+          method: 'POST',
+          body: { 'uris': [...url], 'position': 0 }
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    deleteUserPlaylistTrack: build.mutation<any, { ids: string, url: any[] }>({ // Удалить трек из плейлист
       query: ({ ids, url }) => {
         return {
           url: `/v1/playlists/${ids}/tracks`,
           method: 'DELETE',
-          body: { "tracks": [{ 'uri': `spotify:track:${url}` }] }
+          body: { "tracks": [...url] }
         }
       },
       invalidatesTags: ['Playlist']
@@ -156,6 +156,15 @@ export const userAPI = createApi({
         return {
           url: `/v1/albums/${id}`,
           params: { market: "ES" },
+        };
+      },
+      providesTags: (result) => ["User"],
+    }),
+    getCheckAlbum: build.query<boolean[], { id: string }>({// Проверить сохранен ли альбом
+      query: ({ id }) => {
+        return {
+          url: `/v1/me/albums/contains`,
+          params: { ids: id },
         };
       },
       providesTags: (result) => ["User"],
