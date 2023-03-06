@@ -76,8 +76,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
   const addTrackInPlaylist = (praylist: IUserPlaylist) => {
     setPlayAndRemoveVisible(false);
     setAnchorEl(null);
-    if (track.id) {
-    }
+    console.log(praylist);
     add_track({ id: praylist.id, url: track.id });
   };
 
