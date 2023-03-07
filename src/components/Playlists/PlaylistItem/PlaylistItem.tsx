@@ -56,7 +56,7 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
       {hover && (
         <Delete onClick={(e) => deletePlaylist(e, playlist.id)}></Delete>
       )}
-      {hover && <Rename>r</Rename>}
+      {hover && <Rename></Rename>}
       <Name length={playlist.name.length}>
         <div>{playlist.name}</div>
       </Name>

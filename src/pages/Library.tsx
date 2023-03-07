@@ -24,6 +24,10 @@ const Library: FC<PlaylistsProps> = () => {
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
   const { data: savedTracks } = userAPI.useGetUsersSavedTracksQuery(null);
+
+  console.log("currentPlaylists", currentPlaylists);
+  console.log("savedTracks", savedTracks);
+
   const [create] = userAPI.usePostUserPlaylistMutation();
 
   const addCurrentUserPlaylists = ({ items }: any) => {

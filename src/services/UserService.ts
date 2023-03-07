@@ -103,7 +103,7 @@ export const userAPI = createApi({
       },
       invalidatesTags: ['Playlist']
     }),
-    getUsersSavedTracks: build.query<IUser, null>({ // Получение пользователя
+    getUsersSavedTracks: build.query<IUserPlaylist, null>({ // Получить избранный альбом
       query: () => ({
         url: "/v1/me/tracks",
       }),
@@ -168,6 +168,26 @@ export const userAPI = createApi({
         };
       },
       providesTags: (result) => ["User"],
+    }),
+    putAlbumForCurrentUser: build.mutation<any, { id: string }>({ // Проверить сохранен ли альбом
+      query: ({ id }) => {
+        return {
+          url: `/v1/me/albums`,
+          method: 'PUT',
+          params: { ids: id },
+        };
+      },
+      invalidatesTags: ['User']
+    }),
+    deleteAlbumForCurrentUser: build.mutation<any, { id: string }>({ // Проверить сохранен ли альбом
+      query: ({ id }) => {
+        return {
+          url: `/v1/me/albums`,
+          method: 'DELETE',
+          params: { ids: id },
+        };
+      },
+      invalidatesTags: ['User']
     }),
     getArtistsRelatedArtists: build.query<IArtists, string>({ // Получить похожих артистов
       query: (id) => ({
