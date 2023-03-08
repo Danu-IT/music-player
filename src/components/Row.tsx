@@ -21,7 +21,7 @@ interface TitleProps {
   top?: boolean;
 }
 
-const Title = styled.h1<TitleProps>`
+export const Title = styled.h1<TitleProps>`
   font-family: "Source Sans Pro";
   font-weight: 400;
   font-size: 25px;

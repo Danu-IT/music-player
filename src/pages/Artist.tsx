@@ -86,7 +86,8 @@ const Artist: FC<ArtistProps> = () => {
                   artist={true}
                   index={i + 1}
                   track={item}
-                  key={item.name}></Track>
+                  key={item.name}
+                  like={true}></Track>
               )}></List>
           )}
         </Row>

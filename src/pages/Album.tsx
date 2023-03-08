@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import BaseContainer from "../components/BaseContainer";
 import { useLocation, useNavigate } from "react-router";
 import { userAPI } from "../services/UserService";
@@ -9,6 +9,7 @@ import Like from "../components/UI/Like/Like";
 import List from "../components/List";
 import { BiTime } from "react-icons/bi";
 import TrackAlbums from "../components/UI/TrackAlbums/TrackAlbums";
+
 interface AlbumTracksProps {}
 
 const Album: FC<AlbumTracksProps> = () => {
@@ -17,6 +18,9 @@ const Album: FC<AlbumTracksProps> = () => {
   const idAlbums = location.pathname.split("/")[2];
   const navigate = useNavigate();
 
+  const [saveAlbum] = userAPI.usePutAlbumForCurrentUserMutation();
+  const [deleteAlbum] = userAPI.useDeleteAlbumForCurrentUserMutation();
+
   const { data: checkAlbum } = userAPI.useGetCheckAlbumQuery({ id: idAlbums });
   const { data: album } = userAPI.useGetAlbumQuery({ id: idAlbums });
   let id = album?.artists[0].id;
@@ -24,6 +28,16 @@ const Album: FC<AlbumTracksProps> = () => {
   const { data: artist } = userAPI.useGetArtistQuery(id ? id : "");
   const handlerActer = () => {
     navigate(`/artists/${album?.artists[0].id}#access_token=${token}`);
+  };
+
+  const handlerSave = () => {
+    if (checkAlbum) {
+      if (checkAlbum[0]) {
+        deleteAlbum({ id: idAlbums });
+      } else {
+        saveAlbum({ id: idAlbums });
+      }
+    }
   };
 
   return (
@@ -48,7 +62,9 @@ const Album: FC<AlbumTracksProps> = () => {
         </HeaderAlbum>
         <Dashboard>
           <ButtonAndPicture content=""></ButtonAndPicture>
-          <Like activated={checkAlbum}></Like>
+          <Like
+            onClick={handlerSave}
+            activated={checkAlbum}></Like>
         </Dashboard>
         <Header>
           <div># НАЗВАНИЕ</div>

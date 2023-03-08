@@ -4,13 +4,14 @@ import { useAppSelector, useAppDispatch } from "../hooks/redux";
 import { receiveCurrentUserPlaylists } from "../store/slices/UserSlice";
 import { useEffect } from "react";
 import BaseContainer from "../components/BaseContainer";
-import Row from "../components/Row";
+import Row, { Title } from "../components/Row";
 import List from "../components/List";
 import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../interfaces/user";
 import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
 import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
 import styled from "styled-components";
+import Track from "../components/UI/Track/Track";
 
 interface PlaylistsProps {}
 
@@ -24,6 +25,10 @@ const Library: FC<PlaylistsProps> = () => {
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
   const { data: savedTracks } = userAPI.useGetUsersSavedTracksQuery(null);
+
+  console.log("currentPlaylists", currentPlaylists);
+  console.log("savedTracks", savedTracks);
+
   const [create] = userAPI.usePostUserPlaylistMutation();
 
   const addCurrentUserPlaylists = ({ items }: any) => {
@@ -43,11 +48,20 @@ const Library: FC<PlaylistsProps> = () => {
 
   useEffect(() => {
     currentPlaylists && addCurrentUserPlaylists(currentPlaylists);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPlaylists]);
 
   return (
     <BaseContainer>
+      <Favorite>
+        <Title>Favorite tracks</Title>
+        {savedTracks?.items.map((el, i) => (
+          <Track
+            like={true}
+            track={el.track}
+            index={i + 1}
+            add={true}></Track>
+        ))}
+      </Favorite>
       <RowCustom title="My Playlists">
         <Btn onClick={createPlaylist}>+</Btn>
         <List
@@ -91,6 +105,11 @@ const Library: FC<PlaylistsProps> = () => {
     </BaseContainer>
   );
 };
+
+const Favorite = styled.div`
+  margin-bottom: 50px;
+`;
+
 const Btn = styled.div`
   cursor: pointer;
   display: inline-block;

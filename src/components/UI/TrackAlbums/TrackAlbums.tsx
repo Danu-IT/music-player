@@ -4,7 +4,7 @@ import { calcTime } from "../../../utils/calc";
 import styled from "styled-components";
 import { Play } from "../Track/Track";
 import { useState } from "react";
-import { LikePic } from "../Like/Like";
+import Like, { LikePic } from "../Like/Like";
 import { BsFillPlayFill } from "react-icons/bs";
 
 interface TrackAlbumProps {
@@ -19,6 +19,21 @@ const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
   const { data: track } = userAPI.useGetAlbumTracksQuery({
     id: id,
   });
+
+  const { data: checkSavedTrack } = userAPI.useGetCheckUsersSavedTracksQuery({
+    ids: id,
+  });
+
+  const [deleteSaveTrack, {}] = userAPI.useDeleteUsersSavedTracksMutation();
+  const [saveTrack, {}] = userAPI.usePutCheckUsersSavedTracksMutation();
+
+  const handlerTrackSaved = () => {
+    if (checkSavedTrack && checkSavedTrack[0]) {
+      deleteSaveTrack({ ids: String(id) });
+    } else {
+      saveTrack({ ids: String(id) });
+    }
+  };
 
   let duration = calcTime(track ? track?.duration_ms : Number());
 
@@ -37,7 +52,9 @@ const TrackAlbums: FC<TrackAlbumProps> = ({ index, id }) => {
         </Info>
       </Content>
       <CustomLike playandremovevisible={playandremovevisible}>
-        <LikePic size={25}></LikePic>
+        <Like
+          activated={checkSavedTrack}
+          onClick={handlerTrackSaved}></Like>
       </CustomLike>
       <div>{duration}</div>
     </ContainerTracks>
@@ -66,14 +83,14 @@ interface PlayProps {
   playandremovevisible?: boolean;
 }
 
-const CustomPlay = styled.div<PlayProps>`
+export const CustomPlay = styled.div<PlayProps>`
   cursor: pointer;
   position: absolute;
   left: 10px;
   display: ${({ playandremovevisible }) =>
     playandremovevisible ? "block" : "none"};
 `;
-const CustomLike = styled.div<IndexProps>`
+export const CustomLike = styled.div<IndexProps>`
   cursor: pointer;
   position: absolute;
   right: 110px;

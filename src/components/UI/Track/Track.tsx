@@ -19,6 +19,8 @@ import { useLocation } from "react-router";
 import MultiDropDown from "../MultiDropDown/MultiDropDown";
 import MenuItem from "@mui/material/MenuItem";
 import { IUserPlaylist } from "../../../interfaces/user";
+import { CustomLike } from "../TrackAlbums/TrackAlbums";
+import Like from "../Like/Like";
 
 interface TrackProps {
   track: any;
@@ -26,9 +28,10 @@ interface TrackProps {
   artist?: boolean;
   remove?: boolean;
   add?: boolean;
+  like?: boolean;
 }
 
-const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
+const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
   const [playandremovevisible, setPlayandremovevisible] =
     useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -42,6 +45,13 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
 
   const [delete_track, {}] = userAPI.useDeleteUserPlaylistTrackMutation();
   const [add_track, {}] = userAPI.usePostItemsToPlaylistMutation();
+  const [saveTrack, {}] = userAPI.usePutCheckUsersSavedTracksMutation();
+
+  const { data: checkSavedTrack } = userAPI.useGetCheckUsersSavedTracksQuery({
+    ids: track.id,
+  });
+
+  const [deleteSaveTrack, {}] = userAPI.useDeleteUsersSavedTracksMutation();
 
   const { token } = useAppSelector((state) => state.tokenSlice);
   const arrayTrack = track?.artists;
@@ -67,6 +77,14 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
 
   const handleAlbum = () => {
     navigate(`/albums/${album?.id}#access_token=${token}`);
+  };
+
+  const handlerTrackSaved = () => {
+    if (checkSavedTrack && checkSavedTrack[0]) {
+      deleteSaveTrack({ ids: String(track.id) });
+    } else {
+      saveTrack({ ids: String(track.id) });
+    }
   };
 
   const handleDeleteTrack = () => {
@@ -140,6 +158,13 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add }) => {
           ))}
         </MultiDropDown>
       </MultiDropDownTrack>
+      {like && (
+        <CustomLike playandremovevisible={playandremovevisible}>
+          <Like
+            onClick={handlerTrackSaved}
+            activated={checkSavedTrack}></Like>
+        </CustomLike>
+      )}
     </Music>
   );
 };

@@ -6,7 +6,7 @@ import {
   IUserPlaylistTrackHaracter,
 } from "../interfaces/user";
 import { IArtist, IArtists, IMyArtists } from '../interfaces/artist';
-import { IAlbums, IAlbum, IMyAlbums } from '../interfaces/album';
+import { IAlbums, IAlbum, IMyAlbums, IMySavedTracks } from '../interfaces/album';
 import { IUserPlaylistTrack } from '../interfaces/user';
 
 export const userAPI = createApi({
@@ -103,11 +103,34 @@ export const userAPI = createApi({
       },
       invalidatesTags: ['Playlist']
     }),
-    getUsersSavedTracks: build.query<IUser, null>({ // Получение пользователя
+    getUsersSavedTracks: build.query<IMySavedTracks, null>({ // Получить избранный альбом
       query: () => ({
         url: "/v1/me/tracks",
       }),
       providesTags: (result) => ["User"],
+    }),
+    getCheckUsersSavedTracks: build.query<boolean[], {ids: string}>({ // Получить сохранение трека в избранный альбом
+      query: ({ids}) => ({
+        url: "/v1/me/tracks/contains",
+        params: {ids: ids}
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    putCheckUsersSavedTracks: build.mutation<any, {ids: string}>({ //Cохранение трека в избранный альбом
+      query: ({ids}) => ({
+        url: "/v1/me/tracks",
+        method: "PUT",
+        params: {ids: ids}
+      }),
+      invalidatesTags: ['User']
+    }),
+    deleteUsersSavedTracks: build.mutation<any, {ids: string}>({ //Cохранение трека в избранный альбом
+      query: ({ids}) => ({
+        url: "/v1/me/tracks",
+        method: "DELETE",
+        params: {ids: ids}
+      }),
+      invalidatesTags: ['User']
     }),
     currentUser: build.query<IUser, null>({ // Получение пользователя
       query: () => ({
@@ -168,6 +191,26 @@ export const userAPI = createApi({
         };
       },
       providesTags: (result) => ["User"],
+    }),
+    putAlbumForCurrentUser: build.mutation<any, { id: string }>({ // Проверить сохранен ли альбом
+      query: ({ id }) => {
+        return {
+          url: `/v1/me/albums`,
+          method: 'PUT',
+          params: { ids: id },
+        };
+      },
+      invalidatesTags: ['User']
+    }),
+    deleteAlbumForCurrentUser: build.mutation<any, { id: string }>({ // Проверить сохранен ли альбом
+      query: ({ id }) => {
+        return {
+          url: `/v1/me/albums`,
+          method: 'DELETE',
+          params: { ids: id },
+        };
+      },
+      invalidatesTags: ['User']
     }),
     getArtistsRelatedArtists: build.query<IArtists, string>({ // Получить похожих артистов
       query: (id) => ({

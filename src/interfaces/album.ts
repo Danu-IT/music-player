@@ -22,3 +22,18 @@ export interface IMyAlbum {
   added_at: string;
   album: IAlbum;
 }
+
+export interface IMySavedTracks {
+  items: IMySavedTrack[]
+}
+
+interface IMySavedTrack {
+  track: {
+    id: string;
+    name: string;
+    duration_ms: number;
+    album: {
+      name: string;
+    }
+  }
+}
