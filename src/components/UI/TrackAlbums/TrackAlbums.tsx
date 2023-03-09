@@ -93,7 +93,7 @@ export const CustomPlay = styled.div<PlayProps>`
 export const CustomLike = styled.div<IndexProps>`
   cursor: pointer;
   position: absolute;
-  right: 110px;
+  right: 80px;
   display: ${({ playandremovevisible }) =>
     playandremovevisible ? "block" : "none"};
 `;

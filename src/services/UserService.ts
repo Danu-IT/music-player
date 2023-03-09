@@ -8,6 +8,7 @@ import {
 import { IArtist, IArtists, IMyArtists } from '../interfaces/artist';
 import { IAlbums, IAlbum, IMyAlbums, IMySavedTracks } from '../interfaces/album';
 import { IUserPlaylistTrack } from '../interfaces/user';
+import { ICategoryItem } from "../interfaces/category";
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -109,26 +110,26 @@ export const userAPI = createApi({
       }),
       providesTags: (result) => ["User"],
     }),
-    getCheckUsersSavedTracks: build.query<boolean[], {ids: string}>({ // Получить сохранение трека в избранный альбом
-      query: ({ids}) => ({
+    getCheckUsersSavedTracks: build.query<boolean[], { ids: string }>({ // Получить сохранение трека в избранный альбом
+      query: ({ ids }) => ({
         url: "/v1/me/tracks/contains",
-        params: {ids: ids}
+        params: { ids: ids }
       }),
       providesTags: (result) => ["User"],
     }),
-    putCheckUsersSavedTracks: build.mutation<any, {ids: string}>({ //Cохранение трека в избранный альбом
-      query: ({ids}) => ({
+    putCheckUsersSavedTracks: build.mutation<any, { ids: string }>({ //Cохранение трека в избранный альбом
+      query: ({ ids }) => ({
         url: "/v1/me/tracks",
         method: "PUT",
-        params: {ids: ids}
+        params: { ids: ids }
       }),
       invalidatesTags: ['User']
     }),
-    deleteUsersSavedTracks: build.mutation<any, {ids: string}>({ //Cохранение трека в избранный альбом
-      query: ({ids}) => ({
+    deleteUsersSavedTracks: build.mutation<any, { ids: string }>({ //Cохранение трека в избранный альбом
+      query: ({ ids }) => ({
         url: "/v1/me/tracks",
         method: "DELETE",
-        params: {ids: ids}
+        params: { ids: ids }
       }),
       invalidatesTags: ['User']
     }),
@@ -262,6 +263,20 @@ export const userAPI = createApi({
         body: { ids: [ids] }
       }),
       invalidatesTags: ['Artist']
+    }),
+    getSeveralBrowseCategories: build.query<ICategoryItem, null>({// Получить категории
+      query: () => ({
+        url: `/v1/browse/categories`,
+        params: {country: "SE", locale: "sv_SE", offset: 0, limit: 50}
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    getCategorieFullInfo: build.query<ICategoryItem, {category_id: string}>({// Получить категории
+      query: ({category_id}) => ({
+        url: `v1/browse/categories/${category_id}/playlists`,
+        params: {country: "SE", offset: 0, limit: 50}
+      }),
+      providesTags: (result) => ["User"],
     }),
     RecentlyPlayedTracks: build.query<any, null>({
       query: () => ({

@@ -12,6 +12,14 @@ import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
 import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
 import styled from "styled-components";
 import Track from "../components/UI/Track/Track";
+import {
+  Album,
+  Artist,
+  Duration,
+  Header,
+  Number,
+  Song,
+} from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 
 interface PlaylistsProps {}
 
@@ -54,6 +62,13 @@ const Library: FC<PlaylistsProps> = () => {
     <BaseContainer>
       <Favorite>
         <Title>Favorite tracks</Title>
+        <CustomHeader>
+          <Number>#</Number>
+          <Song>Songs</Song>
+          <Duration>Duration</Duration>
+          <Artist>Artist</Artist>
+          <Album>Album</Album>
+        </CustomHeader>
         {savedTracks?.items.map((el, i) => (
           <Track
             like={true}
@@ -120,6 +135,9 @@ const Btn = styled.div`
   position: absolute;
   top: -18px;
   left: 150px;
+`;
+const CustomHeader = styled(Header)`
+  margin: 30px 0;
 `;
 
 const RowCustom = styled(Row)`
