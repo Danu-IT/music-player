@@ -89,7 +89,7 @@ const Container = styled.div`
   flex-direction: column;
   margin-top: 48px;
 `;
-const Header = styled.div`
+export const Header = styled.div`
   display: flex;
   font-weight: 400;
   font-size: 18px;
