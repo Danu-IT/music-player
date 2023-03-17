@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdRemove } from "react-icons/md";
 import { useState } from "react";
-import { Name } from "../../Playlists/PlaylistItem/PlaylistItem";
+import { Name } from "../../../pages/Playlist/components/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/redux";
 import { userAPI } from "../../../services/UserService";

@@ -4,11 +4,12 @@ import {
   IUserPlaylist,
   IUserPlaylistTracks,
   IUserPlaylistTrackHaracter,
+  IUserPlaylists,
 } from "../interfaces/user";
 import { IArtist, IArtists, IMyArtists } from '../interfaces/artist';
 import { IAlbums, IAlbum, IMyAlbums, IMySavedTracks } from '../interfaces/album';
 import { IUserPlaylistTrack } from '../interfaces/user';
-import { ICategoryItem } from "../interfaces/category";
+import { ICategoryItem, ICategoryItemApi } from "../interfaces/category";
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -28,6 +29,12 @@ export const userAPI = createApi({
   }),
   tagTypes: ["User", "Artist", "Playlist"],
   endpoints: (build) => ({
+    getPlaylists: build.query<IUserPlaylist[], string>({ // Получить плейлист
+      query: (id: string) => ({
+        url: `/v1/me/playlists/${id}`,
+      }),
+      providesTags: (result) => ["Playlist"],
+    }),
     currentUserPlaylists: build.query<IUserPlaylist[], null>({ // Получить действующие плейлисты
       query: () => ({
         url: "/v1/me/playlists",
@@ -267,14 +274,21 @@ export const userAPI = createApi({
     getSeveralBrowseCategories: build.query<ICategoryItem, null>({// Получить категории
       query: () => ({
         url: `/v1/browse/categories`,
-        params: {country: "SE", locale: "sv_SE", offset: 0, limit: 50}
+        params: {country: "SE", locale: "sv_SE", offset: 0, limit: 45}
       }),
       providesTags: (result) => ["User"],
     }),
-    getCategorieFullInfo: build.query<ICategoryItem, {category_id: string}>({// Получить категории
+    getCategorieInfo: build.query<ICategoryItemApi, {category_id: string}>({// Получить плейлисты категории
+      query: ({category_id}) => ({
+        url: `v1/browse/categories/${category_id}`,
+        params: {country: "SE", offset: 0, limit: 45}
+      }),
+      providesTags: (result) => ["User"],
+    }),
+    getCategorieFullInfo: build.query<IUserPlaylists, {category_id: string}>({// Получить плейлисты категории
       query: ({category_id}) => ({
         url: `v1/browse/categories/${category_id}/playlists`,
-        params: {country: "SE", offset: 0, limit: 50}
+        params: {country: "SE", offset: 0, limit: 45}
       }),
       providesTags: (result) => ["User"],
     }),

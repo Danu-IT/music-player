@@ -1,20 +1,18 @@
-import BaseContainer from "../components/BaseContainer";
+import BaseContainer from "../../components/BaseContainer";
 import styled from "styled-components";
-import { userAPI } from "../services/UserService";
-import CategoryItem from "../components/Category/CategoryItem/CategoryItem";
-import { Title } from "../components/Row";
+import { userAPI } from "../../services/UserService";
+import CategoryItem from "../Category/components/CategoryItem/CategoryItem";
+import { Title } from "../../components/Row";
 
 const Home = () => {
   const { data: category } = userAPI.useGetSeveralBrowseCategoriesQuery(null);
-  console.log(category);
   return (
     <BaseContainer>
       <Title>Category List</Title>
       <Category>
-        {category &&
-          category?.categories.items.map((el) => (
-            <CategoryItem category={el}></CategoryItem>
-          ))}
+        {category?.categories.items.map((el) => (
+          <CategoryItem category={el}></CategoryItem>
+        ))}
       </Category>
     </BaseContainer>
   );

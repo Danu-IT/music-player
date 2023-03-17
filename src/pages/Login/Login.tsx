@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-redeclare */
 import { useEffect, FC, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { isToken } from "../store/slices/TokenSlice";
-import { ContainerPage, Page } from "../layouts/components";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { isToken } from "../../store/slices/TokenSlice";
+import { ContainerPage, Page } from "../../layouts/components";
 import styled, { keyframes } from "styled-components";
 import { FaPlay } from "react-icons/fa";
 

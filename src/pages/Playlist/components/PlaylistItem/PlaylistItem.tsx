@@ -1,12 +1,12 @@
 import { FC, MouseEvent, useState } from "react";
-import { IUserPlaylist } from "../../../interfaces/user";
+import { IUserPlaylist } from "../../../../interfaces/user";
 import styled from "styled-components";
 import { SiApplemusic } from "react-icons/si";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 import { useNavigate } from "react-router-dom";
 import { BsPencil } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
-import { userAPI } from "../../../services/UserService";
+import { userAPI } from "../../../../services/UserService";
 
 interface PlaylistProps {
   playlist: IUserPlaylist;
@@ -14,14 +14,13 @@ interface PlaylistProps {
 
 const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
   const [hover, setHover] = useState<boolean>(false);
-
+  const { token } = useAppSelector((state) => state.tokenSlice);
   const [rename] = userAPI.useUpdateUserPlaylistMutation();
   const [remove] = userAPI.useDeleteUserPlaylistMutation();
 
   const { currentUserPlaylists, currentUser } = useAppSelector(
     (state) => state.userSlice
   );
-  const { token } = useAppSelector((state) => state.tokenSlice);
 
   const navigate = useNavigate();
   const handlerPlaylist = (e: MouseEvent<HTMLDivElement>, id: string) => {
@@ -110,7 +109,7 @@ export interface NameProps {
   length: number;
 }
 
-const Songs = styled.span`
+export const Songs = styled.span`
   color: white;
 `;
 

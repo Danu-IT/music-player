@@ -1,14 +1,14 @@
 import { FC } from "react";
-import BaseContainer from "../components/BaseContainer";
+import BaseContainer from "../../components/BaseContainer";
 import { useLocation, useNavigate } from "react-router";
-import { userAPI } from "../services/UserService";
+import { userAPI } from "../../services/UserService";
 import styled from "styled-components";
-import { useAppSelector } from "../hooks/redux";
-import ButtonAndPicture from "../components/UI/ButtonAndPicture/ButtonAndPicture";
-import Like from "../components/UI/Like/Like";
-import List from "../components/List";
+import { useAppSelector } from "../../hooks/redux";
+import ButtonAndPicture from "../../components/UI/ButtonAndPicture/ButtonAndPicture";
+import Like from "../../components/UI/Like/Like";
+import List from "../../components/List";
 import { BiTime } from "react-icons/bi";
-import TrackAlbums from "../components/UI/TrackAlbums/TrackAlbums";
+import TrackAlbums from "../../components/UI/TrackAlbums/TrackAlbums";
 
 interface AlbumTracksProps {}
 

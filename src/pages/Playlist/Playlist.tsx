@@ -1,18 +1,18 @@
 import { FC, useMemo, useState, useRef, useEffect, useCallback } from "react";
-import BaseContainer from "../components/BaseContainer";
-import { userAPI } from "../services/UserService";
+import BaseContainer from "../../components/BaseContainer";
+import { userAPI } from "../../services/UserService";
 import { useLocation, useNavigate } from "react-router";
-import PlaylistPicture from "../components/Playlists/PlaylistPicture/PlaylistPicture";
+import PlaylistPicture from "./components/PlaylistPicture/PlaylistPicture";
 import styled from "styled-components";
-import Loader from "../components/UI/Loader/Loader";
-import { countAllDuration, countArtistPlaylist } from "../utils/calc";
-import { ContainerPage, Page } from "../layouts/components/index";
+import Loader from "../../components/UI/Loader/Loader";
+import { countAllDuration, countArtistPlaylist } from "../../utils/calc";
+import { ContainerPage, Page } from "../../layouts/components/index";
 import { BsArrowLeft } from "react-icons/bs";
-import ColumnTracksPlaylists from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
-import Modal from "../components/UI/Modal/Modal";
-import Button from "../components/UI/Button/Button";
+import ColumnTracksPlaylists from "../../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+import Modal from "../../components/UI/Modal/Modal";
+import Button from "../../components/UI/Button/Button";
 import MenuItem from "@mui/material/MenuItem";
-import MultiDropDown from "../components/UI/MultiDropDown/MultiDropDown";
+import MultiDropDown from "../../components/UI/MultiDropDown/MultiDropDown";
 import { SiApplemusic } from "react-icons/si";
 
 interface PlaylistProps {}
