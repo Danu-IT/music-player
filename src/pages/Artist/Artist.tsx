@@ -1,16 +1,16 @@
 import { FC, useState, useEffect, useMemo } from "react";
-import BaseContainer from "../components/BaseContainer";
+import BaseContainer from "../../components/BaseContainer";
 import { useLocation } from "react-router";
-import { userAPI } from "../services/UserService";
+import { userAPI } from "../../services/UserService";
 import styled from "styled-components";
-import ButtonAndPicture from "../components/UI/ButtonAndPicture/ButtonAndPicture";
-import Button from "../components/UI/Button/Button";
-import List from "../components/List";
-import Track from "../components/UI/Track/Track";
-import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
-import Row from "../components/Row";
-import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
-import { separation } from "../utils/calc";
+import ButtonAndPicture from "../../components/UI/ButtonAndPicture/ButtonAndPicture";
+import Button from "../../components/UI/Button/Button";
+import List from "../../components/List";
+import Track from "../../components/UI/Track/Track";
+import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
+import Row from "../../components/Row";
+import ArtistItem from "./components/ArtistItem/ArtistItem";
+import { separation } from "../../utils/calc";
 
 interface ArtistProps {}
 

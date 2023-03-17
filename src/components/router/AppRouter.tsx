@@ -3,8 +3,8 @@ import { useAppSelector } from "../../hooks/redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "../../routes/index";
 import { Fragment } from "react";
-import Home from "../../pages/Home";
-import Login from "../../pages/Login";
+import Home from "../../pages/Home/Home";
+import Login from "../../pages/Login/Login";
 
 const AppRouter: FC = () => {
   const { token } = useAppSelector((state) => state.tokenSlice);

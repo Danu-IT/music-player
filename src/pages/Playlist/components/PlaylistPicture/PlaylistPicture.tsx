@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import ButtonAndPicture from "../../UI/ButtonAndPicture/ButtonAndPicture";
+import ButtonAndPicture from "../../../../components/UI/ButtonAndPicture/ButtonAndPicture";
 import { SiApplemusic } from "react-icons/si";
 
 interface PlaylistPictureProps {

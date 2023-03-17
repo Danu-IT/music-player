@@ -6,10 +6,17 @@ export interface IUser {
   image: IImage;
 }
 
+export interface IUserPlaylists {
+  playlists: IUserPlaylist;
+}
+
 export interface IUserPlaylist {
   images: any;
   name: string;
   id: string;
+  items: {
+    id: string;
+  }[]
   tracks?: IUserPlaylistTracks;
   total?: number;
 }

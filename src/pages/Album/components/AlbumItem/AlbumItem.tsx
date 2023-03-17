@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { IAlbum } from "../../../interfaces/album";
+import { IAlbum } from "../../../../interfaces/album";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface AlbumsProps {
   album: IAlbum;

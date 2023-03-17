@@ -1,10 +1,11 @@
-import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Home from "../pages/Home/Home";
+import Login from "../pages/Login/Login";
 import { ComponentType } from "react";
-import { Playlist } from "../pages/Playlist";
-import Library from "../pages/Library";
-import Artist from "../pages/Artist";
-import Album from "../pages/Album";
+import { Playlist } from "../pages/Playlist/Playlist";
+import Library from "../pages/Library/Library";
+import Artist from "../pages/Artist/Artist";
+import Album from "../pages/Album/Album";
+import Category from "../pages/Category/Category";
 
 export interface IRoute {
   path: string;
@@ -20,6 +21,7 @@ export enum RoutesNamesPrivate {
   LANGUGE = "/language",
   ARTISTS = "/artists/:id",
   ALBUMS = "/albums/:id",
+  CATEGORY = "/category/:id",
   MYALBUMS = "/library/albums",
   MYPLAYLISTS = "/library/playlists",
   MYARTISTS = "/library/artists",
@@ -46,6 +48,7 @@ export const privateRoutes: IRoute[] = [
   { path: RoutesNamesPrivate.MYALBUMS, component: Artist, type: "MyArtist" },
   { path: RoutesNamesPrivate.MYPLAYLISTS, component: Artist, type: "MyAlbums" },
   { path: RoutesNamesPrivate.MYARTISTS, component: Artist, type: "MyPlaylist" },
+  { path: RoutesNamesPrivate.CATEGORY, component: Category, type: "Category" },
 ];
 
 export const publicRoutes: IRoute[] = [

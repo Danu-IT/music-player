@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { IArtist } from "../../../interfaces/artist";
-import { ContainerCard } from "../../Albums/AlbumItem/AlbumItem";
+import { IArtist } from "../../../../interfaces/artist";
+import { ContainerCard } from "../../../Album/components/AlbumItem/AlbumItem";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppSelector } from "../../../../hooks/redux";
 
 interface ArtistItemProps {
   artist: IArtist;

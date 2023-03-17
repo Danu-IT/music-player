@@ -1,17 +1,17 @@
 import { FC } from "react";
-import { userAPI } from "../services/UserService";
-import { useAppSelector, useAppDispatch } from "../hooks/redux";
-import { receiveCurrentUserPlaylists } from "../store/slices/UserSlice";
+import { userAPI } from "../../services/UserService";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux";
+import { receiveCurrentUserPlaylists } from "../../store/slices/UserSlice";
 import { useEffect } from "react";
-import BaseContainer from "../components/BaseContainer";
-import Row, { Title } from "../components/Row";
-import List from "../components/List";
-import PlaylistItem from "../components/Playlists/PlaylistItem/PlaylistItem";
-import { IUserPlaylist } from "../interfaces/user";
-import AlbumItem from "../components/Albums/AlbumItem/AlbumItem";
-import ArtistItem from "../components/Artists/ArtistItem/ArtistItem";
+import BaseContainer from "../../components/BaseContainer";
+import Row, { Title } from "../../components/Row";
+import List from "../../components/List";
+import PlaylistItem from "../Playlist/components/PlaylistItem/PlaylistItem";
+import { IUserPlaylist } from "../../interfaces/user";
+import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
+import ArtistItem from "../Artist/components/ArtistItem/ArtistItem";
 import styled from "styled-components";
-import Track from "../components/UI/Track/Track";
+import Track from "../../components/UI/Track/Track";
 import {
   Album,
   Artist,
@@ -19,7 +19,7 @@ import {
   Header,
   Number,
   Song,
-} from "../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+} from "../../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
 
 interface PlaylistsProps {}
 
@@ -33,9 +33,6 @@ const Library: FC<PlaylistsProps> = () => {
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
   const { data: savedTracks } = userAPI.useGetUsersSavedTracksQuery(null);
-
-  console.log("currentPlaylists", currentPlaylists);
-  console.log("savedTracks", savedTracks);
 
   const [create] = userAPI.usePostUserPlaylistMutation();
 
@@ -140,7 +137,7 @@ const CustomHeader = styled(Header)`
   margin: 30px 0;
 `;
 
-const RowCustom = styled(Row)`
+export const RowCustom = styled(Row)`
   position: relative;
 `;
 
