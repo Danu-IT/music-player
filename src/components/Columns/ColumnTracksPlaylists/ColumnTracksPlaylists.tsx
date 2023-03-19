@@ -2,14 +2,15 @@ import React, { FC, useEffect } from "react";
 import styled from "styled-components";
 import { userAPI } from "../../../services/UserService";
 import List from "../../List";
-import Track from "../../UI/Track/Track";
+import Track from "../../Track/Track";
 import { IUserPlaylistTrackHaracter } from "../../../interfaces/user";
 
 interface TracksProps {
   id: string;
+  isDelete?: boolean;
 }
 
-const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
+const ColumnTracksPlaylists: FC<TracksProps> = ({ id, isDelete }) => {
   const { data: tracks, refetch } =
     userAPI.useCurrentUserPlaylistTracksQuery(id);
   // const [upddate] = userAPI.useUpdateUserPlaylistItemsMutation();
@@ -75,8 +76,9 @@ const ColumnTracksPlaylists: FC<TracksProps> = ({ id }) => {
               <Track
                 index={i + 1}
                 track={item.track}
-                remove={true}
-                key={item.track.id}></Track>
+                remove={isDelete === false ? false : true}
+                key={item.track.id}
+                like={true}></Track>
             )}></List>
         )}
       </ContainerMusic>

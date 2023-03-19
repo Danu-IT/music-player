@@ -5,22 +5,22 @@ import {
   Image,
   Number,
   ArtistProps,
-} from "../../Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
-import { calcArtist, calcTime } from "../../../utils/calc";
+} from "../Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+import { calcArtist, calcTime } from "../../utils/calc";
 import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdRemove } from "react-icons/md";
 import { useState } from "react";
-import { Name } from "../../../pages/Playlist/components/PlaylistItem/PlaylistItem";
+import { Name } from "../../pages/PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../hooks/redux";
-import { userAPI } from "../../../services/UserService";
+import { useAppSelector } from "../../hooks/redux";
+import { userAPI } from "../../services/UserService";
 import { useLocation } from "react-router";
-import MultiDropDown from "../MultiDropDown/MultiDropDown";
+import MultiDropDown from "../UI/MultiDropDown/MultiDropDown";
 import MenuItem from "@mui/material/MenuItem";
-import { IUserPlaylist } from "../../../interfaces/user";
+import { IUserPlaylist } from "../../interfaces/user";
 import { CustomLike } from "../TrackAlbums/TrackAlbums";
-import Like from "../Like/Like";
+import Like from "../UI/Like/Like";
 
 interface TrackProps {
   track: any;

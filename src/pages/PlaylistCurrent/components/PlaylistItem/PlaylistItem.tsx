@@ -22,6 +22,7 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
     (state) => state.userSlice
   );
 
+  console.log(currentUserPlaylists);
   const navigate = useNavigate();
   const handlerPlaylist = (e: MouseEvent<HTMLDivElement>, id: string) => {
     e.preventDefault();
@@ -29,7 +30,9 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
       (playlist) => playlist.id === id
     );
 
-    navigate(`/playlists/${currentPlaylist[0].id}#access_token=${token}`);
+    navigate(
+      `/playlistsCurrent/${currentPlaylist[0].id}#access_token=${token}`
+    );
   };
 
   const deletePlaylist = (e: MouseEvent<SVGElement>, id: string) => {

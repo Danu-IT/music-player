@@ -6,12 +6,12 @@ import { useEffect } from "react";
 import BaseContainer from "../../components/BaseContainer";
 import Row, { Title } from "../../components/Row";
 import List from "../../components/List";
-import PlaylistItem from "../Playlist/components/PlaylistItem/PlaylistItem";
+import PlaylistItem from "../PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import { IUserPlaylist } from "../../interfaces/user";
 import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
 import ArtistItem from "../Artist/components/ArtistItem/ArtistItem";
 import styled from "styled-components";
-import Track from "../../components/UI/Track/Track";
+import Track from "../../components/Track/Track";
 import {
   Album,
   Artist,

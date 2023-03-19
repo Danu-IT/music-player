@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { userAPI } from "../../../services/UserService";
-import { calcTime } from "../../../utils/calc";
+import { userAPI } from "../../services/UserService";
+import { calcTime } from "../../utils/calc";
 import styled from "styled-components";
 import { Play } from "../Track/Track";
 import { useState } from "react";
-import Like, { LikePic } from "../Like/Like";
+import Like, { LikePic } from "../UI/Like/Like";
 import { BsFillPlayFill } from "react-icons/bs";
 
 interface TrackAlbumProps {
