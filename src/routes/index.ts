@@ -1,7 +1,8 @@
+import { Playlist } from './../pages/Playlist/Playlist';
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import { ComponentType } from "react";
-import { Playlist } from "../pages/Playlist/Playlist";
+import { PlaylistCurrent } from "../pages/PlaylistCurrent/PlaylistCurrent";
 import Library from "../pages/Library/Library";
 import Artist from "../pages/Artist/Artist";
 import Album from "../pages/Album/Album";
@@ -17,6 +18,7 @@ export enum RoutesNamesPrivate {
   HOME = "/",
   LIBRARY = "/library",
   PLAYLISTS_ID = "/playlists/:id",
+  PLAYLISTS_CURRENT_ID = "/playlistsCurrent/:id",
   SETTINGS = "/settings",
   LANGUGE = "/language",
   ARTISTS = "/artists/:id",
@@ -39,6 +41,11 @@ export const privateRoutes: IRoute[] = [
   { path: RoutesNamesPrivate.ARTISTS, component: Artist, type: "Artist" },
   {
     path: RoutesNamesPrivate.ALBUMS, component: Album, type: "Albums"
+  },
+  {
+    path: RoutesNamesPrivate.PLAYLISTS_CURRENT_ID,
+    component: PlaylistCurrent,
+    type: "Playlist",
   },
   {
     path: RoutesNamesPrivate.PLAYLISTS_ID,

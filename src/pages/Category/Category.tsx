@@ -5,7 +5,7 @@ import { userAPI } from "../../services/UserService";
 import { ContainerPage, Page } from "../../layouts/components";
 import BaseContainer from "../../components/BaseContainer";
 import styled from "styled-components";
-import PlaylistItem from "../Playlist/components/PlaylistItem/PlaylistItem";
+import PlaylistItem from "../PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import CategoryPlaylistItem from "./components/CategoryPlaylistItem/CategoryPlaylistItem";
 import { RowCustom } from "../Library/Library";
 import List from "../../components/List";

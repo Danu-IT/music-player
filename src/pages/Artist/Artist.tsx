@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ButtonAndPicture from "../../components/UI/ButtonAndPicture/ButtonAndPicture";
 import Button from "../../components/UI/Button/Button";
 import List from "../../components/List";
-import Track from "../../components/UI/Track/Track";
+import Track from "../../components/Track/Track";
 import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
 import Row from "../../components/Row";
 import ArtistItem from "./components/ArtistItem/ArtistItem";

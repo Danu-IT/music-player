@@ -8,7 +8,7 @@ import ButtonAndPicture from "../../components/UI/ButtonAndPicture/ButtonAndPict
 import Like from "../../components/UI/Like/Like";
 import List from "../../components/List";
 import { BiTime } from "react-icons/bi";
-import TrackAlbums from "../../components/UI/TrackAlbums/TrackAlbums";
+import TrackAlbums from "../../components/TrackAlbums/TrackAlbums";
 
 interface AlbumTracksProps {}
 
