@@ -14,7 +14,7 @@ const initialState: userState = {
     currentUser: null,
     currentUserPlaylists: [],
     search: '',
-    player: true,
+    player: false,
     trackID: '',
     context: {}
 };
