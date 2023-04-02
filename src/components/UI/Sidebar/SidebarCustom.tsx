@@ -37,7 +37,7 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
 
   const handleTheme = () => {
     dispatch(toggleTheme());
-    setIsDarkMode((prev) => (prev = !prev));
+    setIsDarkMode((prev) => !prev);
   };
 
   const { data: user, isFetching } = userAPI.useCurrentUserQuery(null);

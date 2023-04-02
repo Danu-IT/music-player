@@ -22,7 +22,6 @@ const PlaylistItem: FC<PlaylistProps> = ({ playlist }) => {
     (state) => state.userSlice
   );
 
-  console.log(currentUserPlaylists);
   const navigate = useNavigate();
   const handlerPlaylist = (e: MouseEvent<HTMLDivElement>, id: string) => {
     e.preventDefault();

@@ -13,7 +13,7 @@ import { MdRemove } from "react-icons/md";
 import { useState } from "react";
 import { Name } from "../../pages/PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { userAPI } from "../../services/UserService";
 import { useLocation } from "react-router";
 import MultiDropDown from "../UI/MultiDropDown/MultiDropDown";
@@ -21,6 +21,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { IUserPlaylist } from "../../interfaces/user";
 import { CustomLike } from "../TrackAlbums/TrackAlbums";
 import Like from "../UI/Like/Like";
+import { changeTrack, changeVisiblePlayer } from "../../store/slices/UserSlice";
 
 interface TrackProps {
   track: any;
@@ -37,15 +38,17 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
   const open = Boolean(anchorEl);
-
+  const dispatch = useAppDispatch();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const place = location.pathname.split("/")[1];
 
   const { data: album } = userAPI.useGetAlbumQuery({ id: track.album.id });
 
   const [delete_track, {}] = userAPI.useDeleteUserPlaylistTrackMutation();
   const [add_track, {}] = userAPI.usePostItemsToPlaylistMutation();
   const [saveTrack, {}] = userAPI.usePutCheckUsersSavedTracksMutation();
+  const [startPlayback] = userAPI.useStartResumePlaybackMutation();
 
   const { data: checkSavedTrack } = userAPI.useGetCheckUsersSavedTracksQuery({
     ids: track.id,
@@ -97,8 +100,30 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
     add_track({ id: praylist.id, url: [`spotify:track:${track.id}`] });
   };
 
+  const visiblePlayer = () => {
+    let kindOfPlace;
+    dispatch(changeVisiblePlayer(true));
+    dispatch(changeTrack(track.id));
+    if (
+      place === "library" ||
+      place === "playlists" ||
+      place === "playlistsCurrent"
+    ) {
+      kindOfPlace = "playlist";
+    } else if (place === "artists") {
+      kindOfPlace = "artist";
+    }
+    kindOfPlace &&
+      startPlayback({
+        context_uri: `spotify:${kindOfPlace}:${id}`,
+        offset: 1,
+        position_ms: 0,
+      });
+  };
+
   return (
     <Music
+      onClick={() => visiblePlayer()}
       artist={artist}
       onMouseEnter={() => setPlayandremovevisible(true)}
       onMouseLeave={() => setPlayandremovevisible(false)}>
@@ -226,7 +251,7 @@ const MultiDropDownTrack = styled.div<AddProps>`
   right: 55px;
 `;
 
-const CustArtist = styled.div<ArtistProps>`
+export const CustArtist = styled.div<ArtistProps>`
   display: ${({ display }) => (!display ? "block" : "none")};
   column-width: 250px;
   width: 280px;
@@ -235,7 +260,7 @@ const CustArtist = styled.div<ArtistProps>`
   }
 `;
 
-const ArtSpan = styled.span`
+export const ArtSpan = styled.span`
   &:hover {
     text-decoration: underline;
   }

@@ -50,6 +50,7 @@ export const userAPI = createApi({
     currentUserPlaylistTracks: build.query<IUserPlaylistTracks, string>({ // Получить треки из действующего плейлиста
       query: (id: string) => ({
         url: `/v1/playlists/${id}/tracks`,
+        params: {limit: 20}
       }),
       providesTags: (result) => ["Playlist"],
     }),
@@ -132,7 +133,7 @@ export const userAPI = createApi({
       }),
       invalidatesTags: ['User']
     }),
-    deleteUsersSavedTracks: build.mutation<any, { ids: string }>({ //Cохранение трека в избранный альбом
+    deleteUsersSavedTracks: build.mutation<any, { ids: string }>({ //Удаление трека из избранного альбома
       query: ({ ids }) => ({
         url: "/v1/me/tracks",
         method: "DELETE",
@@ -291,6 +292,45 @@ export const userAPI = createApi({
         params: {country: "SE", offset: 0, limit: 45}
       }),
       providesTags: (result) => ["User"],
+    }),
+    searchInfo: build.query<{albums: IAlbums, artists: IMyArtists, tracks: IUserPlaylistTracks}, { q: string, type: string }>({ // Поиск
+      query: ({ q, type }) => {
+        return {
+          url: `/v1/search`,
+          params: { q: q, type: type, limit: 10 },
+        };
+      },
+      providesTags: (result) => ["Artist"],
+    }),
+    getCurrentlyPlaying: build.query<any, null>({ // Получить играющий трек
+      query: () => {
+        return {
+          url: `/v1/me/player/currently-playing`,
+        };
+      },
+      providesTags: (result) => ["Artist"],
+    }),
+    startResumePlayback: build.mutation<null, {context_uri: string,  position_ms: number, offset: number }>({ // Воспроизведение трека
+      query: ({context_uri,  position_ms, offset}) => {
+        return {
+          url: `/v1/me/player/play`,
+          method: 'PUT',
+          // params: {device_id: device_id},
+          body: { 
+            "context_uri": context_uri,  "position_ms": position_ms, offset: offset}
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    skipToNext: build.mutation<null, null>({ // Скип Трека
+      query: () => {
+        return {
+          url: `/v1/me/player/next`,
+          method: 'POST',
+          body: { "device_id": '0d1841b0976bae2a3a310dd74c0f3df354899bc8' }
+        }
+      },
+      invalidatesTags: ['Playlist']
     }),
     RecentlyPlayedTracks: build.query<any, null>({
       query: () => ({

@@ -6,9 +6,10 @@ import { useAppSelector } from "../../../../hooks/redux";
 
 interface CategoryItemProps {
   category: ICategoryItemApi;
+  loading: boolean;
 }
 
-const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
+const CategoryItem: FC<CategoryItemProps> = ({ category, loading }) => {
   const navigate = useNavigate();
   const { token } = useAppSelector((state) => state.tokenSlice);
 
@@ -16,10 +17,16 @@ const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
     navigate(`/category/${category.id}#access_token=${token}`);
   };
   return (
-    <CategoryItemBox onClick={handlerCategory}>
-      <Image src={category.icons[0].url}></Image>
-      <Text>{category.name}</Text>
-    </CategoryItemBox>
+    <>
+      {loading ? (
+        <>Loading</>
+      ) : (
+        <CategoryItemBox onClick={handlerCategory}>
+          <Image src={category.icons[0].url}></Image>
+          <Text>{category.name}</Text>
+        </CategoryItemBox>
+      )}
+    </>
   );
 };
 
