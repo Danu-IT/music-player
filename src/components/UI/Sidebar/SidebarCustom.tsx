@@ -33,6 +33,7 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
 
   const { currentUser } = useAppSelector((state) => state.userSlice);
   const { token } = useAppSelector((state) => state.tokenSlice);
+
   const dispatch = useAppDispatch();
 
   const handleTheme = () => {
