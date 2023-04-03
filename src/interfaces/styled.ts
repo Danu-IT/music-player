@@ -6,6 +6,7 @@ export interface ITheme {
         success: string
         danger: string
         bg: string,
+        bgMain: string,
     },
 }
 

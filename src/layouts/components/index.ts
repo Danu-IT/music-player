@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Page = styled.div`
-  background: ${({ theme }) => theme.colors.bg};
+  background: ${({ theme }) => theme.colors.bgMain};
   color: ${({ theme }) => theme.colors.primary};
   height: 100vh;
 `;

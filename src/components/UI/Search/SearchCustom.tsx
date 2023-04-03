@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, KeyboardEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import LogoImage from "../../../assets/images/Logo.svg";
@@ -6,20 +6,36 @@ import LogoImageDark from "../../../assets/images/LogoDark.svg";
 import { SearchIcons } from "../../../utils";
 import SearchIcon from "./SearchIcon";
 import List from "../../List";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { changeSearch } from "../../../store/slices/UserSlice";
 
 interface SearchCustomProps {
   search?: boolean;
 }
 
 const SearchCustom: FC<SearchCustomProps> = ({ search }) => {
+  const dispatch = useAppDispatch();
   const { theme } = useAppSelector((state) => state.themeSlice);
+  const { search: searchReq } = useAppSelector((state) => state.userSlice);
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      dispatch(changeSearch(searchText));
+    }, 800);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [searchText]);
+
   return (
     <ContainerSearch search={search}>
       <Logo src={theme.type === "dark" ? LogoImage : LogoImageDark}></Logo>
       <InputContainer>
         <ImgInput size={15}></ImgInput>
-        <Input></Input>
+        <Input
+          defaultValue={searchReq}
+          onChange={(e) => setSearchText(e.target.value)}></Input>
       </InputContainer>
       <SearchContainer>
         <List

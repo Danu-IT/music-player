@@ -1,23 +1,25 @@
 import { FC } from "react";
-import { useAppSelector } from "../../hooks/redux";
 import { useLocation } from "react-router";
 import { userAPI } from "../../services/UserService";
-import { ContainerPage, Page } from "../../layouts/components";
 import BaseContainer from "../../components/BaseContainer";
 import styled from "styled-components";
-import PlaylistItem from "../PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import CategoryPlaylistItem from "./components/CategoryPlaylistItem/CategoryPlaylistItem";
 import { RowCustom } from "../Library/Library";
 import List from "../../components/List";
-import { IUserPlaylist } from "../../interfaces/user";
+import { useAppSelector } from "../../hooks/redux";
+import Player from "../../components/Player/Player";
 
 interface CategoryProps {}
 
 const Category: FC<CategoryProps> = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  const { player } = useAppSelector((state) => state.userSlice);
 
-  const { data: infoCategoryPlaylists } = userAPI.useGetCategorieFullInfoQuery({
+  const {
+    data: infoCategoryPlaylists,
+    isLoading: infoCategoryPlaylistsLoading,
+  } = userAPI.useGetCategorieFullInfoQuery({
     category_id: id,
   });
 
@@ -25,14 +27,15 @@ const Category: FC<CategoryProps> = () => {
     category_id: id,
   });
 
-  console.log(infoCategory, infoCategoryPlaylists?.playlists.items[0].id);
-  // const { data: playlists } = userAPI.useGetPlaylistsQuery(
-  //   "37i9dQZF1DX6OgmB2fwLGd"
-  // );
-
   return (
-    <BaseContainer search={true}>
-      <Title>{infoCategory?.name}</Title>
+    <Container search={true}>
+      <Head>
+        <Image
+          src={infoCategory?.icons[0].url}
+          alt=""
+        />
+        <Title>{infoCategory?.name}</Title>
+      </Head>
       <Content>
         <RowCustom title="Playlists Category's">
           {infoCategoryPlaylists && (
@@ -42,21 +45,42 @@ const Category: FC<CategoryProps> = () => {
               renderItem={(item: any) => (
                 <CategoryPlaylistItem
                   key={item.id}
-                  playlist={item}></CategoryPlaylistItem>
+                  playlist={item}
+                  loading={infoCategoryPlaylistsLoading}></CategoryPlaylistItem>
               )}
             />
           )}
         </RowCustom>
       </Content>
-    </BaseContainer>
+      {player && <Player></Player>}
+    </Container>
   );
 };
 
-const Title = styled.h1`
-  font-size: 70px;
-  margin: 75px 0;
+const Container = styled(BaseContainer)`
+  position: relative;
 `;
 
-const Content = styled.div``;
+const Head = styled.div`
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  margin: 25px 0;
+`;
+
+const Title = styled.h1`
+  z-index: 2;
+  font-size: 100px;
+`;
+
+const Image = styled.img`
+  z-index: 0;
+`;
+
+const Content = styled.div`
+  margin: 405px 0;
+`;
 
 export default Category;

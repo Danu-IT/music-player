@@ -9,12 +9,15 @@ import { countAllDuration, countArtistPlaylist } from "../../utils/calc";
 import { ContainerPage, Page } from "../../layouts/components/index";
 import { BsArrowLeft } from "react-icons/bs";
 import ColumnTracksPlaylists from "../../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+import Player from "../../components/Player/Player";
+import { useAppSelector } from "../../hooks/redux";
 
 interface PlaylistProps {}
 
 export const Playlist: FC<PlaylistProps> = () => {
   const input = useRef<HTMLInputElement | null>(null);
   const error = useRef<HTMLSpanElement | null>(null);
+  const { player } = useAppSelector((state) => state.userSlice);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -70,6 +73,7 @@ export const Playlist: FC<PlaylistProps> = () => {
             id={id}></ColumnTracksPlaylists>
         </ContainerPlaylist>
       </ContainerPage>
+      {player && <Player></Player>}
     </Page>
   );
 };

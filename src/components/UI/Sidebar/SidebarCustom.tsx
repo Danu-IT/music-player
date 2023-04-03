@@ -33,11 +33,12 @@ const SidebarCustom: FC<SidebarCustomProps> = () => {
 
   const { currentUser } = useAppSelector((state) => state.userSlice);
   const { token } = useAppSelector((state) => state.tokenSlice);
+
   const dispatch = useAppDispatch();
 
   const handleTheme = () => {
     dispatch(toggleTheme());
-    setIsDarkMode((prev) => (prev = !prev));
+    setIsDarkMode((prev) => !prev);
   };
 
   const { data: user, isFetching } = userAPI.useCurrentUserQuery(null);

@@ -20,6 +20,7 @@ import {
   Number,
   Song,
 } from "../../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
+import Player from "../../components/Player/Player";
 
 interface PlaylistsProps {}
 
@@ -27,13 +28,14 @@ const Library: FC<PlaylistsProps> = () => {
   const { currentUserPlaylists, currentUser } = useAppSelector(
     (state) => state.userSlice
   );
+  const { player } = useAppSelector((state) => state.userSlice);
+
   const dispatch = useAppDispatch();
 
   const { data: currentPlaylists } = userAPI.useCurrentUserPlaylistsQuery(null);
   const { data: currentAlbums } = userAPI.useGetUsersSavedAlbumsQuery(null);
   const { data: currentArtists } = userAPI.useGetFollowedArtistsQuery(null);
   const { data: savedTracks } = userAPI.useGetUsersSavedTracksQuery(null);
-
   const [create] = userAPI.usePostUserPlaylistMutation();
 
   const addCurrentUserPlaylists = ({ items }: any) => {
@@ -114,6 +116,7 @@ const Library: FC<PlaylistsProps> = () => {
             )}></List>
         </Row>
       )}
+      {player && <Player></Player>}
     </BaseContainer>
   );
 };
