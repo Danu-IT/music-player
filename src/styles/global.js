@@ -8,7 +8,7 @@ export const GlobalStyles = createGlobalStyle`
     }
     body{
         height: 100vh;
-        background: ${({ theme }) => theme.colors.bgMain};
+        background: ${({ theme }) => theme.colors.bg};
     }
 
     *,
