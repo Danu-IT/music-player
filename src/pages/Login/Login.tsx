@@ -16,7 +16,7 @@ const Login: FC<LoginProps> = () => {
   const handleLogin = () => {
     setRotate(true);
     const clientID = "31902ba63cef4879b088fcd06fd9d234";
-    const redirect = "http://localhost:3000/";
+    const redirect = window.location.href;
     const apiUrl = "https://accounts.spotify.com/authorize";
     const scope = [
       "ugc-image-upload",
@@ -43,9 +43,9 @@ const Login: FC<LoginProps> = () => {
     window.location.href = `${apiUrl}?client_id=${clientID}&redirect_uri=${redirect}&scope=${scope.join(
       " "
     )}&response_type=token&show_daialog=true`;
-    console.log(window.location.href);
   };
 
+  console.log(window.location.href);
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {
