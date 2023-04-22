@@ -12,9 +12,9 @@ const Like: FC<LikeProps> = ({ activated, onClick }) => {
   return (
     <div onClick={onClick}>
       {activated?.[0] ? (
-        <LikeState size={40}></LikeState>
+        <LikeState size={30}></LikeState>
       ) : (
-        <LikePic size={40}></LikePic>
+        <LikePic size={30}></LikePic>
       )}
     </div>
   );

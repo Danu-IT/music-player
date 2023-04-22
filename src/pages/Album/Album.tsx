@@ -9,7 +9,6 @@ import Like from "../../components/UI/Like/Like";
 import List from "../../components/List";
 import { BiTime } from "react-icons/bi";
 import TrackAlbums from "../../components/TrackAlbums/TrackAlbums";
-import Player from "../../components/Player/Player";
 
 interface AlbumTracksProps {}
 
@@ -18,7 +17,6 @@ const Album: FC<AlbumTracksProps> = () => {
   const { token } = useAppSelector((state) => state.tokenSlice);
   const idAlbums = location.pathname.split("/")[2];
   const navigate = useNavigate();
-  const { player } = useAppSelector((state) => state.userSlice);
 
   const [saveAlbum] = userAPI.usePutAlbumForCurrentUserMutation();
   const [deleteAlbum] = userAPI.useDeleteAlbumForCurrentUserMutation();
@@ -84,7 +82,6 @@ const Album: FC<AlbumTracksProps> = () => {
             )}></List>
         )}
       </AlbumContainer>
-      {player && <Player></Player>}
     </BaseContainer>
   );
 };

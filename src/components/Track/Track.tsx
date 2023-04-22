@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
   Album,
   Duration,
@@ -10,6 +10,7 @@ import { calcArtist, calcTime } from "../../utils/calc";
 import styled from "styled-components";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdRemove } from "react-icons/md";
+import { AiOutlinePause } from "react-icons/ai";
 import { useState } from "react";
 import { Name } from "../../pages/PlaylistCurrent/components/PlaylistItem/PlaylistItem";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { IUserPlaylist } from "../../interfaces/user";
 import { CustomLike } from "../TrackAlbums/TrackAlbums";
 import Like from "../UI/Like/Like";
-import { changeTrack, changeVisiblePlayer } from "../../store/slices/UserSlice";
+import {
+  changeContext,
+  changeDuration,
+  changeIndex,
+  changeTime,
+  changeTrack,
+  changeVisiblePlayer,
+} from "../../store/slices/UserSlice";
 
 interface TrackProps {
   track: any;
@@ -36,12 +44,28 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
   const [playandremovevisible, setPlayandremovevisible] =
     useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { currentUserPlaylists } = useAppSelector((state) => state.userSlice);
+  const [played, setPlayed] = useState<boolean>(false);
+
+  const { currentUserPlaylists, indexStore, context, isPlay } = useAppSelector(
+    (state) => state.userSlice
+  );
+
+  let kindOfPlace: string = "playlist";
+
   const open = Boolean(anchorEl);
   const dispatch = useAppDispatch();
+
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const place = location.pathname.split("/")[1];
+
+  useEffect(() => {
+    if (place === "playlists" || place === "playlistsCurrent") {
+      kindOfPlace = "playlist";
+    } else if (place === "artists") {
+      kindOfPlace = "artist";
+    }
+  }, []);
 
   const { data: album } = userAPI.useGetAlbumQuery({ id: track.album.id });
 
@@ -101,35 +125,46 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
   };
 
   const visiblePlayer = () => {
-    let kindOfPlace;
     dispatch(changeVisiblePlayer(true));
     dispatch(changeTrack(track.id));
-    if (
-      place === "library" ||
-      place === "playlists" ||
-      place === "playlistsCurrent"
-    ) {
-      kindOfPlace = "playlist";
-    } else if (place === "artists") {
-      kindOfPlace = "artist";
-    }
     kindOfPlace &&
       startPlayback({
         context_uri: `spotify:${kindOfPlace}:${id}`,
-        offset: 1,
+        offset: index - 1,
         position_ms: 0,
       });
+    dispatch(changeContext(`spotify:${kindOfPlace}:${id}`));
+    dispatch(changeIndex(index - 1));
+    dispatch(changeTime(0));
+    dispatch(changeDuration("0"));
+    setPlayed(true);
   };
+
+  useEffect(() => {
+    if (
+      index - 1 === indexStore &&
+      context === `spotify:${kindOfPlace}:${id}`
+    ) {
+      setPlayed(true);
+    } else {
+      setPlayed(false);
+    }
+  }, [indexStore]);
 
   return (
     <Music
-      onClick={() => visiblePlayer()}
+      played={played}
+      onDoubleClick={visiblePlayer}
       artist={artist}
       onMouseEnter={() => setPlayandremovevisible(true)}
       onMouseLeave={() => setPlayandremovevisible(false)}>
       <Number>{index}</Number>
       <Play playandremovevisible={playandremovevisible}>
-        <BsFillPlayFill size={30} />
+        {!isPlay && played ? (
+          <AiOutlinePause size={30}></AiOutlinePause>
+        ) : (
+          <BsFillPlayFill size={30} />
+        )}
       </Play>
       <SongCustom>
         <SongContainer>
@@ -196,6 +231,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
 
 interface MusicProps {
   artist: boolean | undefined;
+  played: boolean;
 }
 
 interface PlayProps {
@@ -215,9 +251,8 @@ interface AddProps {
 export const Music = styled.div<MusicProps>`
   display: flex;
   position: relative;
-  color: white;
   width: ${({ artist }) => (artist ? "900px" : "100%")};
-  color: ${({ theme }) => theme.colors.secondary};
+  color: ${({ theme, played }) => (played ? "gray" : theme.colors.secondary)};
   & > * {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -242,6 +277,7 @@ const Remove = styled.div<RemoveProps>`
     !playandremovevisible ? "none" : !displayRemove ? "none" : "flex"};
   right: 55px;
   cursor: pointer;
+  color: white !important;
 `;
 
 const MultiDropDownTrack = styled.div<AddProps>`

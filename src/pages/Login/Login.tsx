@@ -45,7 +45,6 @@ const Login: FC<LoginProps> = () => {
     )}&response_type=token&show_daialog=true`;
   };
 
-  console.log(window.location.href);
   useEffect(() => {
     const hash = window.location.hash;
     if (hash) {
