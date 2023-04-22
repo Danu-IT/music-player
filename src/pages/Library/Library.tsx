@@ -20,7 +20,6 @@ import {
   Number,
   Song,
 } from "../../components/Columns/ColumnTracksPlaylists/ColumnTracksPlaylists";
-import Player from "../../components/Player/Player";
 
 interface PlaylistsProps {}
 
@@ -28,7 +27,6 @@ const Library: FC<PlaylistsProps> = () => {
   const { currentUserPlaylists, currentUser } = useAppSelector(
     (state) => state.userSlice
   );
-  const { player } = useAppSelector((state) => state.userSlice);
 
   const dispatch = useAppDispatch();
 
@@ -58,7 +56,7 @@ const Library: FC<PlaylistsProps> = () => {
   }, [currentPlaylists]);
 
   return (
-    <BaseContainer>
+    <Container search={true}>
       <Favorite>
         <Title>Favorite tracks</Title>
         <CustomHeader>
@@ -116,13 +114,15 @@ const Library: FC<PlaylistsProps> = () => {
             )}></List>
         </Row>
       )}
-      {player && <Player></Player>}
-    </BaseContainer>
+    </Container>
   );
 };
 
+const Container = styled(BaseContainer)``;
+
 const Favorite = styled.div`
   margin-bottom: 50px;
+  margin-top: 50px;
 `;
 
 const Btn = styled.div`

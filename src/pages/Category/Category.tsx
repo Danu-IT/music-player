@@ -7,14 +7,12 @@ import CategoryPlaylistItem from "./components/CategoryPlaylistItem/CategoryPlay
 import { RowCustom } from "../Library/Library";
 import List from "../../components/List";
 import { useAppSelector } from "../../hooks/redux";
-import Player from "../../components/Player/Player";
 
 interface CategoryProps {}
 
 const Category: FC<CategoryProps> = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const { player } = useAppSelector((state) => state.userSlice);
 
   const {
     data: infoCategoryPlaylists,
@@ -52,7 +50,6 @@ const Category: FC<CategoryProps> = () => {
           )}
         </RowCustom>
       </Content>
-      {player && <Player></Player>}
     </Container>
   );
 };

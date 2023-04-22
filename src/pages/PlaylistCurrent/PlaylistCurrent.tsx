@@ -15,14 +15,12 @@ import MenuItem from "@mui/material/MenuItem";
 import MultiDropDown from "../../components/UI/MultiDropDown/MultiDropDown";
 import { SiApplemusic } from "react-icons/si";
 import { useAppSelector } from "../../hooks/redux";
-import Player from "../../components/Player/Player";
 
 interface PlaylistProps {}
 
 export const PlaylistCurrent: FC<PlaylistProps> = () => {
   const [visibleModal, setVisibleModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { player } = useAppSelector((state) => state.userSlice);
 
   const input = useRef<HTMLInputElement | null>(null);
   const error = useRef<HTMLSpanElement | null>(null);
@@ -152,13 +150,12 @@ export const PlaylistCurrent: FC<PlaylistProps> = () => {
           </Content>
         </Modal>
       </ContainerPage>
-      {player && <Player></Player>}
     </Page>
   );
 };
 
 const ContainerPlaylist = styled.div`
-  padding: 60px 50px 0 50px;
+  padding: 60px 50px 0px 50px;
   display: block;
   gap: 50px;
   position: relative;

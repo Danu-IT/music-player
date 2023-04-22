@@ -10,6 +10,7 @@ import { IArtist, IArtists, IMyArtists } from '../interfaces/artist';
 import { IAlbums, IAlbum, IMyAlbums, IMySavedTracks } from '../interfaces/album';
 import { IUserPlaylistTrack } from '../interfaces/user';
 import { ICategoryItem, ICategoryItemApi } from "../interfaces/category";
+import { Player } from "../interfaces/player";
 
 export const userAPI = createApi({
   reducerPath: "userAPI",
@@ -310,14 +311,31 @@ export const userAPI = createApi({
       },
       providesTags: (result) => ["Artist"],
     }),
-    startResumePlayback: build.mutation<null, {context_uri: string,  position_ms: number, offset: number }>({ // Воспроизведение трека
+    getPaybackState: build.query<Player, null>({ // Получить играющий трек
+      query: () => {
+        return {
+          url: `/v1/me/player`,
+        };
+      },
+      providesTags: (result) => ["Artist"],
+    }),
+    startResumePlayback: build.mutation<null, {context_uri: string, uris?: string[], position_ms: number, offset: number }>({ // Воспроизведение трека
       query: ({context_uri,  position_ms, offset}) => {
         return {
           url: `/v1/me/player/play`,
           method: 'PUT',
           // params: {device_id: device_id},
           body: { 
-            "context_uri": context_uri,  "position_ms": position_ms, offset: offset}
+            "context_uri": context_uri,  "position_ms": position_ms, offset: {"position": offset}}
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    pausePlayback: build.mutation<null, null>({ // Воспроизведение трека
+      query: () => {
+        return {
+          url: `/v1/me/player/pause`,
+          method: 'PUT',
         }
       },
       invalidatesTags: ['Playlist']
@@ -327,7 +345,45 @@ export const userAPI = createApi({
         return {
           url: `/v1/me/player/next`,
           method: 'POST',
-          body: { "device_id": '0d1841b0976bae2a3a310dd74c0f3df354899bc8' }
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    skipToPrevious: build.mutation<null, null>({ // Трек назад
+      query: () => {
+        return {
+          url: `/v1/me/player/previous`,
+          method: 'POST',
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    volumePlayback: build.mutation<null, {volume_percent: number}>({ // Трек назад
+      query: ({volume_percent}) => {
+        return {
+          url: `/v1/me/player/volume`,
+          params: {volume_percent: volume_percent},
+          method: 'PUT',
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    repeatPlayback: build.mutation<null, {state: string}>({ // Повторить трек или контекст
+      query: ({state}) => {
+        return {
+          url: `/v1/me/player/repeat`,
+          params: {state: state},
+          method: 'PUT',
+        }
+      },
+      invalidatesTags: ['Playlist']
+    }),
+    shufflePlayback: build.mutation<null, {state: boolean}>({ // 
+      query: ({state}) => {
+        return {
+          url: `/v1/me/player/shuffle`,
+          params: {state: state},
+          method: 'PUT',
         }
       },
       invalidatesTags: ['Playlist']

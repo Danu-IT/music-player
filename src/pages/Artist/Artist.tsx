@@ -11,7 +11,6 @@ import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
 import Row from "../../components/Row";
 import ArtistItem from "./components/ArtistItem/ArtistItem";
 import { separation } from "../../utils/calc";
-import Player from "../../components/Player/Player";
 import { useAppSelector } from "../../hooks/redux";
 
 interface ArtistProps {}
@@ -40,7 +39,7 @@ const Artist: FC<ArtistProps> = () => {
     () => separation(artist?.followers.total),
     [artist?.followers.total]
   );
-  const { player } = useAppSelector((state) => state.userSlice);
+
   const handlerButton = () => {
     if (check) {
       unfollow({ ids: artist?.id, type: "artist" });
@@ -130,7 +129,6 @@ const Artist: FC<ArtistProps> = () => {
           )}
         </Row>
       </Content>
-      {player && <Player></Player>}
     </Container>
   );
 };

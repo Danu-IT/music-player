@@ -7,10 +7,9 @@ import { useAppSelector } from "../../hooks/redux";
 import Track from "../../components/Track/Track";
 import List from "../../components/List";
 import AlbumItem from "../Album/components/AlbumItem/AlbumItem";
-import Player from "../../components/Player/Player";
 
 const Home = () => {
-  const { search, player } = useAppSelector((state) => state.userSlice);
+  const { search } = useAppSelector((state) => state.userSlice);
   const { data: category, isLoading: categoryLoading } =
     userAPI.useGetSeveralBrowseCategoriesQuery(null);
 
@@ -58,17 +57,12 @@ const Home = () => {
                 key={el.id}
                 category={el}></CategoryItem>
             ))}
-          </Category>{" "}
+          </Category>
         </>
       )}
-      {player && <Player></Player>}
     </BaseContainer>
   );
 };
-
-const Header = styled.header`
-  color: ${({ theme }) => theme.colors.primary};
-`;
 
 const Category = styled.div`
   display: flex;
