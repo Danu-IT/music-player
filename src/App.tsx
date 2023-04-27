@@ -9,9 +9,9 @@ const App = () => {
   const { player } = useAppSelector((state) => state.userSlice);
   return (
     <ThemeProvider theme={theme}>
-      {player && <Player></Player>}
       <GlobalStyles />
       <AppRouter></AppRouter>
+      {player && <Player></Player>}
     </ThemeProvider>
   );
 };

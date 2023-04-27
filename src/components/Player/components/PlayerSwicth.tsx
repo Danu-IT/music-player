@@ -21,9 +21,10 @@ interface PlayerSwicthProps {
 }
 
 const PlayerSwicth: FC<PlayerSwicthProps> = ({ progressBar, allTime }) => {
-  const { data: playerState, refetch } = userAPI.useGetPaybackStateQuery(null);
+  const [shuffle, setShuffle] = useState(false);
 
-  const repeatIconInitialState = { src: TbRepeat, name: "off", color: "" };
+  const { data: playerState, refetch } = userAPI.useGetPaybackStateQuery(null);
+  const repeatIconInitialState = { src: TbRepeat, name: "off" };
   const [repeatIcon, setRepeatIcon] = useState<RepeatIconsProps>(
     repeatIconInitialState
   );
@@ -42,8 +43,6 @@ const PlayerSwicth: FC<PlayerSwicthProps> = ({ progressBar, allTime }) => {
   const { context, indexStore, isPlay, time, duration } = useAppSelector(
     (state) => state.userSlice
   );
-
-  // console.log(duration);
 
   const dispatch = useAppDispatch();
 
@@ -88,7 +87,7 @@ const PlayerSwicth: FC<PlayerSwicthProps> = ({ progressBar, allTime }) => {
   };
 
   const switchShuffle = () => {
-    refetch();
+    setShuffle((prev) => !prev);
   };
 
   const changeProgress = (e: ChangeEvent<HTMLInputElement>) => {
@@ -107,6 +106,7 @@ const PlayerSwicth: FC<PlayerSwicthProps> = ({ progressBar, allTime }) => {
       clearTimeout(timeout);
     };
   }, [isPlay, duration]);
+
   useEffect(() => {
     if (!isPlay) {
       second = setTimeout(() => {
@@ -124,20 +124,21 @@ const PlayerSwicth: FC<PlayerSwicthProps> = ({ progressBar, allTime }) => {
   }, [isPlay, time]);
 
   useEffect(() => {
-    shuffleTrack({ state: !playerState?.shuffle_state });
-  }, [playerState]);
+    shuffleTrack({ state: shuffle });
+  }, [shuffle]);
 
   useEffect(() => {
     dispatch(changeDuration("0"));
   }, []);
+
   return (
     <Content>
       <ContentUp>
         <span onClick={switchShuffle}>
-          {playerState?.shuffle_state ? (
-            <TbArrowsRight size={33}></TbArrowsRight>
-          ) : (
+          {shuffle ? (
             <TiArrowShuffle size={33}></TiArrowShuffle>
+          ) : (
+            <TbArrowsRight size={33}></TbArrowsRight>
           )}
         </span>
         <RiRewindFill
