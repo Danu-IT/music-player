@@ -14,7 +14,6 @@ import Button from "../../components/UI/Button/Button";
 import MenuItem from "@mui/material/MenuItem";
 import MultiDropDown from "../../components/UI/MultiDropDown/MultiDropDown";
 import { SiApplemusic } from "react-icons/si";
-import { useAppSelector } from "../../hooks/redux";
 
 interface PlaylistProps {}
 

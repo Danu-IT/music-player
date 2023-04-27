@@ -45,6 +45,7 @@ const Track: FC<TrackProps> = ({ track, index, artist, remove, add, like }) => {
     useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [played, setPlayed] = useState<boolean>(false);
+  const { data: playerState, refetch } = userAPI.useGetPaybackStateQuery(null);
 
   const { currentUserPlaylists, indexStore, context, isPlay } = useAppSelector(
     (state) => state.userSlice
